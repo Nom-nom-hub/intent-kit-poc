@@ -90,10 +90,10 @@ class MarkdownRenderer:
                 alternatives = decision.properties.get("alternatives", [])
                 lines.append(f"### {decision.id} — {decision.title}")
                 lines.append("")
-                lines.append(f"**Status:** `{decision.status}`  ")
-                lines.append(f"**Rationale:** {decision.description}  ")
+                lines.append(f"**Status:** `{decision.status}`")
+                lines.append(f"**Rationale:** {decision.description}")
                 if requirement_titles:
-                    lines.append(f"**Addresses:** {', '.join(requirement_titles)}  ")
+                    lines.append(f"**Addresses:** {', '.join(requirement_titles)}")
                 if alternatives:
                     lines.append(f"**Alternatives considered:** {', '.join(alternatives)}")
                 lines.append("")
@@ -132,8 +132,8 @@ class MarkdownRenderer:
                 evidence_nodes = [graph.get_node(edge.source) for edge in evidence_edges]
                 lines.append(f"### {obligation.id} — {obligation.title}")
                 lines.append("")
-                lines.append(f"**Status:** `{obligation.status}`  ")
-                lines.append(f"**Claim:** {obligation.description}  ")
+                lines.append(f"**Status:** `{obligation.status}`")
+                lines.append(f"**Claim:** {obligation.description}")
                 lines.append("**Evidence:**")
                 if evidence_nodes:
                     for evidence in evidence_nodes:

@@ -11,6 +11,8 @@ The project follows [Semantic Versioning](https://semver.org/). Before `1.0.0`, 
 - A read-only Spec Kit importer for completed `spec.md`, optional `plan.md`, and optional `tasks.md` feature artifacts.
 - Provenance-backed outcomes, requirements, decisions, and implementation tasks, including artifact SHA-256 digests and source-line references.
 - The `intentkit import-speckit` command, importer documentation, generated implementation-task visibility, and migration regression coverage.
+- Graph Insight commands: `intentkit drift` for provenance hash checks and `intentkit impact` for deterministic typed-path and proof-gap analysis.
+- Read-only graph-insight documentation and a dependency-ordered public delivery roadmap.
 
 ## [0.2.0] - 2026-08-16
 

@@ -23,6 +23,7 @@ The POC intentionally focuses on one essential thesis: **a requirement should ca
 | Proof status | Links evidence to proof obligations, supports `latest`, `all`, `any`, and `manual` evaluation policies, and marks proofs `verified`, `failed`, or active. |
 | Typed proof checks | Runs trusted in-process checkers that return normalized, provenance-rich evidence without direct graph-write access. |
 | Spec Kit migration | Imports completed `spec.md`, optional `plan.md`, and optional `tasks.md` into the local graph with artifact hashes and line-level provenance. |
+| Graph insight | Detects imported-source drift and traverses typed graph paths to show affected work and unverified proof obligations. |
 
 ## POC Scope
 
@@ -30,10 +31,14 @@ The POC is deliberately not a production system. It does **not** yet include age
 
 ## Installation
 
-Intent Kit supports Python 3.11 and 3.12. Install the tagged release directly from GitHub or clone the repository for development.
+Intent Kit supports Python 3.11 and 3.12. The latest published release is `v0.2.0`. Graph Insight is currently on the `main` development branch and will be released as `v0.3.0` after final verification.
 
 ```bash
+# Latest published release
 python -m pip install "git+https://github.com/Nom-nom-hub/intent-kit-poc.git@v0.2.0"
+
+# Current development branch, including Graph Insight
+python -m pip install "git+https://github.com/Nom-nom-hub/intent-kit-poc.git@main"
 ```
 
 ## Quick Start
@@ -93,8 +98,31 @@ See [`docs/speckit-import.md`](docs/speckit-import.md) for the supported Markdow
 | `intentkit prove` | Records manually supplied evidence against a proof obligation and updates its verification state. |
 | `intentkit check` | Runs a trusted registered checker, records immutable evidence with provenance, evaluates the proof policy, and rerenders Markdown. |
 | `intentkit import-speckit` | Reads a completed Spec Kit feature directory and creates typed, provenance-backed graph nodes without changing source artifacts. |
+| `intentkit drift` | Re-hashes imported artifacts and reports unchanged, changed, missing, or unsupported provenance records. Returns nonzero when drift needs review. |
+| `intentkit impact` | Traverses incoming and outgoing typed graph links from a node or imported source, including linked proof gaps. |
 | `intentkit render` | Rebuilds Markdown projections from the canonical graph. |
 | `intentkit status` | Shows graph counts and proof coverage. |
+
+## Graph Insight
+
+Graph Insight turns the imported graph into a practical change-review tool. Both commands are read-only: they do not change the graph, source artifacts, or rendered Markdown.
+
+```bash
+# Inspect whether source artifacts still match the hashes recorded at import time.
+intentkit drift --path ./intent-migration
+
+# Limit a scan to one imported artifact or feature directory.
+intentkit drift --path ./intent-migration --source ../legacy-project/specs/001-checkout-safety/spec.md
+
+# Identify all graph records connected to a requirement.
+intentkit impact REQ-002 --path ./intent-migration
+
+# Find all imported nodes associated with a source directory. Exit nonzero only
+# when the affected paths include proof obligations that are not verified.
+intentkit impact --source ../legacy-project/specs/001-checkout-safety --proof-gaps --path ./intent-migration
+```
+
+`drift` uses the SHA-256 provenance stored by the importer. `impact` follows both incoming and outgoing typed edges so a requirement review includes its outcome, implementation tasks, proof obligations, and evidence. See [`docs/graph-insight.md`](docs/graph-insight.md) for the output contract and review workflow.
 
 ## Proof Checkers
 
@@ -154,7 +182,7 @@ The tests cover graph integrity, deterministic IDs, persistence, Markdown projec
 
 ## Next Build Steps
 
-The next recommended increment is **controlled external checker discovery**: package entry-point discovery behind a project allowlist, configuration validation, and isolated execution boundaries. After that, add incremental Spec Kit synchronization with explicit review and change-impact analysis for a realistic brownfield feature.
+The next recommended increment is **policy packs**: risk-calibrated proof defaults for release-critical, migration, and documentation work. Controlled external checker discovery follows behind explicit allowlisting, configuration validation, and isolated execution boundaries. Incremental Spec Kit synchronization then builds on the existing drift and impact reports.
 
 ## Community and Project Policies
 

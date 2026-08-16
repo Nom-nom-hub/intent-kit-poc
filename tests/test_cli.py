@@ -195,3 +195,50 @@ A shopper can safely repeat checkout confirmation.
     assert graph.get_node("OUT-001").properties["provenance"]["importer"] == "intentkit.speckit"
     assert graph.get_node("TSK-001").properties["source_identifier"] == "T001"
     assert "Imported Spec Kit feature into OUT-001" in capsys.readouterr().out
+
+
+def test_cli_reports_import_drift_and_requirement_impact(tmp_path: Path, capsys) -> None:
+    source = tmp_path / "speckit-feature"
+    source.mkdir()
+    spec = source / "spec.md"
+    spec.write_text(
+        """# Feature Specification: Retry Safety
+
+**Input**: User description: "Avoid duplicate orders."
+
+## User Scenarios & Testing
+
+### User Story 1 - Retry once (Priority: P1)
+
+A shopper can safely repeat checkout confirmation.
+
+**Why this priority**: Duplicate charges harm customers.
+
+**Independent Test**: Repeat confirmation and verify one order.
+
+**Acceptance Scenarios**:
+
+1. **Given** a pending checkout, **When** confirmation repeats, **Then** one order exists.
+
+## Requirements
+
+### Functional Requirements
+
+- **FR-001**: System MUST store one idempotency key per confirmation.
+""",
+        encoding="utf-8",
+    )
+    root = str(tmp_path / "intent-project")
+    assert main(["init", "--path", root, "--project-name", "Insight CLI"]) == 0
+    assert main(["import-speckit", str(source), "--path", root]) == 0
+    assert main(["drift", "--path", root]) == 0
+    assert "1 unchanged" in capsys.readouterr().out
+
+    changed = spec.read_text(encoding="utf-8") + "\nChanged after import.\n"
+    spec.write_text(changed, encoding="utf-8")
+    assert main(["drift", "--path", root]) == 1
+    assert "CHANGED:" in capsys.readouterr().out
+    assert main(["impact", "REQ-001", "--path", root]) == 0
+    impact_output = capsys.readouterr().out
+    assert "Impact root: REQ-001" in impact_output
+    assert "OUT-001" in impact_output

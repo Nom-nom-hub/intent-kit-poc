@@ -9,6 +9,14 @@ from pathlib import Path
 from typing import Any
 
 from .importers import SpecKitImporter
+from .insights import (
+    DriftStatus,
+    analyze_impact,
+    render_drift,
+    render_impact,
+    scan_drift,
+    source_nodes,
+)
 from .kernel import GraphStore, NodeStatus, NodeType, RelationType
 from .proof_checkers import CheckerRegistry, CheckState, ProofRunner
 from .proof_checkers.builtin import FileExistsChecker
@@ -121,6 +129,34 @@ def build_parser() -> argparse.ArgumentParser:
         "source", type=Path, help="Spec Kit feature directory containing spec.md."
     )
     import_speckit.set_defaults(handler=handle_import_speckit)
+
+    drift = subparsers.add_parser(
+        "drift", help="Compare imported source artifacts with recorded provenance."
+    )
+    add_path(drift)
+    drift.add_argument(
+        "--source",
+        type=Path,
+        help="Optional imported feature directory or source artifact to scan.",
+    )
+    drift.set_defaults(handler=handle_drift)
+
+    impact = subparsers.add_parser(
+        "impact", help="Show typed graph paths and proof gaps affected by a node or source."
+    )
+    add_path(impact)
+    impact.add_argument("node", nargs="?", help="Graph node ID to analyze.")
+    impact.add_argument(
+        "--source",
+        type=Path,
+        help="Imported feature directory or source artifact whose nodes to analyze.",
+    )
+    impact.add_argument(
+        "--proof-gaps",
+        action="store_true",
+        help="Return a nonzero status when affected proof obligations are not verified.",
+    )
+    impact.set_defaults(handler=handle_impact)
 
     render = subparsers.add_parser("render", help="Regenerate Markdown views from the graph.")
     add_path(render)
@@ -290,6 +326,28 @@ def parse_checker_config(raw_config: str) -> dict[str, Any]:
     if not isinstance(parsed, dict):
         raise ValueError("Checker configuration must be a JSON object.")
     return parsed
+
+
+def handle_drift(args: argparse.Namespace) -> int:
+    records = scan_drift(load_store(args.path).load(), args.source)
+    print(render_drift(records))
+    degraded = {DriftStatus.CHANGED, DriftStatus.MISSING, DriftStatus.UNSUPPORTED}
+    return 1 if any(record.status in degraded for record in records) else 0
+
+
+def handle_impact(args: argparse.Namespace) -> int:
+    if bool(args.node) == bool(args.source):
+        raise ValueError("Provide exactly one impact target: NODE or --source PATH.")
+    graph = load_store(args.path).load()
+    targets = [graph.get_node(args.node)] if args.node else source_nodes(graph, args.source)
+    if not targets:
+        print("No graph nodes matched the requested source.")
+        return 0
+    reports = [analyze_impact(graph, target.id) for target in targets]
+    print("\n\n".join(render_impact(report) for report in reports))
+    if args.proof_gaps and any(report.proof_gaps for report in reports):
+        return 1
+    return 0
 
 
 def handle_import_speckit(args: argparse.Namespace) -> int:
