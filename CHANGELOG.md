@@ -4,6 +4,14 @@ All notable changes to Intent Kit are documented in this file.
 
 The project follows [Semantic Versioning](https://semver.org/). Before `1.0.0`, minor releases may include breaking changes where necessary to clarify the experimental extension model.
 
+## [Unreleased]
+
+### Added
+
+- A read-only Spec Kit importer for completed `spec.md`, optional `plan.md`, and optional `tasks.md` feature artifacts.
+- Provenance-backed outcomes, requirements, decisions, and implementation tasks, including artifact SHA-256 digests and source-line references.
+- The `intentkit import-speckit` command, importer documentation, generated implementation-task visibility, and migration regression coverage.
+
 ## [0.2.0] - 2026-08-16
 
 ### Added

@@ -65,6 +65,7 @@ class MarkdownRenderer:
     def _render_design(self, graph: IntentGraph) -> str:
         decisions = nodes_of_type(graph, NodeType.DECISION)
         requirements = nodes_of_type(graph, NodeType.REQUIREMENT)
+        tasks = nodes_of_type(graph, NodeType.IMPLEMENTATION_TASK)
         lines = [
             "# Design and Decision Record",
             "",
@@ -96,6 +97,21 @@ class MarkdownRenderer:
                 if alternatives:
                     lines.append(f"**Alternatives considered:** {', '.join(alternatives)}")
                 lines.append("")
+        lines += ["## Implementation Tasks", ""]
+        if not tasks:
+            lines.append("No implementation tasks have been imported or recorded yet.")
+        else:
+            for task in tasks:
+                phase = task.properties.get("phase")
+                story = task.properties.get("story_label")
+                labels = ", ".join(label for label in [phase, story] if label)
+                implements = related_titles(graph, task.id, RelationType.IMPLEMENTS, outgoing=True)
+                suffix = f" ({labels})" if labels else ""
+                lines.append(
+                    f"- **{task.id} — {task.title}** (`{task.status}`){suffix}: {task.description}"
+                )
+                if implements:
+                    lines.append(f"  - Implements: {', '.join(implements)}")
         return "\n".join(lines).rstrip() + "\n"
 
     def _render_evidence(self, graph: IntentGraph) -> str:

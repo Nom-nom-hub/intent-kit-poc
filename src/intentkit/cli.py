@@ -8,6 +8,7 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
+from .importers import SpecKitImporter
 from .kernel import GraphStore, NodeStatus, NodeType, RelationType
 from .proof_checkers import CheckerRegistry, CheckState, ProofRunner
 from .proof_checkers.builtin import FileExistsChecker
@@ -111,6 +112,15 @@ def build_parser() -> argparse.ArgumentParser:
     )
     check.add_argument("--config", default="{}", help="Checker configuration as a JSON object.")
     check.set_defaults(handler=handle_check)
+
+    import_speckit = subparsers.add_parser(
+        "import-speckit", help="Import a completed Spec Kit feature directory with provenance."
+    )
+    add_path(import_speckit)
+    import_speckit.add_argument(
+        "source", type=Path, help="Spec Kit feature directory containing spec.md."
+    )
+    import_speckit.set_defaults(handler=handle_import_speckit)
 
     render = subparsers.add_parser("render", help="Regenerate Markdown views from the graph.")
     add_path(render)
@@ -280,6 +290,21 @@ def parse_checker_config(raw_config: str) -> dict[str, Any]:
     if not isinstance(parsed, dict):
         raise ValueError("Checker configuration must be a JSON object.")
     return parsed
+
+
+def handle_import_speckit(args: argparse.Namespace) -> int:
+    store = load_store(args.path)
+    graph = store.load()
+    report = SpecKitImporter(args.source).import_into(graph)
+    store.save(graph)
+    MarkdownRenderer(args.path).render(graph)
+    print(
+        "Imported Spec Kit feature into "
+        f"{report.feature_outcome_id}: {report.user_stories} user stories, "
+        f"{report.functional_requirements} functional requirements, "
+        f"{report.decisions} plan decisions, and {report.tasks} tasks."
+    )
+    return 0
 
 
 def handle_render(args: argparse.Namespace) -> int:

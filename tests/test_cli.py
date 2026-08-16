@@ -139,3 +139,59 @@ def test_cli_runs_a_checker_backed_proof(tmp_path: Path, capsys) -> None:
     assert graph.get_node("PRF-001").status == NodeStatus.VERIFIED.value
     assert graph.get_node("EVD-001").properties["checker"]["id"] == "local.file-exists"
     assert "PASS: Required path is present" in capsys.readouterr().out
+
+
+def test_cli_imports_a_speckit_feature(tmp_path: Path, capsys) -> None:
+    source = tmp_path / "speckit-feature"
+    source.mkdir()
+    (source / "spec.md").write_text(
+        """# Feature Specification: Retry Safety
+
+**Input**: User description: "Avoid duplicate orders."
+
+## User Scenarios & Testing
+
+### User Story 1 - Retry once (Priority: P1)
+
+A shopper can safely repeat checkout confirmation.
+
+**Why this priority**: Duplicate charges harm customers.
+
+**Independent Test**: Repeat confirmation and verify one order.
+
+**Acceptance Scenarios**:
+
+1. **Given** a pending checkout, **When** confirmation repeats, **Then** one order exists.
+
+## Requirements
+
+### Functional Requirements
+
+- **FR-001**: System MUST store one idempotency key per confirmation.
+
+## Success Criteria
+
+### Measurable Outcomes
+
+- **SC-001**: Repeated confirmation returns one order.
+""",
+        encoding="utf-8",
+    )
+    (source / "tasks.md").write_text(
+        """# Tasks: Retry Safety
+
+## Phase 3: User Story 1 - Retry once (Priority: P1)
+
+- [ ] T001 [US1] Add idempotency support in src/checkout.py
+""",
+        encoding="utf-8",
+    )
+    root = str(tmp_path / "intent-project")
+    assert main(["init", "--path", root, "--project-name", "Imported CLI"]) == 0
+
+    assert main(["import-speckit", str(source), "--path", root]) == 0
+
+    graph = GraphStore(Path(root)).load()
+    assert graph.get_node("OUT-001").properties["provenance"]["importer"] == "intentkit.speckit"
+    assert graph.get_node("TSK-001").properties["source_identifier"] == "T001"
+    assert "Imported Spec Kit feature into OUT-001" in capsys.readouterr().out

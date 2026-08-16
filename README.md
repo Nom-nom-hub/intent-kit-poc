@@ -22,10 +22,11 @@ The POC intentionally focuses on one essential thesis: **a requirement should ca
 | Manual collaboration | Preserves text inside a clearly marked **Manual Notes** region during future renders. |
 | Proof status | Links evidence to proof obligations, supports `latest`, `all`, `any`, and `manual` evaluation policies, and marks proofs `verified`, `failed`, or active. |
 | Typed proof checks | Runs trusted in-process checkers that return normalized, provenance-rich evidence without direct graph-write access. |
+| Spec Kit migration | Imports completed `spec.md`, optional `plan.md`, and optional `tasks.md` into the local graph with artifact hashes and line-level provenance. |
 
 ## POC Scope
 
-The POC is deliberately not a production system. It does **not** yet include agent integrations, a visual graph explorer, direct Spec Kit import, GitHub/Jira synchronization, CI/telemetry adapters, automatic repository mapping, role-based access control, external checker-package discovery, or sophisticated merge/conflict resolution. Those are later roadmap capabilities, not safe assumptions for the first build.
+The POC is deliberately not a production system. It does **not** yet include agent integrations, a visual graph explorer, GitHub/Jira synchronization, CI/telemetry adapters, automatic repository mapping, role-based access control, external checker-package discovery, incremental import updates, or sophisticated merge/conflict resolution. Those are later roadmap capabilities, not safe assumptions for the first build.
 
 ## Installation
 
@@ -69,6 +70,19 @@ intentkit check PRF-001 \
 intentkit status --path ./demo-project
 ```
 
+## Import an Existing Spec Kit Feature
+
+Initialize an empty Intent Kit project, then provide the path to a completed Spec Kit feature directory. The importer reads the source files but never changes them.
+
+```bash
+intentkit init --path ./intent-migration --project-name "Checkout Safety"
+intentkit import-speckit ../legacy-project/specs/001-checkout-safety --path ./intent-migration
+```
+
+The importer requires `spec.md`; it uses `plan.md` and `tasks.md` when available. It maps Spec Kit user stories and functional requirements to Intent Kit requirements, plan context to a decision record, and task-list entries to typed implementation tasks. Every imported node records its source artifact, SHA-256 digest, source line, and importer identity. A source directory may be imported into a graph only once; use a new Intent Kit project for a clean re-import.
+
+See [`docs/speckit-import.md`](docs/speckit-import.md) for the supported Markdown conventions and mapping rules.
+
 ## Command Model
 
 | Command | Purpose |
@@ -78,6 +92,7 @@ intentkit status --path ./demo-project
 | `intentkit shape` | Adds a requirement, plus optional decision and proof-obligation nodes. |
 | `intentkit prove` | Records manually supplied evidence against a proof obligation and updates its verification state. |
 | `intentkit check` | Runs a trusted registered checker, records immutable evidence with provenance, evaluates the proof policy, and rerenders Markdown. |
+| `intentkit import-speckit` | Reads a completed Spec Kit feature directory and creates typed, provenance-backed graph nodes without changing source artifacts. |
 | `intentkit render` | Rebuilds Markdown projections from the canonical graph. |
 | `intentkit status` | Shows graph counts and proof coverage. |
 
@@ -97,6 +112,8 @@ The default registry is explicit and in-process: only trusted checkers bundled b
 Outcome ← Requirement ← Decision
                  ↓
          Proof obligation ← Evidence
+                 ↑
+     Implementation task
 ```
 
 The POC records this graph as nodes plus typed directed edges. It makes the following questions queryable in a deterministic way:
@@ -108,6 +125,7 @@ The POC records this graph as nodes plus typed directed edges. It makes the foll
 | How will it be addressed? | Decision |
 | What must be demonstrated? | Proof obligation |
 | What was observed or executed? | Evidence |
+| What work implements a requirement? | Implementation task |
 
 ## Generated Files
 
@@ -132,11 +150,11 @@ Run the test suite from the project root:
 python3 -m pytest -q
 ```
 
-The tests cover graph integrity, deterministic IDs, persistence, Markdown projection, manual-note preservation, checker registration, path containment, proof aggregation, and complete CLI workflows.
+The tests cover graph integrity, deterministic IDs, persistence, Markdown projection, manual-note preservation, checker registration, path containment, proof aggregation, read-only Spec Kit import, provenance, and complete CLI workflows.
 
 ## Next Build Steps
 
-The next recommended increment is **controlled external checker discovery**: package entry-point discovery behind a project allowlist, configuration validation, and isolated execution boundaries. After that, add a read-only importer for existing Spec Kit feature artifacts and validate change impact on one realistic brownfield feature.
+The next recommended increment is **controlled external checker discovery**: package entry-point discovery behind a project allowlist, configuration validation, and isolated execution boundaries. After that, add incremental Spec Kit synchronization with explicit review and change-impact analysis for a realistic brownfield feature.
 
 ## Community and Project Policies
 

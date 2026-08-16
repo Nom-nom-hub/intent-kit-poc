@@ -20,6 +20,7 @@ class NodeType(StrEnum):
     PROOF_OBLIGATION = "proof_obligation"
     EVIDENCE = "evidence"
     OBSERVED_BEHAVIOR = "observed_behavior"
+    IMPLEMENTATION_TASK = "implementation_task"
 
 
 class NodeStatus(StrEnum):
@@ -226,6 +227,7 @@ def next_node_id(node_type: str, nodes: dict[str, Node]) -> str:
         NodeType.PROOF_OBLIGATION.value: "PRF",
         NodeType.EVIDENCE.value: "EVD",
         NodeType.OBSERVED_BEHAVIOR.value: "OBS",
+        NodeType.IMPLEMENTATION_TASK.value: "TSK",
     }[node_type]
     current_ids = [node_id for node_id in nodes if node_id.startswith(f"{prefix}-")]
     numbers = [
