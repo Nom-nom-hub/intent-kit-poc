@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability report
+    url: https://github.com/Nom-nom-hub/intent-kit-poc/security/advisories/new
+    about: Please report suspected vulnerabilities privately rather than in public issues.
+  - name: Contribution guide
+    url: https://github.com/Nom-nom-hub/intent-kit-poc/blob/main/CONTRIBUTING.md
+    about: Read the local setup, quality, and compatibility expectations before contributing.

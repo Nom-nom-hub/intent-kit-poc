@@ -4,11 +4,37 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "intentkit"
-version = "0.1.0"
-description = "A local-first proof of concept for Intent Graph Development"
+version = "0.2.0"
+description = "A local-first, proof-backed toolkit for Intent Graph Development"
+readme = "README.md"
 requires-python = ">=3.11"
-authors = [{name = "Manus AI"}]
-license = {text = "MIT"}
+authors = [{name = "Intent Kit Contributors"}]
+maintainers = [{name = "Intent Kit Contributors"}]
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["specification", "requirements", "traceability", "proof", "developer-tools", "local-first"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Quality Assurance",
+  "Topic :: Software Development :: Testing",
+]
+
+[project.urls]
+Documentation = "https://github.com/Nom-nom-hub/intent-kit-poc#readme"
+Issues = "https://github.com/Nom-nom-hub/intent-kit-poc/issues"
+Source = "https://github.com/Nom-nom-hub/intent-kit-poc"
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2,<2",
+  "pytest>=8,<10",
+  "ruff>=0.6,<1",
+]
 
 [project.scripts]
 intentkit = "intentkit.cli:main"
@@ -22,3 +48,11 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = ["build", "dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

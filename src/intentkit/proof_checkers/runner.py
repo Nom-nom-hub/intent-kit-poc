@@ -2,18 +2,18 @@
 
 from __future__ import annotations
 
+import json
+from collections.abc import Mapping
 from dataclasses import replace
 from hashlib import sha256
-import json
 from time import perf_counter
-from typing import Any, Mapping
+from typing import Any
 from uuid import uuid4
 
 from ..kernel import GraphStore, IntentGraph, NodeStatus, NodeType, RelationType, utc_now
 from ..renderer import MarkdownRenderer
-from .models import Artifact, CheckRequest, CheckResult, CheckState, CheckerDescriptor
+from .models import Artifact, CheckerDescriptor, CheckRequest, CheckResult, CheckState
 from .registry import CheckerRegistry
-
 
 MAX_DETAIL_CHARS = 8_000
 SUPPORTED_EVALUATIONS = {"latest", "all", "any", "manual"}
@@ -26,7 +26,9 @@ class ProofRunner:
         self.store = store
         self.registry = registry
 
-    def run(self, obligation_id: str, checker_id: str, config: Mapping[str, Any] | None = None) -> CheckResult:
+    def run(
+        self, obligation_id: str, checker_id: str, config: Mapping[str, Any] | None = None
+    ) -> CheckResult:
         graph = self.store.load()
         obligation = graph.get_node(obligation_id)
         if obligation.type != NodeType.PROOF_OBLIGATION.value:
@@ -62,7 +64,9 @@ class ProofRunner:
             title=f"{checker.descriptor.display_name}: {result.summary}",
             description=result.details or result.summary,
             status=evidence_status(result.state),
-            properties=serialize_result(result, checker.descriptor, run_id, normalized_config, duration_ms),
+            properties=serialize_result(
+                result, checker.descriptor, run_id, normalized_config, duration_ms
+            ),
         )
         graph.add_edge(evidence.id, obligation.id, RelationType.PROVES)
         graph.set_status(obligation.id, aggregate_obligation_status(graph, obligation.id))
@@ -91,7 +95,9 @@ class ProofRunner:
         return result
 
     @staticmethod
-    def _normalize_result(result: CheckResult, descriptor: CheckerDescriptor, duration_ms: int) -> CheckResult:
+    def _normalize_result(
+        result: CheckResult, descriptor: CheckerDescriptor, duration_ms: int
+    ) -> CheckResult:
         summary = result.summary.strip()
         if not summary:
             return CheckResult(
@@ -126,8 +132,9 @@ def aggregate_obligation_status(graph: IntentGraph, obligation_id: str) -> NodeS
         raise ValueError(f"{obligation_id} is not a proof obligation.")
     evaluation = obligation.properties.get("evaluation", "latest")
     if evaluation not in SUPPORTED_EVALUATIONS:
+        supported = ", ".join(sorted(SUPPORTED_EVALUATIONS))
         raise ValueError(
-            f"Unsupported proof evaluation {evaluation!r}; expected one of {', '.join(sorted(SUPPORTED_EVALUATIONS))}."
+            f"Unsupported proof evaluation {evaluation!r}; expected one of {supported}."
         )
     if evaluation == "manual":
         return NodeStatus(obligation.status)
@@ -193,7 +200,9 @@ def required_checker_ids(properties: Mapping[str, Any]) -> tuple[str, ...]:
     configured = properties.get("required_checkers", [])
     if configured is None:
         return ()
-    if not isinstance(configured, list) or not all(isinstance(item, str) and item for item in configured):
+    if not isinstance(configured, list) or not all(
+        isinstance(item, str) and item for item in configured
+    ):
         raise ValueError("required_checkers must be a list of non-empty checker IDs.")
     return tuple(configured)
 
@@ -235,7 +244,9 @@ def serialize_result(
 
 def configuration_fingerprint(config: Mapping[str, Any]) -> str:
     try:
-        encoded = json.dumps(config, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+        encoded = json.dumps(
+            config, sort_keys=True, separators=(",", ":"), ensure_ascii=True
+        ).encode("utf-8")
     except (TypeError, ValueError) as exc:
         raise ValueError("Checker configuration must be JSON-serializable.") from exc
     return "sha256:" + sha256(encoded).hexdigest()

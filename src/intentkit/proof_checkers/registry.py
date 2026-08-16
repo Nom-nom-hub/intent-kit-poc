@@ -28,18 +28,19 @@ class CheckerRegistry:
             return self._checkers[checker_id]
         except KeyError as exc:
             available = ", ".join(sorted(self._checkers)) or "none"
-            raise ValueError(f"Unknown checker {checker_id!r}. Registered checkers: {available}.") from exc
+            raise ValueError(
+                f"Unknown checker {checker_id!r}. Registered checkers: {available}."
+            ) from exc
 
     def descriptors(self) -> tuple[CheckerDescriptor, ...]:
-        return tuple(
-            self._checkers[checker_id].descriptor
-            for checker_id in sorted(self._checkers)
-        )
+        return tuple(self._checkers[checker_id].descriptor for checker_id in sorted(self._checkers))
 
     @staticmethod
     def _validate_descriptor(descriptor: CheckerDescriptor) -> None:
         if not descriptor.checker_id or "." not in descriptor.checker_id:
-            raise ValueError("Checker IDs must be non-empty dotted identifiers, e.g. 'local.file-exists'.")
+            raise ValueError(
+                "Checker IDs must be non-empty dotted identifiers, e.g. 'local.file-exists'."
+            )
         if not descriptor.version:
             raise ValueError(f"Checker {descriptor.checker_id!r} must declare a version.")
         if not descriptor.display_name:

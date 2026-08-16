@@ -2,8 +2,10 @@
 
 ![Intent Kit logo: a green intent graph with an integrated verification mark](assets/intent-kit-logo.png)
 
-**Intent Kit** is a local-first proof of concept for **Intent Graph Development (IGD)**. It preserves a lightweight, command-driven development experience while storing the underlying methodology as a typed, version-controlled graph of outcomes, requirements, decisions, proof obligations, and evidence.
+**Intent Kit** is an experimental, local-first toolkit for **Intent Graph Development (IGD)**. It preserves a lightweight, command-driven development experience while storing the underlying methodology as a typed, version-controlled graph of outcomes, requirements, decisions, proof obligations, and evidence.
 
+> **Status:** Intent Kit `0.2.0` is pre-`1.0` software. It is suitable for local evaluation and contributor experimentation, not yet for business-critical proof workflows or untrusted plug-in execution.
+>
 > **Design principle:** Keep the interface linear for people; keep the system model graph-shaped for agents.
 
 The POC intentionally focuses on one essential thesis: **a requirement should carry explicit, stable links to why it exists, how it will be addressed, and what proves it.** Markdown files remain the everyday review interface, but they are deterministic projections of a local graph rather than the only place relationships exist.
@@ -25,19 +27,27 @@ The POC intentionally focuses on one essential thesis: **a requirement should ca
 
 The POC is deliberately not a production system. It does **not** yet include agent integrations, a visual graph explorer, direct Spec Kit import, GitHub/Jira synchronization, CI/telemetry adapters, automatic repository mapping, role-based access control, external checker-package discovery, or sophisticated merge/conflict resolution. Those are later roadmap capabilities, not safe assumptions for the first build.
 
-## Quick Start
+## Installation
 
-The project uses only the Python standard library at runtime. From the repository root, run the commands below. Replace `demo-project` with your target directory.
+Intent Kit supports Python 3.11 and 3.12. Install the tagged release directly from GitHub or clone the repository for development.
 
 ```bash
-PYTHONPATH=src python3 -m intentkit init --path ./demo-project --project-name "Checkout Safety"
+python -m pip install "git+https://github.com/Nom-nom-hub/intent-kit-poc.git@v0.2.0"
+```
 
-PYTHONPATH=src python3 -m intentkit capture "Prevent duplicate orders" \
+## Quick Start
+
+Replace `demo-project` with your target directory. The CLI stores canonical graph data locally in the selected project.
+
+```bash
+intentkit init --path ./demo-project --project-name "Checkout Safety"
+
+intentkit capture "Prevent duplicate orders" \
   --path ./demo-project \
   --description "Checkout retries must not create duplicate orders." \
   --success-measure "A repeated confirmation returns exactly one order."
 
-PYTHONPATH=src python3 -m intentkit shape "Use idempotency keys" \
+intentkit shape "Use idempotency keys" \
   --path ./demo-project \
   --description "Every confirmation request must carry an idempotency key." \
   --outcome OUT-001 \
@@ -51,12 +61,12 @@ PYTHONPATH=src python3 -m intentkit shape "Use idempotency keys" \
   --proof-evaluation all \
   --required-checker local.file-exists
 
-PYTHONPATH=src python3 -m intentkit check PRF-001 \
+intentkit check PRF-001 \
   --path ./demo-project \
   --checker local.file-exists \
   --config '{"path":"intent/intent.md","contains":"Intent Contract"}'
 
-PYTHONPATH=src python3 -m intentkit status --path ./demo-project
+intentkit status --path ./demo-project
 ```
 
 ## Command Model
@@ -127,3 +137,7 @@ The tests cover graph integrity, deterministic IDs, persistence, Markdown projec
 ## Next Build Steps
 
 The next recommended increment is **controlled external checker discovery**: package entry-point discovery behind a project allowlist, configuration validation, and isolated execution boundaries. After that, add a read-only importer for existing Spec Kit feature artifacts and validate change impact on one realistic brownfield feature.
+
+## Community and Project Policies
+
+Please read the [contribution guide](CONTRIBUTING.md), [code of conduct](CODE_OF_CONDUCT.md), [security policy](SECURITY.md), and [changelog](CHANGELOG.md) before opening an issue or pull request. Report security concerns privately; do not place vulnerability details in public issues.

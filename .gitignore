@@ -2,5 +2,10 @@ __pycache__/
 .pytest_cache/
 *.py[cod]
 *.egg-info/
-examples/checkout-safety/.intent/
-examples/checkout-safety/intent/
+build/
+dist/
+.venv/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/

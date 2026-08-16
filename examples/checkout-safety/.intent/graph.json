@@ -1,0 +1,134 @@
+{
+  "created_at": "2026-08-16T16:06:16+00:00",
+  "edges": {
+    "edge-2f1db371869b": {
+      "created_at": "2026-08-16T16:06:16+00:00",
+      "id": "edge-2f1db371869b",
+      "properties": {},
+      "relation": "derives_from",
+      "source": "REQ-001",
+      "target": "OUT-001"
+    },
+    "edge-521916cfda72": {
+      "created_at": "2026-08-16T16:06:16+00:00",
+      "id": "edge-521916cfda72",
+      "properties": {},
+      "relation": "addresses",
+      "source": "DEC-001",
+      "target": "REQ-001"
+    },
+    "edge-aa8f90fd2c45": {
+      "created_at": "2026-08-16T16:06:16+00:00",
+      "id": "edge-aa8f90fd2c45",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-001",
+      "target": "PRF-001"
+    },
+    "edge-b707a63106f0": {
+      "created_at": "2026-08-16T16:06:16+00:00",
+      "id": "edge-b707a63106f0",
+      "properties": {},
+      "relation": "requires_proof",
+      "source": "REQ-001",
+      "target": "PRF-001"
+    }
+  },
+  "nodes": {
+    "DEC-001": {
+      "created_at": "2026-08-16T16:06:16+00:00",
+      "description": "Provider-backed idempotency makes duplicate-order handling explicit and testable.",
+      "id": "DEC-001",
+      "properties": {
+        "alternatives": [
+          "Time-window deduplication"
+        ]
+      },
+      "status": "proposed",
+      "title": "Use provider idempotency keys",
+      "type": "decision",
+      "updated_at": "2026-08-16T16:06:16+00:00"
+    },
+    "EVD-001": {
+      "created_at": "2026-08-16T16:06:16+00:00",
+      "description": "Required path is present: intent/intent.md.",
+      "id": "EVD-001",
+      "properties": {
+        "artifacts": [],
+        "checker": {
+          "id": "local.file-exists",
+          "version": "1.0.0"
+        },
+        "details": "",
+        "external_run_id": null,
+        "metrics": {
+          "contains": true,
+          "duration_ms": 0,
+          "exists": true
+        },
+        "result": "pass",
+        "run": {
+          "config_fingerprint": "sha256:a29d855a4cd9229643a7bcb40dfca0990565197fee427663944c6a22d745988d",
+          "duration_ms": 0,
+          "executed_at": "2026-08-16T16:06:16+00:00",
+          "id": "run-18c1653eba45489f"
+        },
+        "source": "intent/intent.md",
+        "summary": "Required path is present: intent/intent.md."
+      },
+      "status": "verified",
+      "title": "Local file existence: Required path is present: intent/intent.md.",
+      "type": "evidence",
+      "updated_at": "2026-08-16T16:06:16+00:00"
+    },
+    "OUT-001": {
+      "created_at": "2026-08-16T16:06:16+00:00",
+      "description": "Checkout retries must not create duplicate orders.",
+      "id": "OUT-001",
+      "properties": {
+        "assumptions": [
+          "The payment provider supports idempotency keys."
+        ],
+        "success_measures": [
+          "A repeated confirmation returns exactly one order."
+        ]
+      },
+      "status": "active",
+      "title": "Prevent duplicate orders",
+      "type": "outcome",
+      "updated_at": "2026-08-16T16:06:16+00:00"
+    },
+    "PRF-001": {
+      "created_at": "2026-08-16T16:06:16+00:00",
+      "description": "The rendered intent contract must state the project outcomes.",
+      "id": "PRF-001",
+      "properties": {
+        "checker_kind": "file_exists",
+        "evaluation": "all",
+        "required_checkers": [
+          "local.file-exists"
+        ],
+        "risk": "R3"
+      },
+      "status": "verified",
+      "title": "Verify the generated intent contract",
+      "type": "proof_obligation",
+      "updated_at": "2026-08-16T16:06:16+00:00"
+    },
+    "REQ-001": {
+      "created_at": "2026-08-16T16:06:16+00:00",
+      "description": "Every confirmation request must carry an idempotency key and a repeated request must return the original order.",
+      "id": "REQ-001",
+      "properties": {
+        "risk": "R3"
+      },
+      "status": "active",
+      "title": "Use idempotency keys",
+      "type": "requirement",
+      "updated_at": "2026-08-16T16:06:16+00:00"
+    }
+  },
+  "project_name": "Checkout Safety",
+  "schema_version": "0.1",
+  "updated_at": "2026-08-16T16:06:16+00:00"
+}

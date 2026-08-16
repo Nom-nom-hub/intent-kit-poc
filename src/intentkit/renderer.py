@@ -10,7 +10,6 @@ from pathlib import Path
 
 from .kernel import Edge, GraphStore, IntentGraph, Node, NodeType, RelationType
 
-
 MANUAL_START = "<!-- intentkit:manual-notes:start -->"
 MANUAL_END = "<!-- intentkit:manual-notes:end -->"
 
@@ -74,7 +73,11 @@ class MarkdownRenderer:
             "## Active Requirements",
             "",
         ]
-        lines.extend(render_node_list(requirements, fallback="Capture and shape a requirement to begin design work."))
+        lines.extend(
+            render_node_list(
+                requirements, fallback="Capture and shape a requirement to begin design work."
+            )
+        )
         lines += ["", "## Decisions", ""]
         if not decisions:
             lines.append("No decisions have been recorded yet.")
@@ -120,7 +123,9 @@ class MarkdownRenderer:
                     for evidence in evidence_nodes:
                         result = evidence.properties.get("result", "recorded")
                         source = evidence.properties.get("source", "unspecified")
-                        lines.append(f"- `{result}` — **{evidence.id}**: {evidence.title} (source: {source})")
+                        lines.append(
+                            f"- `{result}` — **{evidence.id}**: {evidence.title} (source: {source})"
+                        )
                 else:
                     lines.append("- _No evidence recorded._")
                 lines.append("")
@@ -136,11 +141,15 @@ class MarkdownRenderer:
         if not graph.edges:
             lines.append("| _No links recorded_ | — | — |")
         else:
-            for edge in sorted(graph.edges.values(), key=lambda item: (item.source, item.relation, item.target)):
+            for edge in sorted(
+                graph.edges.values(), key=lambda item: (item.source, item.relation, item.target)
+            ):
                 source = graph.get_node(edge.source)
                 target = graph.get_node(edge.target)
                 lines.append(
-                    f"| {source.id} — {source.title} | `{edge.relation}` | {target.id} — {target.title} |"
+                    "| "
+                    f"{source.id} — {source.title} | `{edge.relation}` | "
+                    f"{target.id} — {target.title} |"
                 )
         return "\n".join(lines) + "\n"
 
@@ -160,10 +169,16 @@ class MarkdownRenderer:
     @staticmethod
     def _extract_manual_notes(path: Path) -> str:
         if not path.exists():
-            return "Add team context, review notes, or links here. This section is preserved on re-render."
+            return (
+                "Add team context, review notes, or links here. "
+                "This section is preserved on re-render."
+            )
         content = path.read_text(encoding="utf-8")
         if MANUAL_START not in content or MANUAL_END not in content:
-            return "Existing document did not contain Intent Kit markers; preserve any important notes before the next render."
+            return (
+                "Existing document did not contain Intent Kit markers; "
+                "preserve any important notes before the next render."
+            )
         return content.split(MANUAL_START, 1)[1].split(MANUAL_END, 1)[0].strip()
 
 
@@ -178,15 +193,16 @@ def render_node_list(nodes: list[Node], fallback: str) -> list[str]:
     if not nodes:
         return [fallback]
     return [
-        f"- **{node.id} — {node.title}** (`{node.status}`): {node.description}"
-        for node in nodes
+        f"- **{node.id} — {node.title}** (`{node.status}`): {node.description}" for node in nodes
     ]
 
 
 def related_titles(
     graph: IntentGraph, node_id: str, relation: RelationType, *, outgoing: bool
 ) -> list[str]:
-    edges: list[Edge] = graph.outgoing(node_id, relation) if outgoing else graph.incoming(node_id, relation)
+    edges: list[Edge] = (
+        graph.outgoing(node_id, relation) if outgoing else graph.incoming(node_id, relation)
+    )
     related_nodes = [graph.get_node(edge.target if outgoing else edge.source) for edge in edges]
     return [f"{node.id} — {node.title}" for node in related_nodes]
 

@@ -1,8 +1,10 @@
 # Extending Intent Kit with Custom Proof Checkers
 
-**Audience:** Intent Kit core maintainers, plug-in authors, and teams adding domain-specific verification.  
-**Applies to:** Intent Kit POC `0.1`  
-**Status:** Developer design and implementation guide. The plug-in runner described below is a **recommended extension**; the current POC has not yet shipped it.
+**Audience:** Intent Kit core maintainers, plug-in authors, and teams adding domain-specific verification.
+
+**Applies to:** Intent Kit `0.2.0`
+
+**Status:** Developer design and implementation guide. The typed contract, explicit local registry, graph-safe runner, CLI integration, and built-in checker are shipped in `0.2.0`; separately packaged checker discovery and isolation remain planned extensions.
 
 ## Purpose
 
@@ -10,7 +12,7 @@ A custom proof checker is an extension that evaluates a **proof obligation** and
 
 > **Core rule:** A checker may *observe and evaluate*. The Intent Kit core owns graph mutation, proof-state aggregation, persistence, rendering, and user-facing status.
 
-This separation is deliberate. The current POC stores a local, typed graph in `.intent/graph.json`; its graph nodes have a type, status, title, description, timestamps, and arbitrary JSON-compatible properties. It also persists directed typed edges and validates that both edge endpoints exist. [1] The current `prove` command records an `evidence` node, creates an `evidence → proof_obligation` edge with the `proves` relation, updates the proof obligation status, saves the graph atomically, and rerenders Markdown views. [2] A checker extension should preserve those invariants rather than bypass them.
+This separation is deliberate. Intent Kit `0.2.0` stores a local, typed graph in `.intent/graph.json`; its graph nodes have a type, status, title, description, timestamps, and arbitrary JSON-compatible properties. It also persists directed typed edges and validates that both edge endpoints exist. [1] The manual `prove` command records an `evidence` node, while the shipped `check` command runs a trusted registered checker, records evidence, evaluates the proof policy, saves the graph atomically, and rerenders Markdown views. [2] A checker extension should preserve those invariants rather than bypass them.
 
 The guide uses a `pytest`-style checker as an example because it demonstrates external process execution and machine-readable evidence. The same contract works for contract-test runners, accessibility scanners, schema validators, security policy checks, human review collectors, performance benchmarks, and production-signal evaluators.
 
@@ -33,7 +35,7 @@ The renderer expects `evidence.properties["result"]` and `evidence.properties["s
 | Markdown evidence view | `MarkdownRenderer._render_evidence()` | A custom result needs at least `result` and `source` properties for immediate renderer compatibility. |
 | Manual proof command | `handle_prove()` in `cli.py` | The future `check` command should share the same recording path, not duplicate it. |
 
-The POC does **not** yet have a checker registry, plug-in discovery, sandboxing, result taxonomy beyond the three CLI values, aggregation policy, or evidence-freshness calculation. This guide defines those additions in a backward-compatible way.
+Intent Kit `0.2.0` ships an explicit in-process checker registry, normalized result taxonomy, a graph-safe runner, and `latest`, `all`, `any`, and `manual` aggregation policies. It does **not** yet ship external plug-in discovery, sandboxed execution, or automated evidence-freshness calculation. This guide documents the shipped foundation and the compatible path to those later additions.
 
 ## Extension Architecture
 
@@ -106,8 +108,8 @@ class CheckState(StrEnum):
 
 @dataclass(frozen=True, slots=True)
 class CheckerDescriptor:
-    checker_id: str              # e.g., "org.example.pytest"
-    version: str                 # semantic version of the checker implementation
+    checker_id: str  # e.g., "org.example.pytest"
+    version: str  # semantic version of the checker implementation
     display_name: str
     supported_kinds: tuple[str, ...]
     needs_network: bool = False
@@ -117,7 +119,7 @@ class CheckerDescriptor:
 @dataclass(frozen=True, slots=True)
 class Artifact:
     name: str
-    path: str | None = None      # project-relative path only
+    path: str | None = None  # project-relative path only
     digest_sha256: str | None = None
     media_type: str | None = None
 
@@ -125,8 +127,8 @@ class Artifact:
 @dataclass(frozen=True, slots=True)
 class CheckRequest:
     project_root: Path
-    graph: IntentGraph           # treat as read-only snapshot
-    obligation: Node             # always a PROOF_OBLIGATION node
+    graph: IntentGraph  # treat as read-only snapshot
+    obligation: Node  # always a PROOF_OBLIGATION node
     config: Mapping[str, Any]
     run_id: str
     timeout_seconds: int
@@ -135,9 +137,9 @@ class CheckRequest:
 @dataclass(frozen=True, slots=True)
 class CheckResult:
     state: CheckState
-    summary: str                 # one concise, human-readable sentence
-    details: str = ""           # bounded diagnostic text; no secrets
-    source: str = ""            # test path, CI job URL, review record, etc.
+    summary: str  # one concise, human-readable sentence
+    details: str = ""  # bounded diagnostic text; no secrets
+    source: str = ""  # test path, CI job URL, review record, etc.
     artifacts: tuple[Artifact, ...] = ()
     metrics: Mapping[str, float | int | str | bool] = field(default_factory=dict)
     external_run_id: str | None = None
@@ -377,16 +379,25 @@ class PytestChecker:
 
     def run(self, request: CheckRequest) -> CheckResult:
         targets = request.config.get("targets", [])
-        if not isinstance(targets, list) or not targets or not all(isinstance(item, str) for item in targets):
+        if (
+            not isinstance(targets, list)
+            or not targets
+            or not all(isinstance(item, str) for item in targets)
+        ):
             return CheckResult(
                 state=CheckState.ERROR,
                 summary="Pytest checker requires a non-empty string list of targets.",
                 source="checker:com.example.pytest",
             )
 
-        resolved_targets = [self._resolve_target(request.project_root, target) for target in targets]
+        resolved_targets = [
+            self._resolve_target(request.project_root, target) for target in targets
+        ]
         command = [sys.executable, "-m", "pytest", "-q", *[str(item) for item in resolved_targets]]
-        safe_env = {"PATH": os.environ.get("PATH", ""), "PYTHONPATH": str(request.project_root / "src")}
+        safe_env = {
+            "PATH": os.environ.get("PATH", ""),
+            "PYTHONPATH": str(request.project_root / "src"),
+        }
         try:
             completed = subprocess.run(
                 command,
@@ -467,7 +478,7 @@ The checker uses `subprocess.run()` with an argument sequence, captured output, 
 }
 ```
 
-The runner can expose this through a future CLI command:
+The shipped runner is exposed through the generic CLI command:
 
 ```bash
 intentkit check PRF-001 --checker com.example.pytest \
@@ -494,7 +505,7 @@ When separately distributed packages are needed, Python package metadata entry p
 name = "my-company-intent-checkers"
 version = "1.0.0"
 requires-python = ">=3.11"
-dependencies = ["intentkit>=0.1,<0.2"]
+dependencies = ["intentkit>=0.2,<0.3"]
 
 [project.entry-points."intentkit.proof_checkers"]
 pytest = "my_company_intent_checkers.pytest_checker:PytestChecker"

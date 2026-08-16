@@ -66,7 +66,9 @@ def test_runner_records_evidence_and_renders_a_passing_file_check(tmp_path: Path
     assert evidence.properties["checker"] == {"id": "local.file-exists", "version": "1.0.0"}
     assert evidence.properties["run"]["config_fingerprint"].startswith("sha256:")
     assert graph.incoming("PRF-001", RelationType.PROVES)[0].source == "EVD-001"
-    assert "Required path is present" in (tmp_path / "intent" / "evidence.md").read_text(encoding="utf-8")
+    assert "Required path is present" in (tmp_path / "intent" / "evidence.md").read_text(
+        encoding="utf-8"
+    )
 
 
 def test_file_checker_rejects_paths_outside_project(tmp_path: Path) -> None:
@@ -74,7 +76,9 @@ def test_file_checker_rejects_paths_outside_project(tmp_path: Path) -> None:
     registry = CheckerRegistry()
     registry.register(FileExistsChecker())
 
-    result = ProofRunner(store, registry).run("PRF-001", "local.file-exists", {"path": "../outside.txt"})
+    result = ProofRunner(store, registry).run(
+        "PRF-001", "local.file-exists", {"path": "../outside.txt"}
+    )
 
     graph = store.load()
     assert result.state is CheckState.ERROR
@@ -82,7 +86,9 @@ def test_file_checker_rejects_paths_outside_project(tmp_path: Path) -> None:
     assert graph.get_node("EVD-001").properties["result"] == "error"
 
 
-def test_all_policy_requires_every_configured_checker_and_tracks_latest_results(tmp_path: Path) -> None:
+def test_all_policy_requires_every_configured_checker_and_tracks_latest_results(
+    tmp_path: Path,
+) -> None:
     store = initialized_proof(
         tmp_path,
         properties={

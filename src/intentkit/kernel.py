@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
+import json
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from enum import StrEnum
-import json
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
-
 
 GRAPH_SCHEMA_VERSION = "0.1"
 
@@ -159,7 +158,8 @@ class IntentGraph:
         return [
             edge
             for edge in self.edges.values()
-            if edge.target == node_id and (relation_value is None or edge.relation == relation_value)
+            if edge.target == node_id
+            and (relation_value is None or edge.relation == relation_value)
         ]
 
     def outgoing(self, node_id: str, relation: RelationType | str | None = None) -> list[Edge]:
@@ -167,7 +167,8 @@ class IntentGraph:
         return [
             edge
             for edge in self.edges.values()
-            if edge.source == node_id and (relation_value is None or edge.relation == relation_value)
+            if edge.source == node_id
+            and (relation_value is None or edge.relation == relation_value)
         ]
 
     def validate(self) -> list[str]:
@@ -198,7 +199,7 @@ class IntentGraph:
         }
 
     @classmethod
-    def from_dict(cls, payload: dict[str, Any]) -> "IntentGraph":
+    def from_dict(cls, payload: dict[str, Any]) -> IntentGraph:
         graph = cls(
             schema_version=payload.get("schema_version", GRAPH_SCHEMA_VERSION),
             project_name=payload.get("project_name", ""),
@@ -227,7 +228,9 @@ def next_node_id(node_type: str, nodes: dict[str, Node]) -> str:
         NodeType.OBSERVED_BEHAVIOR.value: "OBS",
     }[node_type]
     current_ids = [node_id for node_id in nodes if node_id.startswith(f"{prefix}-")]
-    numbers = [int(node_id.split("-")[1]) for node_id in current_ids if node_id.split("-")[1].isdigit()]
+    numbers = [
+        int(node_id.split("-")[1]) for node_id in current_ids if node_id.split("-")[1].isdigit()
+    ]
     return f"{prefix}-{max(numbers, default=0) + 1:03d}"
 
 
@@ -247,7 +250,8 @@ class GraphStore:
         graph = IntentGraph(project_name=project_name.strip() or self.project_root.name)
         self.save(graph)
         self.config_path.write_text(
-            json.dumps({"renderer": "markdown", "schema_version": GRAPH_SCHEMA_VERSION}, indent=2) + "\n",
+            json.dumps({"renderer": "markdown", "schema_version": GRAPH_SCHEMA_VERSION}, indent=2)
+            + "\n",
             encoding="utf-8",
         )
         return graph
@@ -265,5 +269,7 @@ class GraphStore:
             raise ValueError("Cannot save invalid graph: " + "; ".join(errors))
         self.intent_dir.mkdir(parents=True, exist_ok=True)
         temporary_path = self.graph_path.with_suffix(".tmp")
-        temporary_path.write_text(json.dumps(graph.to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        temporary_path.write_text(
+            json.dumps(graph.to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
         temporary_path.replace(self.graph_path)
