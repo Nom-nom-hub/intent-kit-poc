@@ -22,7 +22,7 @@ The POC intentionally focuses on one essential thesis: **a requirement should ca
 | Manual collaboration | Preserves text inside a clearly marked **Manual Notes** region during future renders. |
 | Proof status | Links evidence to proof obligations, supports `latest`, `all`, `any`, and `manual` evaluation policies, and marks proofs `verified`, `failed`, or active. |
 | Typed proof checks | Runs trusted in-process checkers that return normalized, provenance-rich evidence without direct graph-write access. |
-| Spec Kit migration | Imports completed `spec.md`, optional `plan.md`, and optional `tasks.md` into the local graph with artifact hashes and line-level provenance. |
+| Spec Kit migration | Imports completed `spec.md`, optional `plan.md`, and optional `tasks.md` into the local graph with artifact hashes, line-level provenance, and reviewed incremental synchronization. |
 | Graph insight | Detects imported-source drift and traverses typed graph paths to show affected work and unverified proof obligations. |
 | Policy packs | Applies local, version-controlled risk defaults for release-critical, migration, and documentation work. |
 | Controlled external checkers | Runs only explicitly allowlisted, manifest-pinned local checker scripts through an isolated JSON subprocess protocol. |
@@ -30,17 +30,17 @@ The POC intentionally focuses on one essential thesis: **a requirement should ca
 
 ## POC Scope
 
-The POC is deliberately not a production system. It does **not** yet include a graphical agent desktop, a visual graph explorer, GitHub/Jira synchronization, CI/telemetry adapters, automatic repository mapping, role-based access control, package-based checker discovery, network-capable external checkers, incremental import updates, or sophisticated merge/conflict resolution. Those are later roadmap capabilities, not safe assumptions for the first build.
+The POC is deliberately not a production system. It does **not** yet include a graphical agent desktop, a visual graph explorer, GitHub/Jira synchronization, CI/telemetry adapters, automatic repository mapping, role-based access control, package-based checker discovery, network-capable external checkers, or sophisticated merge/conflict resolution. Those are later roadmap capabilities, not safe assumptions for the first build.
 
 ## Installation
 
-Intent Kit supports Python 3.11 and 3.12. The latest published release is `v0.2.0`. Graph Insight, Policy Packs, controlled external checkers, and Agent Computer support are currently on the `main` development branch and will be released together as `v0.6.0` after final verification.
+Intent Kit supports Python 3.11 and 3.12. The latest published release is `v0.2.0`. Graph Insight, Policy Packs, controlled external checkers, Agent Computer support, and reviewed Spec Kit synchronization are currently on the `main` development branch and will be released together as `v0.7.0` after final verification.
 
 ```bash
 # Latest published release
 python -m pip install "git+https://github.com/Nom-nom-hub/intent-kit-poc.git@v0.2.0"
 
-# Current development branch, including Graph Insight, Policy Packs, controlled external checkers, and Agent Computer support
+# Current development branch, including Graph Insight, Policy Packs, controlled external checkers, Agent Computer support, and reviewed Spec Kit synchronization
 python -m pip install "git+https://github.com/Nom-nom-hub/intent-kit-poc.git@main"
 ```
 
@@ -101,6 +101,7 @@ See [`docs/speckit-import.md`](docs/speckit-import.md) for the supported Markdow
 | `intentkit prove` | Records manually supplied evidence against a proof obligation and updates its verification state. |
 | `intentkit check` | Runs a trusted registered checker, records immutable evidence with provenance, evaluates the proof policy, and rerenders Markdown. |
 | `intentkit import-speckit` | Reads a completed Spec Kit feature directory and creates typed, provenance-backed graph nodes without changing source artifacts. |
+| `intentkit sync-speckit` | Generates a deterministic Spec Kit import-delta proposal and applies it only from a reviewed proposal with explicit `--apply`. |
 | `intentkit drift` | Re-hashes imported artifacts and reports unchanged, changed, missing, or unsupported provenance records. Returns nonzero when drift needs review. |
 | `intentkit impact` | Traverses incoming and outgoing typed graph links from a node or imported source, including linked proof gaps. |
 | `intentkit policy` | Lists, inspects, or initializes local policy packs that calibrate risk, proof, evidence freshness, and review expectations. |
@@ -156,6 +157,20 @@ intentkit agent --path ./demo-project --request '{
 ```
 
 The Agent Computer is controlled execution, not a virtual desktop or sandbox. It has no arbitrary shell, network, browser, credentials, VM/container isolation, or direct graph-file write capability. See [`docs/agent-computer.md`](docs/agent-computer.md) for its protocol, approval flow, workspace, and audit model.
+
+## Reviewed Spec Kit Synchronization
+
+A previously imported Spec Kit feature can be refreshed through a deterministic review artifact rather than reimported as a second graph. The first command only creates a proposal under `.intent/sync-proposals/`; the second revalidates source and graph before applying the exact reviewed proposal.
+
+```bash
+intentkit sync-speckit ./specs/001-checkout-safety --path ./intent-project
+intentkit sync-speckit ./specs/001-checkout-safety \
+  --path ./intent-project \
+  --proposal .intent/sync-proposals/sync-<id>.json \
+  --apply
+```
+
+The proposal exposes additions, source-backed updates, removals, relation changes, impacted graph nodes, and proof gaps. If the source or graph changes between review and approval, Intent Kit rejects the stale proposal. See [`docs/speckit-sync.md`](docs/speckit-sync.md) for source-key behavior, approval controls, and agent integration.
 
 ## Graph Insight
 
@@ -236,7 +251,7 @@ The tests cover graph integrity, deterministic IDs, persistence, Markdown projec
 
 ## Next Build Steps
 
-The next recommended increment is **incremental Spec Kit synchronization**: a reviewed import-diff workflow that agents can analyze and propose through the new controlled workspace without silently creating duplicate graph records.
+The next recommended increment is **P6 — Graph Explorer**: a local, read-only visual surface for intent, evidence, drift, impact, policy status, synchronization proposals, and agent activity without becoming a second source of truth.
 
 ## Community and Project Policies
 

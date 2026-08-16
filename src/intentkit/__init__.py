@@ -2,7 +2,7 @@
 
 from .kernel import GraphStore, IntentGraph, NodeStatus, NodeType, RelationType
 
-__version__ = "0.6.0"
+__version__ = "0.7.0"
 
 __all__ = [
     "GraphStore",

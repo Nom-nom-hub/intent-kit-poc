@@ -1,0 +1,93 @@
+{
+  "approval": {
+    "apply_command": "intentkit sync-speckit SOURCE --proposal PROPOSAL.json --apply",
+    "required": true
+  },
+  "base_graph_digest": "sha256:02007c125859a982332ee23534e8832f80456a7fad7db00091ff313a19000c75",
+  "deltas": [
+    {
+      "action": "unchanged",
+      "changes": [],
+      "key": "feature",
+      "node_id": "OUT-002",
+      "node_type": "outcome",
+      "title": "Imported Spec Kit feature: Reviewed Import Refresh"
+    },
+    {
+      "action": "unchanged",
+      "changes": [],
+      "key": "functional:FR-001",
+      "node_id": "REQ-010",
+      "node_type": "requirement",
+      "title": "FR-001: System MUST generate a deterministic source-and-graph delta before refr\u2026"
+    },
+    {
+      "action": "unchanged",
+      "changes": [],
+      "key": "functional:FR-002",
+      "node_id": "REQ-011",
+      "node_type": "requirement",
+      "title": "FR-002: System MUST preserve stable graph identifiers and locally maintained po\u2026"
+    },
+    {
+      "action": "unchanged",
+      "changes": [],
+      "key": "functional:FR-003",
+      "node_id": "REQ-012",
+      "node_type": "requirement",
+      "title": "FR-003: System MUST record source digests, impact context, proof gaps, and expl\u2026"
+    },
+    {
+      "action": "unchanged",
+      "changes": [],
+      "key": "plan",
+      "node_id": "DEC-009",
+      "node_type": "decision",
+      "title": "Imported implementation plan: Reviewed Import Refresh"
+    },
+    {
+      "action": "unchanged",
+      "changes": [],
+      "key": "story:US1",
+      "node_id": "REQ-009",
+      "node_type": "requirement",
+      "title": "P1 user story: Review an imported specification change"
+    },
+    {
+      "action": "unchanged",
+      "changes": [],
+      "key": "task:T001",
+      "node_id": "TSK-001",
+      "node_type": "implementation_task",
+      "title": "T001: Define deterministic synchronization proposal records in src/intentkit/\u2026"
+    },
+    {
+      "action": "unchanged",
+      "changes": [],
+      "key": "task:T002",
+      "node_id": "TSK-002",
+      "node_type": "implementation_task",
+      "title": "T002: Add source-key matching and stale-plan validation tests in tests/test_s\u2026"
+    },
+    {
+      "action": "unchanged",
+      "changes": [],
+      "key": "task:T003",
+      "node_id": "TSK-003",
+      "node_type": "implementation_task",
+      "title": "T003: Publish synchronization proposal workflow documentation in docs/speckit\u2026"
+    }
+  ],
+  "impacted_node_ids": [],
+  "links_to_add": [],
+  "links_to_remove": [],
+  "proof_gap_ids": [],
+  "proposal_id": "sync-5c119a91b86885b0",
+  "schema_version": 1,
+  "source_digests": {
+    "plan.md": "sha256:2937c9ed058f41502b3a0899934779d78863adba032bb0bebad4ee2c4c046a42",
+    "spec.md": "sha256:dd3b98683e1001b78c6c8587696a268214c3662c56dbaac36d507ee4189d39b0",
+    "tasks.md": "sha256:328dff38c2c7c4fef02433a5bfc2ad46766ae92d4b0222299e43961171983649"
+  },
+  "source_root": "/home/ubuntu/intent-kit-poc/examples/incremental-speckit-sync"
+}

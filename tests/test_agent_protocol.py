@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+from test_speckit_importer import write_speckit_feature
+
 from intentkit.cli import main
 
 
@@ -238,3 +240,47 @@ def test_agent_applies_shaping_and_approved_proof_check(tmp_path: Path, capsys) 
         capsys,
     )
     assert status["result"]["proof_coverage"]["verified"] == 1
+
+
+def test_agent_proposes_and_applies_reviewed_speckit_sync(tmp_path: Path, capsys) -> None:
+    source = tmp_path / "speckit-feature"
+    artifacts = write_speckit_feature(source)
+    root = tmp_path / "agent-project"
+    assert main(["init", "--path", str(root)]) == 0
+    capsys.readouterr()
+    assert main(["import-speckit", "--path", str(root), str(source)]) == 0
+    capsys.readouterr()
+    (source / "spec.md").write_text(
+        artifacts["spec.md"].replace(
+            "System MUST return the original order for a repeated confirmation.",
+            "System MUST return the original audited order for a repeated confirmation.",
+        ),
+        encoding="utf-8",
+    )
+    proposal_request = {
+        "protocol_version": 1,
+        "request_id": "sync-proposal-001",
+        "operation": "sync.propose",
+        "arguments": {"source": str(source)},
+    }
+    _, proposal_response = agent_request(root, proposal_request, capsys)
+    proposal = proposal_response["result"]["proposal"]
+    changed = {delta["key"]: delta["action"] for delta in proposal["deltas"]}
+    assert changed["functional:FR-002"] == "updated"
+
+    apply_request = {
+        "protocol_version": 1,
+        "request_id": "sync-apply-001",
+        "operation": "sync.apply",
+        "arguments": {"source": str(source), "proposal": proposal},
+    }
+    _, preview = agent_request(root, apply_request, capsys)
+    assert preview["applied"] is False
+    assert preview["result"]["requires_apply"] is True
+
+    assert (
+        main(["agent", "--path", str(root), "--apply", "--request", json.dumps(apply_request)]) == 0
+    )
+    applied = json.loads(capsys.readouterr().out)
+    assert applied["applied"] is True
+    assert applied["result"]["sync"]["updated"] >= 1

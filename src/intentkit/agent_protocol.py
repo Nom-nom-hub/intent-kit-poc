@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from .agent_computer import AgentComputer, AgentComputerError
+from .importers import SpecKitSynchronizer, SyncProposal
 from .insights import DriftRecord, ImpactPath, ImpactReport, analyze_impact, scan_drift
 from .kernel import GraphStore, IntentGraph, Node, NodeStatus, NodeType, RelationType
 from .policies import PolicyRegistry
@@ -22,12 +23,16 @@ from .proof_checkers.runner import ProofRunner, aggregate_obligation_status
 from .renderer import MarkdownRenderer
 
 PROTOCOL_VERSION = 1
-READ_OPERATIONS = frozenset({"snapshot", "status", "drift", "impact", "policies", "checkers"})
+READ_OPERATIONS = frozenset(
+    {"snapshot", "status", "drift", "impact", "policies", "checkers", "sync.propose"}
+)
 COMPUTER_READ_OPERATIONS = frozenset(
     {"computer.status", "computer.list_files", "computer.read_file"}
 )
 COMPUTER_RUN_OPERATIONS = frozenset({"computer.run"})
-MUTATION_OPERATIONS = frozenset({"capture", "shape", "prove", "check", "computer.write_file"})
+MUTATION_OPERATIONS = frozenset(
+    {"capture", "shape", "prove", "check", "sync.apply", "computer.write_file"}
+)
 ALL_OPERATIONS = (
     READ_OPERATIONS | COMPUTER_READ_OPERATIONS | COMPUTER_RUN_OPERATIONS | MUTATION_OPERATIONS
 )
@@ -111,6 +116,10 @@ def execute_read(
     elif operation == "policies":
         registry = PolicyRegistry.from_project(project_root)
         result = {"packs": [pack.to_properties() for pack in registry.list()]}
+    elif operation == "sync.propose":
+        source = required_project_directory(project_root, arguments, "source")
+        proposal = SpecKitSynchronizer(source).propose(graph)
+        result = {"proposal": proposal.to_dict()}
     else:
         result = {
             "checkers": [descriptor_to_dict(descriptor) for descriptor in checker_descriptors],
@@ -327,11 +336,20 @@ def execute_mutation(
     if not apply:
         return mutation_preview(request)
     operation = request["operation"]
+    arguments = request["arguments"]
     if operation == "computer.write_file":
         return execute_computer(project_root, request, apply=True)
     store = GraphStore(project_root)
+    if operation == "sync.apply":
+        result = apply_sync(store, project_root, arguments)
+        AgentComputer(project_root).record(
+            "agent.apply",
+            request_id=request["request_id"],
+            operation=operation,
+            result_keys=sorted(result),
+        )
+        return response(request, result=result, applied=True)
     graph = store.load()
-    arguments = request["arguments"]
     computer = AgentComputer(project_root)
     if operation == "capture":
         outcome = graph.add_node(
@@ -381,6 +399,31 @@ def execute_mutation(
         result_keys=sorted(result),
     )
     return response(request, result=result, applied=True)
+
+
+def apply_sync(
+    store: GraphStore, project_root: Path, arguments: Mapping[str, Any]
+) -> dict[str, Any]:
+    source = required_project_directory(project_root, arguments, "source")
+    proposal = SyncProposal.from_dict(required_object(arguments, "proposal", default={}))
+    synchronizer = SpecKitSynchronizer(source)
+    if proposal.source_root != str(synchronizer.source_root):
+        raise AgentProtocolError(
+            "invalid_arguments", "proposal source_root does not match arguments.source."
+        )
+    synchronizer.write_proposal(store, proposal)
+    report = synchronizer.apply(store, proposal)
+    return {
+        "sync": {
+            "proposal_id": report.proposal_id,
+            "added": report.added,
+            "updated": report.updated,
+            "removed": report.removed,
+            "links_added": report.links_added,
+            "links_removed": report.links_removed,
+            "record_path": str(report.record_path.relative_to(project_root)),
+        }
+    }
 
 
 def apply_shape(
@@ -503,6 +546,15 @@ def optional_string(
             "invalid_arguments", f"arguments.{key} must be a non-empty string."
         )
     return value.strip()
+
+
+def required_project_directory(project_root: Path, arguments: Mapping[str, Any], key: str) -> Path:
+    path = optional_project_path(project_root, arguments, key)
+    if path is None or not path.is_dir():
+        raise AgentProtocolError(
+            "invalid_arguments", f"arguments.{key} must identify a project-contained directory."
+        )
+    return path
 
 
 def required_content(arguments: Mapping[str, Any], key: str) -> str:

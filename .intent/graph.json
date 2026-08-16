@@ -17,6 +17,14 @@
       "source": "EVD-002",
       "target": "PRF-001"
     },
+    "edge-0a92d6578a99": {
+      "created_at": "2026-08-16T22:28:27+00:00",
+      "id": "edge-0a92d6578a99",
+      "properties": {},
+      "relation": "requires_proof",
+      "source": "REQ-013",
+      "target": "PRF-009"
+    },
     "edge-0b81c0d155a5": {
       "created_at": "2026-08-16T21:49:21+00:00",
       "id": "edge-0b81c0d155a5",
@@ -40,6 +48,22 @@
       "relation": "derives_from",
       "source": "REQ-006",
       "target": "OUT-001"
+    },
+    "edge-10dc7b3513b2": {
+      "created_at": "2026-08-16T22:28:27+00:00",
+      "id": "edge-10dc7b3513b2",
+      "properties": {},
+      "relation": "derives_from",
+      "source": "REQ-013",
+      "target": "OUT-001"
+    },
+    "edge-11adbd59d0f7": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "id": "edge-11adbd59d0f7",
+      "properties": {},
+      "relation": "implements",
+      "source": "TSK-003",
+      "target": "REQ-009"
     },
     "edge-27e57f2b2fe9": {
       "created_at": "2026-08-16T21:46:54+00:00",
@@ -65,6 +89,14 @@
       "source": "REQ-008",
       "target": "OUT-001"
     },
+    "edge-3aed49859386": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "id": "edge-3aed49859386",
+      "properties": {},
+      "relation": "derives_from",
+      "source": "REQ-010",
+      "target": "OUT-002"
+    },
     "edge-3d81ecc61d22": {
       "created_at": "2026-08-16T21:46:54+00:00",
       "id": "edge-3d81ecc61d22",
@@ -88,6 +120,14 @@
       "relation": "proves",
       "source": "EVD-005",
       "target": "PRF-004"
+    },
+    "edge-693ac4a10058": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "id": "edge-693ac4a10058",
+      "properties": {},
+      "relation": "derives_from",
+      "source": "REQ-009",
+      "target": "OUT-002"
     },
     "edge-69652c330b9b": {
       "created_at": "2026-08-16T21:32:08+00:00",
@@ -120,6 +160,14 @@
       "relation": "addresses",
       "source": "DEC-008",
       "target": "REQ-008"
+    },
+    "edge-772c5403d1d7": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "id": "edge-772c5403d1d7",
+      "properties": {},
+      "relation": "derives_from",
+      "source": "REQ-011",
+      "target": "OUT-002"
     },
     "edge-7734436b501c": {
       "created_at": "2026-08-16T21:08:59+00:00",
@@ -209,6 +257,14 @@
       "source": "REQ-005",
       "target": "OUT-001"
     },
+    "edge-a76d24f5f4ea": {
+      "created_at": "2026-08-16T22:28:27+00:00",
+      "id": "edge-a76d24f5f4ea",
+      "properties": {},
+      "relation": "addresses",
+      "source": "DEC-010",
+      "target": "REQ-013"
+    },
     "edge-b1e6c3fc1239": {
       "created_at": "2026-08-16T22:07:54+00:00",
       "id": "edge-b1e6c3fc1239",
@@ -265,6 +321,22 @@
       "source": "REQ-001",
       "target": "PRF-001"
     },
+    "edge-c60c33fad28d": {
+      "created_at": "2026-08-16T22:28:27+00:00",
+      "id": "edge-c60c33fad28d",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-016",
+      "target": "PRF-009"
+    },
+    "edge-c87dbfc398bb": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "id": "edge-c87dbfc398bb",
+      "properties": {},
+      "relation": "implements",
+      "source": "TSK-002",
+      "target": "REQ-009"
+    },
     "edge-cc218f7869a2": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "id": "edge-cc218f7869a2",
@@ -280,6 +352,14 @@
       "relation": "derives_from",
       "source": "REQ-002",
       "target": "OUT-001"
+    },
+    "edge-d83f266a9bbf": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "id": "edge-d83f266a9bbf",
+      "properties": {},
+      "relation": "derives_from",
+      "source": "REQ-012",
+      "target": "OUT-002"
     },
     "edge-eb39669dc6c1": {
       "created_at": "2026-08-16T21:46:54+00:00",
@@ -427,6 +507,37 @@
       "title": "Use a project-scoped Agent Computer protocol",
       "type": "decision",
       "updated_at": "2026-08-16T22:06:33+00:00"
+    },
+    "DEC-009": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "description": "Compare the current supported Spec Kit artifacts with imported graph records, write an explicit review proposal, and apply only after the proposal is revalidated.\n\n**Language/Version**: Python 3.11+\n**Testing**: pytest, Ruff, installed-wheel smoke tests\n**Storage**: Version-controlled JSON graph and synchronization proposal records",
+      "id": "DEC-009",
+      "properties": {
+        "provenance": {
+          "artifact": "plan.md",
+          "importer": "intentkit.speckit",
+          "line": 3,
+          "sha256": "sha256:2937c9ed058f41502b3a0899934779d78863adba032bb0bebad4ee2c4c046a42",
+          "source_root": "/home/ubuntu/intent-kit-poc/examples/incremental-speckit-sync"
+        },
+        "source_kind": "speckit_plan"
+      },
+      "status": "proposed",
+      "title": "Imported implementation plan: Reviewed Import Refresh",
+      "type": "decision",
+      "updated_at": "2026-08-16T22:26:58+00:00"
+    },
+    "DEC-010": {
+      "created_at": "2026-08-16T22:28:27+00:00",
+      "description": "Source-backed graph updates need a visible approval boundary and stable identifiers.",
+      "id": "DEC-010",
+      "properties": {
+        "alternatives": []
+      },
+      "status": "proposed",
+      "title": "Require reviewable synchronization deltas",
+      "type": "decision",
+      "updated_at": "2026-08-16T22:28:27+00:00"
     },
     "EVD-001": {
       "created_at": "2026-08-16T20:57:31+00:00",
@@ -846,6 +957,45 @@
       "type": "evidence",
       "updated_at": "2026-08-16T22:07:54+00:00"
     },
+    "EVD-016": {
+      "created_at": "2026-08-16T22:28:27+00:00",
+      "description": "Required file and configured content are present: docs/speckit-sync.md.",
+      "id": "EVD-016",
+      "properties": {
+        "artifacts": [
+          {
+            "digest_sha256": "sha256:8ca235b943396cbcbe65fcedd2cc880a5029a54baa75d57aae5eb77a84cbfaa0",
+            "media_type": "text/markdown",
+            "name": "docs/speckit-sync.md",
+            "path": "docs/speckit-sync.md"
+          }
+        ],
+        "checker": {
+          "id": "intentkit.example.file-content",
+          "version": "1.0.0"
+        },
+        "details": "",
+        "external_run_id": null,
+        "metrics": {
+          "contains": true,
+          "duration_ms": 40,
+          "exists": true
+        },
+        "result": "pass",
+        "run": {
+          "config_fingerprint": "sha256:9dd72c3def62f916d3f4c8b86b06a04b9565db6290a6767071fbc006fea1db7f",
+          "duration_ms": 40,
+          "executed_at": "2026-08-16T22:28:27+00:00",
+          "id": "run-24fc2c15f3824511"
+        },
+        "source": "docs/speckit-sync.md",
+        "summary": "Required file and configured content are present: docs/speckit-sync.md."
+      },
+      "status": "verified",
+      "title": "Intent Kit Example File Content: Required file and configured content are present: docs/speckit-sync.md.",
+      "type": "evidence",
+      "updated_at": "2026-08-16T22:28:27+00:00"
+    },
     "OUT-001": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "description": "Intent Kit must demonstrate that its own repository can carry explicit intent, reviewable evidence, and reliable release practices.",
@@ -861,6 +1011,29 @@
       "title": "Sustain a trustworthy local-first Intent Kit release",
       "type": "outcome",
       "updated_at": "2026-08-16T20:57:07+00:00"
+    },
+    "OUT-002": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "description": "User description: \"Refresh imported specifications through an explicit reviewed delta.",
+      "id": "OUT-002",
+      "properties": {
+        "provenance": {
+          "artifact": "spec.md",
+          "importer": "intentkit.speckit",
+          "line": 1,
+          "sha256": "sha256:dd3b98683e1001b78c6c8587696a268214c3662c56dbaac36d507ee4189d39b0",
+          "source_root": "/home/ubuntu/intent-kit-poc/examples/incremental-speckit-sync"
+        },
+        "source_kind": "speckit_feature",
+        "success_measures": [
+          "A reviewed proposal is the only path that updates an imported graph record.",
+          "A source change after review causes application to fail until a new proposal is generated."
+        ]
+      },
+      "status": "active",
+      "title": "Imported Spec Kit feature: Reviewed Import Refresh",
+      "type": "outcome",
+      "updated_at": "2026-08-16T22:26:58+00:00"
     },
     "PRF-001": {
       "created_at": "2026-08-16T20:57:07+00:00",
@@ -1025,6 +1198,34 @@
       "type": "proof_obligation",
       "updated_at": "2026-08-16T22:07:54+00:00"
     },
+    "PRF-009": {
+      "created_at": "2026-08-16T22:28:27+00:00",
+      "description": "The synchronization guide and self-hosted fixture demonstrate proposal, revalidation, and apply controls.",
+      "id": "PRF-009",
+      "properties": {
+        "checker_kind": "external_file_content",
+        "evaluation": "all",
+        "policy_pack": {
+          "evaluation": "all",
+          "evidence_freshness_days": 7,
+          "name": "release-critical",
+          "proof_required": true,
+          "required_checkers": [],
+          "review_required": true,
+          "risk": "R3",
+          "source_provenance_required": false,
+          "title": "Release Critical"
+        },
+        "required_checkers": [
+          "intentkit.example.file-content"
+        ],
+        "risk": "R3"
+      },
+      "status": "verified",
+      "title": "Verify the reviewed synchronization protocol",
+      "type": "proof_obligation",
+      "updated_at": "2026-08-16T22:28:27+00:00"
+    },
     "REQ-001": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "description": "The repository must include a recognized license and public contribution and security policies.",
@@ -1153,9 +1354,190 @@
       "title": "Provide a controlled Agent Computer",
       "type": "requirement",
       "updated_at": "2026-08-16T22:06:33+00:00"
+    },
+    "REQ-009": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "description": "A delivery lead can inspect a proposed import delta before an Intent Kit graph is changed.",
+      "id": "REQ-009",
+      "properties": {
+        "acceptance_scenarios": [
+          "**Given** an imported feature, **When** its specification changes, **Then** Intent Kit produces a reviewable update proposal.",
+          "**Given** a reviewed proposal, **When** the source or graph changes again, **Then** Intent Kit rejects the stale proposal."
+        ],
+        "independent_test": "Change a functional requirement, generate a proposal, and confirm the graph does not change until the reviewed proposal is explicitly applied.",
+        "priority": "P1",
+        "provenance": {
+          "artifact": "spec.md",
+          "importer": "intentkit.speckit",
+          "line": 7,
+          "sha256": "sha256:dd3b98683e1001b78c6c8587696a268214c3662c56dbaac36d507ee4189d39b0",
+          "source_root": "/home/ubuntu/intent-kit-poc/examples/incremental-speckit-sync"
+        },
+        "source_kind": "speckit_user_story",
+        "story_label": "US1"
+      },
+      "status": "active",
+      "title": "P1 user story: Review an imported specification change",
+      "type": "requirement",
+      "updated_at": "2026-08-16T22:26:58+00:00"
+    },
+    "REQ-010": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "description": "System MUST generate a deterministic source-and-graph delta before refreshing imported records.",
+      "id": "REQ-010",
+      "properties": {
+        "provenance": {
+          "artifact": "spec.md",
+          "importer": "intentkit.speckit",
+          "line": 24,
+          "sha256": "sha256:dd3b98683e1001b78c6c8587696a268214c3662c56dbaac36d507ee4189d39b0",
+          "source_root": "/home/ubuntu/intent-kit-poc/examples/incremental-speckit-sync"
+        },
+        "source_identifier": "FR-001",
+        "source_kind": "speckit_functional_requirement"
+      },
+      "status": "active",
+      "title": "FR-001: System MUST generate a deterministic source-and-graph delta before refr\u2026",
+      "type": "requirement",
+      "updated_at": "2026-08-16T22:26:58+00:00"
+    },
+    "REQ-011": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "description": "System MUST preserve stable graph identifiers and locally maintained policy metadata for matching source records after an approved refresh.",
+      "id": "REQ-011",
+      "properties": {
+        "provenance": {
+          "artifact": "spec.md",
+          "importer": "intentkit.speckit",
+          "line": 25,
+          "sha256": "sha256:dd3b98683e1001b78c6c8587696a268214c3662c56dbaac36d507ee4189d39b0",
+          "source_root": "/home/ubuntu/intent-kit-poc/examples/incremental-speckit-sync"
+        },
+        "source_identifier": "FR-002",
+        "source_kind": "speckit_functional_requirement"
+      },
+      "status": "active",
+      "title": "FR-002: System MUST preserve stable graph identifiers and locally maintained po\u2026",
+      "type": "requirement",
+      "updated_at": "2026-08-16T22:26:58+00:00"
+    },
+    "REQ-012": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "description": "System MUST record source digests, impact context, proof gaps, and explicit apply requirements in every synchronization proposal.",
+      "id": "REQ-012",
+      "properties": {
+        "provenance": {
+          "artifact": "spec.md",
+          "importer": "intentkit.speckit",
+          "line": 26,
+          "sha256": "sha256:dd3b98683e1001b78c6c8587696a268214c3662c56dbaac36d507ee4189d39b0",
+          "source_root": "/home/ubuntu/intent-kit-poc/examples/incremental-speckit-sync"
+        },
+        "source_identifier": "FR-003",
+        "source_kind": "speckit_functional_requirement"
+      },
+      "status": "active",
+      "title": "FR-003: System MUST record source digests, impact context, proof gaps, and expl\u2026",
+      "type": "requirement",
+      "updated_at": "2026-08-16T22:26:58+00:00"
+    },
+    "REQ-013": {
+      "created_at": "2026-08-16T22:28:27+00:00",
+      "description": "Imported Spec Kit artifacts must change through a deterministic reviewed proposal with explicit approval and stale-plan rejection.",
+      "id": "REQ-013",
+      "properties": {
+        "policy_pack": {
+          "evaluation": "all",
+          "evidence_freshness_days": 7,
+          "name": "release-critical",
+          "proof_required": true,
+          "required_checkers": [],
+          "review_required": true,
+          "risk": "R3",
+          "source_provenance_required": false,
+          "title": "Release Critical"
+        },
+        "risk": "R3"
+      },
+      "status": "active",
+      "title": "Synchronize imported Specs through review",
+      "type": "requirement",
+      "updated_at": "2026-08-16T22:28:27+00:00"
+    },
+    "TSK-001": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "description": "Define deterministic synchronization proposal records in src/intentkit/importers/synchronizer.py",
+      "id": "TSK-001",
+      "properties": {
+        "complete": true,
+        "parallel": false,
+        "phase": "Phase 1: Proposal Model (Shared Infrastructure)",
+        "provenance": {
+          "artifact": "tasks.md",
+          "importer": "intentkit.speckit",
+          "line": 5,
+          "sha256": "sha256:328dff38c2c7c4fef02433a5bfc2ad46766ae92d4b0222299e43961171983649",
+          "source_root": "/home/ubuntu/intent-kit-poc/examples/incremental-speckit-sync"
+        },
+        "source_identifier": "T001",
+        "source_kind": "speckit_task",
+        "story_label": null
+      },
+      "status": "verified",
+      "title": "T001: Define deterministic synchronization proposal records in src/intentkit/\u2026",
+      "type": "implementation_task",
+      "updated_at": "2026-08-16T22:26:58+00:00"
+    },
+    "TSK-002": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "description": "Add source-key matching and stale-plan validation tests in tests/test_speckit_sync.py",
+      "id": "TSK-002",
+      "properties": {
+        "complete": true,
+        "parallel": false,
+        "phase": "Phase 3: User Story 1 - Review an imported specification change (Priority: P1)",
+        "provenance": {
+          "artifact": "tasks.md",
+          "importer": "intentkit.speckit",
+          "line": 9,
+          "sha256": "sha256:328dff38c2c7c4fef02433a5bfc2ad46766ae92d4b0222299e43961171983649",
+          "source_root": "/home/ubuntu/intent-kit-poc/examples/incremental-speckit-sync"
+        },
+        "source_identifier": "T002",
+        "source_kind": "speckit_task",
+        "story_label": "US1"
+      },
+      "status": "verified",
+      "title": "T002: Add source-key matching and stale-plan validation tests in tests/test_s\u2026",
+      "type": "implementation_task",
+      "updated_at": "2026-08-16T22:26:58+00:00"
+    },
+    "TSK-003": {
+      "created_at": "2026-08-16T22:26:58+00:00",
+      "description": "Publish synchronization proposal workflow documentation in docs/speckit-sync.md",
+      "id": "TSK-003",
+      "properties": {
+        "complete": true,
+        "parallel": false,
+        "phase": "Phase 3: User Story 1 - Review an imported specification change (Priority: P1)",
+        "provenance": {
+          "artifact": "tasks.md",
+          "importer": "intentkit.speckit",
+          "line": 10,
+          "sha256": "sha256:328dff38c2c7c4fef02433a5bfc2ad46766ae92d4b0222299e43961171983649",
+          "source_root": "/home/ubuntu/intent-kit-poc/examples/incremental-speckit-sync"
+        },
+        "source_identifier": "T003",
+        "source_kind": "speckit_task",
+        "story_label": "US1"
+      },
+      "status": "verified",
+      "title": "T003: Publish synchronization proposal workflow documentation in docs/speckit\u2026",
+      "type": "implementation_task",
+      "updated_at": "2026-08-16T22:26:58+00:00"
     }
   },
   "project_name": "Intent Kit",
   "schema_version": "0.1",
-  "updated_at": "2026-08-16T22:07:54+00:00"
+  "updated_at": "2026-08-16T22:28:27+00:00"
 }

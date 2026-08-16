@@ -12,6 +12,11 @@
 - **REQ-006 — Apply risk-calibrated policies** (`active`): Intent Kit must make risk, proof, freshness, and review expectations explicit through local Policy Packs.
 - **REQ-007 — Authorize controlled external proof checks** (`active`): Intent Kit must execute external proof automation only when a project allowlist pins its identity, manifest, and entrypoint.
 - **REQ-008 — Provide a controlled Agent Computer** (`active`): Agents must inspect and operate an Intent Kit project through a project-scoped JSON protocol, bounded workspace, explicit apply mode, approved proof checks, and auditable actions rather than unrestricted shell access.
+- **REQ-009 — P1 user story: Review an imported specification change** (`active`): A delivery lead can inspect a proposed import delta before an Intent Kit graph is changed.
+- **REQ-010 — FR-001: System MUST generate a deterministic source-and-graph delta before refr…** (`active`): System MUST generate a deterministic source-and-graph delta before refreshing imported records.
+- **REQ-011 — FR-002: System MUST preserve stable graph identifiers and locally maintained po…** (`active`): System MUST preserve stable graph identifiers and locally maintained policy metadata for matching source records after an approved refresh.
+- **REQ-012 — FR-003: System MUST record source digests, impact context, proof gaps, and expl…** (`active`): System MUST record source digests, impact context, proof gaps, and explicit apply requirements in every synchronization proposal.
+- **REQ-013 — Synchronize imported Specs through review** (`active`): Imported Spec Kit artifacts must change through a deterministic reviewed proposal with explicit approval and stale-plan rejection.
 
 ## Decisions
 
@@ -71,9 +76,28 @@
 **Addresses:** REQ-008 — Provide a controlled Agent Computer
 **Alternatives considered:** Grant agents unrestricted shell access to the project, Expose the graph JSON directly for agents to edit
 
+### DEC-009 — Imported implementation plan: Reviewed Import Refresh
+
+**Status:** `proposed`
+**Rationale:** Compare the current supported Spec Kit artifacts with imported graph records, write an explicit review proposal, and apply only after the proposal is revalidated.
+
+**Language/Version**: Python 3.11+
+**Testing**: pytest, Ruff, installed-wheel smoke tests
+**Storage**: Version-controlled JSON graph and synchronization proposal records
+
+### DEC-010 — Require reviewable synchronization deltas
+
+**Status:** `proposed`
+**Rationale:** Source-backed graph updates need a visible approval boundary and stable identifiers.
+**Addresses:** REQ-013 — Synchronize imported Specs through review
+
 ## Implementation Tasks
 
-No implementation tasks have been imported or recorded yet.
+- **TSK-001 — T001: Define deterministic synchronization proposal records in src/intentkit/…** (`verified`) (Phase 1: Proposal Model (Shared Infrastructure)): Define deterministic synchronization proposal records in src/intentkit/importers/synchronizer.py
+- **TSK-002 — T002: Add source-key matching and stale-plan validation tests in tests/test_s…** (`verified`) (Phase 3: User Story 1 - Review an imported specification change (Priority: P1), US1): Add source-key matching and stale-plan validation tests in tests/test_speckit_sync.py
+  - Implements: REQ-009 — P1 user story: Review an imported specification change
+- **TSK-003 — T003: Publish synchronization proposal workflow documentation in docs/speckit…** (`verified`) (Phase 3: User Story 1 - Review an imported specification change (Priority: P1), US1): Publish synchronization proposal workflow documentation in docs/speckit-sync.md
+  - Implements: REQ-009 — P1 user story: Review an imported specification change
 
 ## Manual Notes
 

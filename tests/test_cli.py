@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from test_speckit_importer import write_speckit_feature
+
 from intentkit.cli import main
 from intentkit.kernel import GraphStore, NodeStatus
 
@@ -311,3 +313,51 @@ def test_cli_policy_pack_shapes_release_critical_defaults(tmp_path: Path, capsys
 
     assert main(["status", "--path", root]) == 0
     assert "Policy packs: release-critical: 1" in capsys.readouterr().out
+
+
+def test_cli_proposes_and_applies_reviewed_speckit_sync(tmp_path: Path, capsys) -> None:
+    source = tmp_path / "speckit-feature"
+    artifacts = write_speckit_feature(source)
+    root = tmp_path / "intent-project"
+    assert main(["init", "--path", str(root), "--project-name", "Sync CLI"]) == 0
+    capsys.readouterr()
+    assert main(["import-speckit", str(source), "--path", str(root)]) == 0
+    capsys.readouterr()
+    initial_graph = GraphStore(root).load()
+    initial_requirement_id = next(
+        node.id
+        for node in initial_graph.nodes.values()
+        if node.properties.get("source_identifier") == "FR-001"
+    )
+    changed_spec = artifacts["spec.md"].replace(
+        "System MUST persist one idempotency key per checkout confirmation.",
+        "System MUST persist a durable idempotency key per checkout confirmation.",
+    )
+    (source / "spec.md").write_text(changed_spec, encoding="utf-8")
+
+    assert main(["sync-speckit", str(source), "--path", str(root)]) == 0
+    proposal_output = capsys.readouterr().out
+    assert "Proposed sync-" in proposal_output
+    proposals = list((root / ".intent" / "sync-proposals").glob("sync-*.json"))
+    assert len(proposals) == 1
+    assert (
+        main(
+            [
+                "sync-speckit",
+                str(source),
+                "--path",
+                str(root),
+                "--proposal",
+                str(proposals[0]),
+                "--apply",
+            ]
+        )
+        == 0
+    )
+
+    graph = GraphStore(root).load()
+    refreshed = graph.get_node(initial_requirement_id)
+    assert "durable idempotency" in refreshed.description
+    assert refreshed.properties["provenance"]["sha256"].startswith("sha256:")
+    assert list((root / ".intent" / "sync-proposals").glob("*.applied.json"))
+    assert "Applied sync-" in capsys.readouterr().out

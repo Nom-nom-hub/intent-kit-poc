@@ -10,6 +10,7 @@
 | DEC-006 — Keep policies declarative and local | `addresses` | REQ-006 — Apply risk-calibrated policies |
 | DEC-007 — Use manifest-pinned JSON subprocesses | `addresses` | REQ-007 — Authorize controlled external proof checks |
 | DEC-008 — Use a project-scoped Agent Computer protocol | `addresses` | REQ-008 — Provide a controlled Agent Computer |
+| DEC-010 — Require reviewable synchronization deltas | `addresses` | REQ-013 — Synchronize imported Specs through review |
 | EVD-001 — Local file existence: Required path is present: LICENSE. | `proves` | PRF-001 — Verify required governance artifacts |
 | EVD-002 — Local file existence: Required path is present: SECURITY.md. | `proves` | PRF-001 — Verify required governance artifacts |
 | EVD-003 — Local file existence: Required path is present: docs/speckit-import.md. | `proves` | PRF-002 — Verify importer guidance |
@@ -25,6 +26,7 @@
 | EVD-013 — Intent Kit Example File Content: Required file and configured content are present: docs/external-checkers.md. | `proves` | PRF-007 — Verify Authorize controlled external proof checks |
 | EVD-014 — Intent Kit Example File Content: Required file and configured content are present: docs/agent-computer.md. | `proves` | PRF-008 — Verify Provide a controlled Agent Computer |
 | EVD-015 — Intent Kit Example File Content: Required file and configured content are present: docs/agent-computer.md. | `proves` | PRF-008 — Verify Provide a controlled Agent Computer |
+| EVD-016 — Intent Kit Example File Content: Required file and configured content are present: docs/speckit-sync.md. | `proves` | PRF-009 — Verify the reviewed synchronization protocol |
 | REQ-001 — Publish governed, licensed source | `derives_from` | OUT-001 — Sustain a trustworthy local-first Intent Kit release |
 | REQ-001 — Publish governed, licensed source | `requires_proof` | PRF-001 — Verify required governance artifacts |
 | REQ-002 — Preserve reliable Spec Kit migration | `derives_from` | OUT-001 — Sustain a trustworthy local-first Intent Kit release |
@@ -41,6 +43,14 @@
 | REQ-007 — Authorize controlled external proof checks | `requires_proof` | PRF-007 — Verify Authorize controlled external proof checks |
 | REQ-008 — Provide a controlled Agent Computer | `derives_from` | OUT-001 — Sustain a trustworthy local-first Intent Kit release |
 | REQ-008 — Provide a controlled Agent Computer | `requires_proof` | PRF-008 — Verify Provide a controlled Agent Computer |
+| REQ-009 — P1 user story: Review an imported specification change | `derives_from` | OUT-002 — Imported Spec Kit feature: Reviewed Import Refresh |
+| REQ-010 — FR-001: System MUST generate a deterministic source-and-graph delta before refr… | `derives_from` | OUT-002 — Imported Spec Kit feature: Reviewed Import Refresh |
+| REQ-011 — FR-002: System MUST preserve stable graph identifiers and locally maintained po… | `derives_from` | OUT-002 — Imported Spec Kit feature: Reviewed Import Refresh |
+| REQ-012 — FR-003: System MUST record source digests, impact context, proof gaps, and expl… | `derives_from` | OUT-002 — Imported Spec Kit feature: Reviewed Import Refresh |
+| REQ-013 — Synchronize imported Specs through review | `derives_from` | OUT-001 — Sustain a trustworthy local-first Intent Kit release |
+| REQ-013 — Synchronize imported Specs through review | `requires_proof` | PRF-009 — Verify the reviewed synchronization protocol |
+| TSK-002 — T002: Add source-key matching and stale-plan validation tests in tests/test_s… | `implements` | REQ-009 — P1 user story: Review an imported specification change |
+| TSK-003 — T003: Publish synchronization proposal workflow documentation in docs/speckit… | `implements` | REQ-009 — P1 user story: Review an imported specification change |
 
 ## Manual Notes
 

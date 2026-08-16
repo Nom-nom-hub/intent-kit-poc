@@ -20,7 +20,7 @@ from .agent_protocol import (
     execute_read,
     parse_request,
 )
-from .importers import SpecKitImporter
+from .importers import SpecKitImporter, SpecKitSynchronizer, SyncProposal
 from .insights import (
     DriftStatus,
     analyze_impact,
@@ -166,6 +166,26 @@ def build_parser() -> argparse.ArgumentParser:
         "source", type=Path, help="Spec Kit feature directory containing spec.md."
     )
     import_speckit.set_defaults(handler=handle_import_speckit)
+
+    sync_speckit = subparsers.add_parser(
+        "sync-speckit",
+        help="Propose or apply a reviewed incremental update for an imported Spec Kit feature.",
+    )
+    add_path(sync_speckit)
+    sync_speckit.add_argument(
+        "source", type=Path, help="Previously imported Spec Kit feature directory."
+    )
+    sync_speckit.add_argument(
+        "--proposal",
+        type=Path,
+        help="Reviewed proposal JSON required with --apply.",
+    )
+    sync_speckit.add_argument(
+        "--apply",
+        action="store_true",
+        help="Apply only the supplied reviewed proposal after source revalidation.",
+    )
+    sync_speckit.set_defaults(handler=handle_sync_speckit)
 
     drift = subparsers.add_parser(
         "drift", help="Compare imported source artifacts with recorded provenance."
@@ -504,6 +524,33 @@ def handle_import_speckit(args: argparse.Namespace) -> int:
         f"{report.feature_outcome_id}: {report.user_stories} user stories, "
         f"{report.functional_requirements} functional requirements, "
         f"{report.decisions} plan decisions, and {report.tasks} tasks."
+    )
+    return 0
+
+
+def handle_sync_speckit(args: argparse.Namespace) -> int:
+    store = load_store(args.path)
+    synchronizer = SpecKitSynchronizer(args.source)
+    if args.apply:
+        if not args.proposal:
+            raise ValueError("sync-speckit --apply requires --proposal PROPOSAL.json.")
+        proposal = SyncProposal.from_dict(json.loads(args.proposal.read_text(encoding="utf-8")))
+        if proposal.source_root != str(synchronizer.source_root):
+            raise ValueError("Proposal source root does not match the supplied sync source.")
+        report = synchronizer.apply(store, proposal)
+        print(
+            f"Applied {report.proposal_id}: {report.added} added, {report.updated} updated, "
+            f"{report.removed} removed; review record {report.record_path}."
+        )
+        return 0
+    if args.proposal:
+        raise ValueError("--proposal is only valid with sync-speckit --apply.")
+    proposal = synchronizer.propose(store.load())
+    proposal_path = synchronizer.write_proposal(store, proposal)
+    print(
+        f"Proposed {proposal.proposal_id}: {proposal.change_count} source changes, "
+        f"{len(proposal.impacted_node_ids)} impacted graph nodes, "
+        f"{len(proposal.proof_gap_ids)} proof gaps. Review {proposal_path}."
     )
     return 0
 

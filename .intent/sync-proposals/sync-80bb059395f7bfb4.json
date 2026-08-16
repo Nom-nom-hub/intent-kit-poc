@@ -1,0 +1,122 @@
+{
+  "approval": {
+    "apply_command": "intentkit sync-speckit SOURCE --proposal PROPOSAL.json --apply",
+    "required": true
+  },
+  "base_graph_digest": "sha256:881eafe5ade7b902a673c920107be3594be69b42646b56f4b7f94912f07b6471",
+  "deltas": [
+    {
+      "action": "updated",
+      "changes": [
+        "properties.provenance"
+      ],
+      "key": "feature",
+      "node_id": "OUT-002",
+      "node_type": "outcome",
+      "title": "Imported Spec Kit feature: Reviewed Import Refresh"
+    },
+    {
+      "action": "updated",
+      "changes": [
+        "properties.provenance"
+      ],
+      "key": "functional:FR-001",
+      "node_id": "REQ-010",
+      "node_type": "requirement",
+      "title": "FR-001: System MUST generate a deterministic source-and-graph delta before refr\u2026"
+    },
+    {
+      "action": "updated",
+      "changes": [
+        "title",
+        "description",
+        "properties.provenance"
+      ],
+      "key": "functional:FR-002",
+      "node_id": "REQ-011",
+      "node_type": "requirement",
+      "title": "FR-002: System MUST preserve stable graph identifiers and locally maintained po\u2026"
+    },
+    {
+      "action": "updated",
+      "changes": [
+        "properties.provenance"
+      ],
+      "key": "functional:FR-003",
+      "node_id": "REQ-012",
+      "node_type": "requirement",
+      "title": "FR-003: System MUST record source digests, impact context, proof gaps, and expl\u2026"
+    },
+    {
+      "action": "unchanged",
+      "changes": [],
+      "key": "plan",
+      "node_id": "DEC-009",
+      "node_type": "decision",
+      "title": "Imported implementation plan: Reviewed Import Refresh"
+    },
+    {
+      "action": "updated",
+      "changes": [
+        "properties.provenance"
+      ],
+      "key": "story:US1",
+      "node_id": "REQ-009",
+      "node_type": "requirement",
+      "title": "P1 user story: Review an imported specification change"
+    },
+    {
+      "action": "updated",
+      "changes": [
+        "properties.provenance"
+      ],
+      "key": "task:T001",
+      "node_id": "TSK-001",
+      "node_type": "implementation_task",
+      "title": "T001: Define deterministic synchronization proposal records in src/intentkit/\u2026"
+    },
+    {
+      "action": "updated",
+      "changes": [
+        "properties.provenance"
+      ],
+      "key": "task:T002",
+      "node_id": "TSK-002",
+      "node_type": "implementation_task",
+      "title": "T002: Add source-key matching and stale-plan validation tests in tests/test_s\u2026"
+    },
+    {
+      "action": "updated",
+      "changes": [
+        "properties.provenance",
+        "properties.complete",
+        "status"
+      ],
+      "key": "task:T003",
+      "node_id": "TSK-003",
+      "node_type": "implementation_task",
+      "title": "T003: Publish synchronization proposal workflow documentation in docs/speckit\u2026"
+    }
+  ],
+  "impacted_node_ids": [
+    "OUT-002",
+    "REQ-009",
+    "REQ-010",
+    "REQ-011",
+    "REQ-012",
+    "TSK-001",
+    "TSK-002",
+    "TSK-003"
+  ],
+  "links_to_add": [],
+  "links_to_remove": [],
+  "proof_gap_ids": [],
+  "proposal_id": "sync-80bb059395f7bfb4",
+  "schema_version": 1,
+  "source_digests": {
+    "plan.md": "sha256:2937c9ed058f41502b3a0899934779d78863adba032bb0bebad4ee2c4c046a42",
+    "spec.md": "sha256:dd3b98683e1001b78c6c8587696a268214c3662c56dbaac36d507ee4189d39b0",
+    "tasks.md": "sha256:328dff38c2c7c4fef02433a5bfc2ad46766ae92d4b0222299e43961171983649"
+  },
+  "source_root": "/home/ubuntu/intent-kit-poc/examples/incremental-speckit-sync"
+}

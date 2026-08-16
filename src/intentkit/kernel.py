@@ -154,6 +154,43 @@ class IntentGraph:
         self.touch()
         return node
 
+    def update_node(
+        self,
+        node_id: str,
+        *,
+        title: str,
+        description: str,
+        status: NodeStatus | str,
+        properties: dict[str, Any],
+    ) -> Node:
+        """Update a typed record while preserving its stable graph identifier."""
+
+        node = self.get_node(node_id)
+        title_value = title.strip()
+        if not title_value:
+            raise ValueError("A graph node requires a non-empty title.")
+        node.title = title_value
+        node.description = description.strip()
+        node.status = NodeStatus(status).value
+        node.properties = dict(properties)
+        node.updated_at = utc_now()
+        self.touch()
+        return node
+
+    def remove_node(self, node_id: str) -> Node:
+        """Remove one node and its attached edges after an explicit reviewed operation."""
+
+        node = self.get_node(node_id)
+        for edge_id in [
+            edge.id
+            for edge in self.edges.values()
+            if edge.source == node_id or edge.target == node_id
+        ]:
+            del self.edges[edge_id]
+        del self.nodes[node_id]
+        self.touch()
+        return node
+
     def incoming(self, node_id: str, relation: RelationType | str | None = None) -> list[Edge]:
         relation_value = RelationType(relation).value if relation else None
         return [

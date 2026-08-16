@@ -1,11 +1,12 @@
 # Intent Contract
 
 **Project:** Intent Kit
-**Graph updated:** 2026-08-16T22:07:54+00:00
+**Graph updated:** 2026-08-16T22:28:27+00:00
 
 ## Outcomes
 
 - **OUT-001 — Sustain a trustworthy local-first Intent Kit release** (`active`): Intent Kit must demonstrate that its own repository can carry explicit intent, reviewable evidence, and reliable release practices.
+- **OUT-002 — Imported Spec Kit feature: Reviewed Import Refresh** (`active`): User description: "Refresh imported specifications through an explicit reviewed delta.
 
 ## Requirements
 
@@ -17,6 +18,11 @@
 - **REQ-006 — Apply risk-calibrated policies** (`active`): Intent Kit must make risk, proof, freshness, and review expectations explicit through local Policy Packs. Derived from: OUT-001 — Sustain a trustworthy local-first Intent Kit release. Policy: `release-critical` (risk `R3`).
 - **REQ-007 — Authorize controlled external proof checks** (`active`): Intent Kit must execute external proof automation only when a project allowlist pins its identity, manifest, and entrypoint. Derived from: OUT-001 — Sustain a trustworthy local-first Intent Kit release. Policy: `release-critical` (risk `R3`).
 - **REQ-008 — Provide a controlled Agent Computer** (`active`): Agents must inspect and operate an Intent Kit project through a project-scoped JSON protocol, bounded workspace, explicit apply mode, approved proof checks, and auditable actions rather than unrestricted shell access. Derived from: OUT-001 — Sustain a trustworthy local-first Intent Kit release. Policy: `release-critical` (risk `R3`).
+- **REQ-009 — P1 user story: Review an imported specification change** (`active`): A delivery lead can inspect a proposed import delta before an Intent Kit graph is changed. Derived from: OUT-002 — Imported Spec Kit feature: Reviewed Import Refresh.
+- **REQ-010 — FR-001: System MUST generate a deterministic source-and-graph delta before refr…** (`active`): System MUST generate a deterministic source-and-graph delta before refreshing imported records. Derived from: OUT-002 — Imported Spec Kit feature: Reviewed Import Refresh.
+- **REQ-011 — FR-002: System MUST preserve stable graph identifiers and locally maintained po…** (`active`): System MUST preserve stable graph identifiers and locally maintained policy metadata for matching source records after an approved refresh. Derived from: OUT-002 — Imported Spec Kit feature: Reviewed Import Refresh.
+- **REQ-012 — FR-003: System MUST record source digests, impact context, proof gaps, and expl…** (`active`): System MUST record source digests, impact context, proof gaps, and explicit apply requirements in every synchronization proposal. Derived from: OUT-002 — Imported Spec Kit feature: Reviewed Import Refresh.
+- **REQ-013 — Synchronize imported Specs through review** (`active`): Imported Spec Kit artifacts must change through a deterministic reviewed proposal with explicit approval and stale-plan rejection. Derived from: OUT-001 — Sustain a trustworthy local-first Intent Kit release. Policy: `release-critical` (risk `R3`).
 
 ## Manual Notes
 

@@ -76,6 +76,16 @@
 - `pass` — **EVD-014**: Intent Kit Example File Content: Required file and configured content are present: docs/agent-computer.md. (source: docs/agent-computer.md)
 - `pass` — **EVD-015**: Intent Kit Example File Content: Required file and configured content are present: docs/agent-computer.md. (source: docs/agent-computer.md)
 
+### PRF-009 — Verify the reviewed synchronization protocol
+
+**Status:** `verified`
+**Claim:** The synchronization guide and self-hosted fixture demonstrate proposal, revalidation, and apply controls.
+**Policy:** `release-critical` (risk `R3`, evaluation `all`)
+**Evidence freshness:** 7 day(s)
+**Review:** Explicit review or automated validation evidence required.
+**Evidence:**
+- `pass` — **EVD-016**: Intent Kit Example File Content: Required file and configured content are present: docs/speckit-sync.md. (source: docs/speckit-sync.md)
+
 ## Manual Notes
 
 <!-- intentkit:manual-notes:start -->

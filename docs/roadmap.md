@@ -13,8 +13,8 @@ Intent Kit should develop in the order that turns its typed graph into a durable
 | P2 | Policy Packs | **Delivered on `main`**: teams apply local, version-controlled risk defaults with short commands and graph-visible metadata. | `v0.4.0` candidate | Graph Insight proof-gap model |
 | P3 | Controlled Checker Extensibility | **Delivered on `main`**: trusted teams add manifest-pinned local proof automation without package discovery or silent execution. | `v0.5.0` candidate | Policy packs and security model |
 | P4 | Agent Computer Foundation | **Delivered on `main`**: agents use a project-scoped JSON protocol, bounded workspace, named quality commands, explicit apply mode, and audit records. | `v0.6.0` candidate | Graph, policy, proof, checker, and CI foundations |
-| P5 | Incremental Spec Kit Synchronization | Imported features can be refreshed through an agent-reviewable change plan rather than a new graph. | `v0.7.0` | Drift detection, impact analysis, and Agent Computer workspace |
-| P6 | Graph Explorer | Teams can inspect intent, evidence, drift, impact, and agent activity visually. | `v0.8.0` | Stable insight queries, policy status, and agent audit model |
+| P5 | Incremental Spec Kit Synchronization | **Delivered on `main`**: imported features refresh through deterministic, impact-aware review proposals with explicit apply and stale-plan rejection. | `v0.7.0` candidate | Drift detection, impact analysis, and Agent Computer workspace |
+| P6 | Graph Explorer | Teams can inspect intent, evidence, drift, impact, synchronization proposals, and agent activity visually. | `v0.8.0` | Stable insight queries, policy status, synchronization records, and agent audit model |
 
 ## P0 — Restore the Public Automation Gate
 
@@ -66,13 +66,11 @@ The Agent Computer is delivered on `main`. It provides a language-agnostic JSON 
 
 **Delivered controls:** no arbitrary shell; no direct graph-file writes; no network, browser, credentials, VM/container sandbox, or graphical desktop claim; project containment; scratch-workspace containment; and append-only local audit records.
 
-## P5 — Incremental Spec Kit Synchronization (`v0.7.0`)
+## P5 — Incremental Spec Kit Synchronization (`v0.7.0` candidate)
 
-The current importer intentionally supports one clean, read-only import. Synchronization must remain an explicit review operation.
+Reviewed incremental synchronization is delivered on `main`. It compares the current source feature with the canonical graph, produces a deterministic proposal containing node and link changes, source digests, impacted graph paths, and proof gaps, then applies only the exact proposal after explicit approval. Source artifacts are read-only, matching source records preserve stable graph IDs, and any source or graph change after review invalidates the proposal.
 
-**Required workflow:** run drift detection, generate a proposed import delta, display added/changed/removed source records, show affected graph paths and proof gaps, let an agent prepare review artifacts in its workspace, and apply the delta only after explicit user confirmation. No source Spec Kit file is ever modified.
-
-**Done when:** a changed sample feature produces a deterministic reviewable update plan; accepted updates preserve stable graph IDs where possible; rejected updates leave the graph untouched.
+**Delivered controls:** proposal and apply records under `.intent/sync-proposals/`; source-key matching; source-managed task status refresh; preservation of Intent Kit metadata outside source-managed fields; relationship reconciliation; stale-plan rejection; CLI and Agent Computer proposal/apply workflows; and source immutability.
 
 ## P6 — Graph Explorer (`v0.8.0`)
 
@@ -96,4 +94,4 @@ Every milestone follows the same delivery sequence:
 
 ## Current Next Action
 
-The active product increment is **P5 — Incremental Spec Kit Synchronization**. It will compare current source artifacts to recorded provenance, let agents prepare a reviewable update proposal, and apply the plan only after explicit human approval.
+The active product increment is **P6 — Graph Explorer**. It will provide a local, read-only view of the canonical graph, evidence, drift, impact, policy status, synchronization proposals, and agent activity without becoming a second source of truth.

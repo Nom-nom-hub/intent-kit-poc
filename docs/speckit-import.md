@@ -59,10 +59,10 @@ The SHA-256 digest applies to the complete source artifact at import time. The s
 
 ## Idempotency and Safety
 
-A single source directory may be imported into a graph only once. Intent Kit rejects a second import from the same resolved source root instead of silently creating duplicate requirements or tasks. To re-import a changed Spec Kit feature, initialize a fresh Intent Kit project and compare the resulting graph and Markdown views deliberately.
+A single source directory may be imported into a graph only once. Intent Kit rejects a second import from the same resolved source root instead of silently creating duplicate requirements or tasks. To refresh a changed feature, use the delivered review-first [`sync-speckit`](speckit-sync.md) workflow: it creates a deterministic proposal, requires explicit apply, preserves matching graph identifiers, and rejects stale source or graph state.
 
 The importer has no network access, executes no source code, and writes only to the destination Intent Kit project. It does not follow references from `spec.md`, parse arbitrary linked files, or run commands described in source artifacts.
 
 ## Current Limitations
 
-The first importer deliberately excludes incremental synchronization, conflict resolution, plan/task-to-functional-requirement links, semantic matching beyond explicit `[USN]` task labels, source-file discovery from `.specify/feature.json`, and migration of research, data model, contract, or checklist artifacts. These are future enhancements and should remain explicit review-driven operations rather than implicit background updates.
+The importer deliberately excludes automatic synchronization, conflict resolution, plan/task-to-functional-requirement links, semantic matching beyond explicit `[USN]` task labels, source-file discovery from `.specify/feature.json`, and migration of research, data model, contract, or checklist artifacts. Delivered incremental synchronization remains an explicit review-driven operation rather than an implicit background update.
