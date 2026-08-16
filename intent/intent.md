@@ -1,7 +1,7 @@
 # Intent Contract
 
 **Project:** Intent Kit
-**Graph updated:** 2026-08-16T21:11:27+00:00
+**Graph updated:** 2026-08-16T21:22:44+00:00
 
 ## Outcomes
 
@@ -13,6 +13,7 @@
 - **REQ-002 — Preserve reliable Spec Kit migration** (`active`): The repository must document and ship a read-only importer with source provenance for completed Spec Kit feature artifacts. Derived from: OUT-001 — Sustain a trustworthy local-first Intent Kit release.
 - **REQ-003 — Require a reproducible local quality gate** (`active`): Every repository update must pass linting, formatting, tests, package build, and an installed-command smoke test before it is pushed. Derived from: OUT-001 — Sustain a trustworthy local-first Intent Kit release.
 - **REQ-004 — Make change impact visible** (`active`): Users must be able to identify source drift, connected graph records, and proof gaps before accepting a specification or implementation change. Derived from: OUT-001 — Sustain a trustworthy local-first Intent Kit release.
+- **REQ-005 — Enforce public continuous integration** (`active`): Every main-branch and pull-request change must run the project quality gate on supported Python versions and build a smoke-tested distribution. Derived from: OUT-001 — Sustain a trustworthy local-first Intent Kit release.
 
 ## Manual Notes
 

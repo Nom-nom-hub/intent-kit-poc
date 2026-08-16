@@ -17,6 +17,14 @@
       "source": "EVD-002",
       "target": "PRF-001"
     },
+    "edge-0f7796f78a20": {
+      "created_at": "2026-08-16T21:22:44+00:00",
+      "id": "edge-0f7796f78a20",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-007",
+      "target": "PRF-005"
+    },
     "edge-300eba242cc0": {
       "created_at": "2026-08-16T20:57:32+00:00",
       "id": "edge-300eba242cc0",
@@ -65,6 +73,14 @@
       "source": "DEC-003",
       "target": "REQ-003"
     },
+    "edge-87ea458aa5e7": {
+      "created_at": "2026-08-16T21:22:44+00:00",
+      "id": "edge-87ea458aa5e7",
+      "properties": {},
+      "relation": "addresses",
+      "source": "DEC-005",
+      "target": "REQ-005"
+    },
     "edge-8b475f65da63": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "id": "edge-8b475f65da63",
@@ -81,6 +97,14 @@
       "source": "DEC-001",
       "target": "REQ-001"
     },
+    "edge-968fe78dfb6c": {
+      "created_at": "2026-08-16T21:22:44+00:00",
+      "id": "edge-968fe78dfb6c",
+      "properties": {},
+      "relation": "requires_proof",
+      "source": "REQ-005",
+      "target": "PRF-005"
+    },
     "edge-a09698e0d995": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "id": "edge-a09698e0d995",
@@ -88,6 +112,14 @@
       "relation": "addresses",
       "source": "DEC-002",
       "target": "REQ-002"
+    },
+    "edge-a0b411ef9cd6": {
+      "created_at": "2026-08-16T21:22:44+00:00",
+      "id": "edge-a0b411ef9cd6",
+      "properties": {},
+      "relation": "derives_from",
+      "source": "REQ-005",
+      "target": "OUT-001"
     },
     "edge-b70e6d1f7136": {
       "created_at": "2026-08-16T20:57:07+00:00",
@@ -202,6 +234,20 @@
       "title": "Use deterministic bidirectional graph traversal",
       "type": "decision",
       "updated_at": "2026-08-16T21:08:59+00:00"
+    },
+    "DEC-005": {
+      "created_at": "2026-08-16T21:22:44+00:00",
+      "description": "A public, repeatable quality matrix makes validation visible to contributors and catches regressions before merge.",
+      "id": "DEC-005",
+      "properties": {
+        "alternatives": [
+          "Rely only on local validation before push"
+        ]
+      },
+      "status": "proposed",
+      "title": "Run a minimal GitHub Actions quality matrix",
+      "type": "decision",
+      "updated_at": "2026-08-16T21:22:44+00:00"
     },
     "EVD-001": {
       "created_at": "2026-08-16T20:57:31+00:00",
@@ -357,6 +403,19 @@
       "type": "evidence",
       "updated_at": "2026-08-16T21:11:27+00:00"
     },
+    "EVD-007": {
+      "created_at": "2026-08-16T21:22:44+00:00",
+      "description": "The first public CI workflow completed successfully. Its Python 3.11 and 3.12 quality jobs and distribution build-and-smoke-test job all succeeded.",
+      "id": "EVD-007",
+      "properties": {
+        "result": "pass",
+        "source": "https://github.com/Nom-nom-hub/intent-kit-poc/actions/runs/31973242959"
+      },
+      "status": "verified",
+      "title": "GitHub Actions CI run 31973242959",
+      "type": "evidence",
+      "updated_at": "2026-08-16T21:22:44+00:00"
+    },
     "OUT-001": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "description": "Intent Kit must demonstrate that its own repository can carry explicit intent, reviewable evidence, and reliable release practices.",
@@ -439,6 +498,21 @@
       "type": "proof_obligation",
       "updated_at": "2026-08-16T21:08:59+00:00"
     },
+    "PRF-005": {
+      "created_at": "2026-08-16T21:22:44+00:00",
+      "description": "The GitHub Actions CI workflow must complete successfully with the Python quality matrix and distribution smoke test.",
+      "id": "PRF-005",
+      "properties": {
+        "checker_kind": null,
+        "evaluation": "manual",
+        "required_checkers": [],
+        "risk": "R3"
+      },
+      "status": "verified",
+      "title": "Verify successful public CI run",
+      "type": "proof_obligation",
+      "updated_at": "2026-08-16T21:22:44+00:00"
+    },
     "REQ-001": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "description": "The repository must include a recognized license and public contribution and security policies.",
@@ -486,9 +560,21 @@
       "title": "Make change impact visible",
       "type": "requirement",
       "updated_at": "2026-08-16T21:08:59+00:00"
+    },
+    "REQ-005": {
+      "created_at": "2026-08-16T21:22:44+00:00",
+      "description": "Every main-branch and pull-request change must run the project quality gate on supported Python versions and build a smoke-tested distribution.",
+      "id": "REQ-005",
+      "properties": {
+        "risk": "R3"
+      },
+      "status": "active",
+      "title": "Enforce public continuous integration",
+      "type": "requirement",
+      "updated_at": "2026-08-16T21:22:44+00:00"
     }
   },
   "project_name": "Intent Kit",
   "schema_version": "0.1",
-  "updated_at": "2026-08-16T21:11:27+00:00"
+  "updated_at": "2026-08-16T21:22:44+00:00"
 }

@@ -24,8 +24,8 @@
 **Status:** `verified`
 **Claim:** The current repository state must pass the documented local release quality gate.
 **Evidence:**
-- `pass` — **EVD-004**: Local release quality gate (source: local:ruff+pytest+build+installed-wheel)
 - `pass` — **EVD-006**: Graph Insight v0.3.0 quality gate (source: local:ruff+pytest+build+installed-wheel+insight-smoke)
+- `pass` — **EVD-004**: Local release quality gate (source: local:ruff+pytest+build+installed-wheel)
 
 ### PRF-004 — Verify Graph Insight guidance
 
@@ -33,6 +33,13 @@
 **Claim:** The public Graph Insight guide must describe drift status, impact traversal, and proof-gap behavior.
 **Evidence:**
 - `pass` — **EVD-005**: Local file existence: Required path is present: docs/graph-insight.md. (source: docs/graph-insight.md)
+
+### PRF-005 — Verify successful public CI run
+
+**Status:** `verified`
+**Claim:** The GitHub Actions CI workflow must complete successfully with the Python quality matrix and distribution smoke test.
+**Evidence:**
+- `pass` — **EVD-007**: GitHub Actions CI run 31973242959 (source: https://github.com/Nom-nom-hub/intent-kit-poc/actions/runs/31973242959)
 
 ## Manual Notes
 
