@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
-from typing import Sequence
+from typing import Any, Sequence
 
 from .kernel import GraphStore, NodeStatus, NodeType, RelationType
+from .proof_checkers import CheckState, CheckerRegistry, ProofRunner
+from .proof_checkers.builtin import FileExistsChecker
 from .renderer import MarkdownRenderer
 
 
@@ -41,6 +44,9 @@ def build_parser() -> argparse.ArgumentParser:
     shape.add_argument("--alternative", action="append", default=[], help="Alternative considered. Repeatable.")
     shape.add_argument("--proof-title", help="Optional proof obligation title.")
     shape.add_argument("--proof-description", help="Claim that the proof obligation must demonstrate.")
+    shape.add_argument("--proof-checker-kind", help="Optional checker kind required by the proof, e.g. file_exists.")
+    shape.add_argument("--proof-evaluation", choices=["latest", "all", "any", "manual"], default="latest", help="Evidence aggregation policy for the proof.")
+    shape.add_argument("--required-checker", action="append", default=[], help="Checker ID required by all/any policies. Repeatable.")
     shape.set_defaults(handler=handle_shape)
 
     prove = subparsers.add_parser("prove", help="Record evidence against a proof obligation.")
@@ -51,6 +57,13 @@ def build_parser() -> argparse.ArgumentParser:
     prove.add_argument("--source", required=True, help="Source path, CI job, review, or external reference.")
     prove.add_argument("--result", choices=["pass", "fail", "recorded"], default="recorded", help="Evidence result.")
     prove.set_defaults(handler=handle_prove)
+
+    check = subparsers.add_parser("check", help="Run a trusted proof checker and record its evidence.")
+    add_path(check)
+    check.add_argument("obligation", help="Proof obligation ID.")
+    check.add_argument("--checker", required=True, help="Registered checker ID, e.g. local.file-exists.")
+    check.add_argument("--config", default="{}", help="Checker configuration as a JSON object.")
+    check.set_defaults(handler=handle_check)
 
     render = subparsers.add_parser("render", help="Regenerate Markdown views from the graph.")
     add_path(render)
@@ -131,7 +144,12 @@ def handle_shape(args: argparse.Namespace) -> int:
             args.proof_title,
             args.proof_description,
             status=NodeStatus.PLANNED,
-            properties={"risk": args.risk},
+            properties={
+                "risk": args.risk,
+                "checker_kind": args.proof_checker_kind,
+                "evaluation": args.proof_evaluation,
+                "required_checkers": args.required_checker,
+            },
         )
         graph.add_edge(requirement.id, proof.id, RelationType.REQUIRES_PROOF)
         recorded.append(proof.id)
@@ -165,6 +183,39 @@ def handle_prove(args: argparse.Namespace) -> int:
     MarkdownRenderer(args.path).render(graph)
     print(f"Recorded {evidence.id} against {obligation.id}: {args.result}")
     return 0
+
+
+def handle_check(args: argparse.Namespace) -> int:
+    config = parse_checker_config(args.config)
+    result = ProofRunner(load_store(args.path), default_registry()).run(
+        args.obligation,
+        args.checker,
+        config,
+    )
+    print(f"{result.state.value.upper()}: {result.summary}")
+    return {
+        CheckState.PASS: 0,
+        CheckState.SKIPPED: 0,
+        CheckState.FAIL: 1,
+        CheckState.INCONCLUSIVE: 2,
+        CheckState.ERROR: 3,
+    }[result.state]
+
+
+def default_registry() -> CheckerRegistry:
+    registry = CheckerRegistry()
+    registry.register(FileExistsChecker())
+    return registry
+
+
+def parse_checker_config(raw_config: str) -> dict[str, Any]:
+    try:
+        parsed = json.loads(raw_config)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Checker configuration must be valid JSON: {exc.msg}.") from exc
+    if not isinstance(parsed, dict):
+        raise ValueError("Checker configuration must be a JSON object.")
+    return parsed
 
 
 def handle_render(args: argparse.Namespace) -> int:
