@@ -25,20 +25,21 @@ The POC intentionally focuses on one essential thesis: **a requirement should ca
 | Spec Kit migration | Imports completed `spec.md`, optional `plan.md`, and optional `tasks.md` into the local graph with artifact hashes and line-level provenance. |
 | Graph insight | Detects imported-source drift and traverses typed graph paths to show affected work and unverified proof obligations. |
 | Policy packs | Applies local, version-controlled risk defaults for release-critical, migration, and documentation work. |
+| Controlled external checkers | Runs only explicitly allowlisted, manifest-pinned local checker scripts through an isolated JSON subprocess protocol. |
 
 ## POC Scope
 
-The POC is deliberately not a production system. It does **not** yet include agent integrations, a visual graph explorer, GitHub/Jira synchronization, CI/telemetry adapters, automatic repository mapping, role-based access control, external checker-package discovery, incremental import updates, or sophisticated merge/conflict resolution. Those are later roadmap capabilities, not safe assumptions for the first build.
+The POC is deliberately not a production system. It does **not** yet include agent integrations, a visual graph explorer, GitHub/Jira synchronization, CI/telemetry adapters, automatic repository mapping, role-based access control, package-based checker discovery, network-capable external checkers, incremental import updates, or sophisticated merge/conflict resolution. Those are later roadmap capabilities, not safe assumptions for the first build.
 
 ## Installation
 
-Intent Kit supports Python 3.11 and 3.12. The latest published release is `v0.2.0`. Graph Insight and Policy Packs are currently on the `main` development branch and will be released together as `v0.4.0` after final verification.
+Intent Kit supports Python 3.11 and 3.12. The latest published release is `v0.2.0`. Graph Insight, Policy Packs, and controlled external checkers are currently on the `main` development branch and will be released together as `v0.5.0` after final verification.
 
 ```bash
 # Latest published release
 python -m pip install "git+https://github.com/Nom-nom-hub/intent-kit-poc.git@v0.2.0"
 
-# Current development branch, including Graph Insight and Policy Packs
+# Current development branch, including Graph Insight, Policy Packs, and controlled external checkers
 python -m pip install "git+https://github.com/Nom-nom-hub/intent-kit-poc.git@main"
 ```
 
@@ -102,6 +103,7 @@ See [`docs/speckit-import.md`](docs/speckit-import.md) for the supported Markdow
 | `intentkit drift` | Re-hashes imported artifacts and reports unchanged, changed, missing, or unsupported provenance records. Returns nonzero when drift needs review. |
 | `intentkit impact` | Traverses incoming and outgoing typed graph links from a node or imported source, including linked proof gaps. |
 | `intentkit policy` | Lists, inspects, or initializes local policy packs that calibrate risk, proof, evidence freshness, and review expectations. |
+| `intentkit checker` | Initializes or lists the explicit allowlist for built-in and manifest-pinned external proof checkers. |
 | `intentkit render` | Rebuilds Markdown projections from the canonical graph. |
 | `intentkit status` | Shows graph counts and proof coverage. |
 
@@ -123,6 +125,20 @@ intentkit shape "Protect release quality" \
 ```
 
 Explicit `--risk`, `--proof-evaluation`, `--required-checker`, and paired proof text override the relevant pack defaults. The exact selected policy is stored on graph nodes and rendered into the Intent and Evidence views. See [`docs/policy-packs.md`](docs/policy-packs.md) for the complete contract, local configuration, precedence, and security boundary.
+
+## Controlled External Checkers
+
+External checker discovery is disabled by default. A project can run a separately maintained local script only after a version-controlled allowlist pins its checker identity, manifest digest, and entrypoint digest. Intent Kit runs the script through a bounded JSON subprocess protocol and keeps graph persistence inside the core.
+
+```bash
+# Create an empty project allowlist, then add a reviewed, pinned manifest entry.
+intentkit checker init --path ./demo-project
+
+# Inspect the built-in and validated external checker identities available to the project.
+intentkit checker list --path ./demo-project
+```
+
+This is authorization and process-boundary control, **not** an operating-system sandbox: never allowlist code you would not independently review and execute. Network-capable manifests and Python package discovery remain unsupported. See [`docs/external-checkers.md`](docs/external-checkers.md) for the protocol, hash-pinning lifecycle, and reference fixture.
 
 ## Graph Insight
 
@@ -203,7 +219,7 @@ The tests cover graph integrity, deterministic IDs, persistence, Markdown projec
 
 ## Next Build Steps
 
-The next recommended increment is **controlled external checker discovery** behind explicit allowlisting, configuration validation, version pinning, and isolated execution boundaries. Incremental Spec Kit synchronization then builds on the existing drift, impact, and migration policy reports.
+The next recommended increment is **incremental Spec Kit synchronization**: a reviewed import-diff workflow that uses existing provenance, drift, impact, and migration policy data without silently creating duplicate graph records.
 
 ## Community and Project Policies
 

@@ -2,9 +2,9 @@
 
 **Audience:** Intent Kit core maintainers, plug-in authors, and teams adding domain-specific verification.
 
-**Applies to:** Intent Kit `0.2.0`
+**Applies to:** Intent Kit `0.5.0` development candidate
 
-**Status:** Developer design and implementation guide. The typed contract, explicit local registry, graph-safe runner, CLI integration, and built-in checker are shipped in `0.2.0`; separately packaged checker discovery and isolation remain planned extensions.
+**Status:** Developer design and implementation guide. The typed contract, explicit local registry, graph-safe runner, CLI integration, built-in checker, and controlled project-local external subprocess protocol are shipped on `main`. Package discovery, network-capable checkers, and operating-system sandboxing remain unsupported.
 
 ## Purpose
 
@@ -35,7 +35,7 @@ The renderer expects `evidence.properties["result"]` and `evidence.properties["s
 | Markdown evidence view | `MarkdownRenderer._render_evidence()` | A custom result needs at least `result` and `source` properties for immediate renderer compatibility. |
 | Manual proof command | `handle_prove()` in `cli.py` | The future `check` command should share the same recording path, not duplicate it. |
 
-Intent Kit `0.2.0` ships an explicit in-process checker registry, normalized result taxonomy, a graph-safe runner, and `latest`, `all`, `any`, and `manual` aggregation policies. It does **not** yet ship external plug-in discovery, sandboxed execution, or automated evidence-freshness calculation. This guide documents the shipped foundation and the compatible path to those later additions.
+Intent Kit ships an explicit in-process registry, normalized result taxonomy, graph-safe runner, `latest`, `all`, `any`, and `manual` aggregation policies, plus an explicit project-local external checker allowlist. External scripts run through a manifest-pinned JSON subprocess protocol; Intent Kit does **not** discover packages, permit network-capable checker manifests, claim operating-system sandboxing, or calculate evidence freshness automatically. This guide documents the shipped foundation and compatible future hardening paths.
 
 ## Extension Architecture
 

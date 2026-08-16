@@ -53,6 +53,18 @@
 - `pass` — **EVD-010**: Policy Pack aggregation validation (source: local:policy-pack+aggregation)
 - `skipped` — **EVD-008**: Local file existence: Checker does not support this proof obligation. (source: checker:local.file-exists)
 
+### PRF-007 — Verify Authorize controlled external proof checks
+
+**Status:** `verified`
+**Claim:** Provide evidence that 'Authorize controlled external proof checks' satisfies the release-critical policy pack. Record explicit review or automated validation evidence. Evidence should be refreshed within 7 day(s) when the work changes.
+**Policy:** `release-critical` (risk `R3`, evaluation `all`)
+**Evidence freshness:** 7 day(s)
+**Review:** Explicit review or automated validation evidence required.
+**Evidence:**
+- `pass` — **EVD-012**: Intent Kit Example File Content: Required file and configured content are present: docs/external-checkers.md. (source: docs/external-checkers.md)
+- `pass` — **EVD-011**: Intent Kit Example File Content: Required file and configured content are present: docs/external-checkers.md. (source: docs/external-checkers.md)
+- `pass` — **EVD-013**: Intent Kit Example File Content: Required file and configured content are present: docs/external-checkers.md. (source: docs/external-checkers.md)
+
 ## Manual Notes
 
 <!-- intentkit:manual-notes:start -->

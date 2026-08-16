@@ -17,6 +17,14 @@
       "source": "EVD-002",
       "target": "PRF-001"
     },
+    "edge-0b81c0d155a5": {
+      "created_at": "2026-08-16T21:49:21+00:00",
+      "id": "edge-0b81c0d155a5",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-013",
+      "target": "PRF-007"
+    },
     "edge-0f7796f78a20": {
       "created_at": "2026-08-16T21:22:44+00:00",
       "id": "edge-0f7796f78a20",
@@ -33,6 +41,14 @@
       "source": "REQ-006",
       "target": "OUT-001"
     },
+    "edge-27e57f2b2fe9": {
+      "created_at": "2026-08-16T21:46:54+00:00",
+      "id": "edge-27e57f2b2fe9",
+      "properties": {},
+      "relation": "addresses",
+      "source": "DEC-007",
+      "target": "REQ-007"
+    },
     "edge-300eba242cc0": {
       "created_at": "2026-08-16T20:57:32+00:00",
       "id": "edge-300eba242cc0",
@@ -40,6 +56,14 @@
       "relation": "proves",
       "source": "EVD-003",
       "target": "PRF-002"
+    },
+    "edge-3d81ecc61d22": {
+      "created_at": "2026-08-16T21:46:54+00:00",
+      "id": "edge-3d81ecc61d22",
+      "properties": {},
+      "relation": "requires_proof",
+      "source": "REQ-007",
+      "target": "PRF-007"
     },
     "edge-4366a7551163": {
       "created_at": "2026-08-16T21:32:08+00:00",
@@ -71,6 +95,14 @@
       "properties": {},
       "relation": "derives_from",
       "source": "REQ-004",
+      "target": "OUT-001"
+    },
+    "edge-6ecf275f392f": {
+      "created_at": "2026-08-16T21:46:54+00:00",
+      "id": "edge-6ecf275f392f",
+      "properties": {},
+      "relation": "derives_from",
+      "source": "REQ-007",
       "target": "OUT-001"
     },
     "edge-7734436b501c": {
@@ -177,6 +209,14 @@
       "source": "EVD-001",
       "target": "PRF-001"
     },
+    "edge-bb0ab549f164": {
+      "created_at": "2026-08-16T21:48:43+00:00",
+      "id": "edge-bb0ab549f164",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-012",
+      "target": "PRF-007"
+    },
     "edge-c2a539410ef4": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "id": "edge-c2a539410ef4",
@@ -200,6 +240,14 @@
       "relation": "derives_from",
       "source": "REQ-002",
       "target": "OUT-001"
+    },
+    "edge-eb39669dc6c1": {
+      "created_at": "2026-08-16T21:46:54+00:00",
+      "id": "edge-eb39669dc6c1",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-011",
+      "target": "PRF-007"
     },
     "edge-f254f6291142": {
       "created_at": "2026-08-16T21:08:59+00:00",
@@ -310,6 +358,20 @@
       "title": "Keep policies declarative and local",
       "type": "decision",
       "updated_at": "2026-08-16T21:32:08+00:00"
+    },
+    "DEC-007": {
+      "created_at": "2026-08-16T21:46:54+00:00",
+      "description": "Explicit project authorization and digest pinning make external execution reviewable while preserving graph ownership in the core.",
+      "id": "DEC-007",
+      "properties": {
+        "alternatives": [
+          "Discover installed Python checker packages automatically"
+        ]
+      },
+      "status": "proposed",
+      "title": "Use manifest-pinned JSON subprocesses",
+      "type": "decision",
+      "updated_at": "2026-08-16T21:46:54+00:00"
     },
     "EVD-001": {
       "created_at": "2026-08-16T20:57:31+00:00",
@@ -534,6 +596,123 @@
       "type": "evidence",
       "updated_at": "2026-08-16T21:35:45+00:00"
     },
+    "EVD-011": {
+      "created_at": "2026-08-16T21:46:54+00:00",
+      "description": "Required file and configured content are present: docs/external-checkers.md.",
+      "id": "EVD-011",
+      "properties": {
+        "artifacts": [
+          {
+            "digest_sha256": "sha256:2f4953cedc5e79a15f1c35f1d4d8660f0ea4445bcb09f7af45718103bffbba3a",
+            "media_type": "text/markdown",
+            "name": "docs/external-checkers.md",
+            "path": "docs/external-checkers.md"
+          }
+        ],
+        "checker": {
+          "id": "intentkit.example.file-content",
+          "version": "1.0.0"
+        },
+        "details": "",
+        "external_run_id": null,
+        "metrics": {
+          "contains": true,
+          "duration_ms": 36,
+          "exists": true
+        },
+        "result": "pass",
+        "run": {
+          "config_fingerprint": "sha256:54f0e8d5598341de10fe62d154470ae8db1b95af456e168ce0e96848704526c3",
+          "duration_ms": 36,
+          "executed_at": "2026-08-16T21:46:54+00:00",
+          "id": "run-06c118f0435f4995"
+        },
+        "source": "docs/external-checkers.md",
+        "summary": "Required file and configured content are present: docs/external-checkers.md."
+      },
+      "status": "verified",
+      "title": "Intent Kit Example File Content: Required file and configured content are present: docs/external-checkers.md.",
+      "type": "evidence",
+      "updated_at": "2026-08-16T21:46:54+00:00"
+    },
+    "EVD-012": {
+      "created_at": "2026-08-16T21:48:43+00:00",
+      "description": "Required file and configured content are present: docs/external-checkers.md.",
+      "id": "EVD-012",
+      "properties": {
+        "artifacts": [
+          {
+            "digest_sha256": "sha256:2f4953cedc5e79a15f1c35f1d4d8660f0ea4445bcb09f7af45718103bffbba3a",
+            "media_type": "text/markdown",
+            "name": "docs/external-checkers.md",
+            "path": "docs/external-checkers.md"
+          }
+        ],
+        "checker": {
+          "id": "intentkit.example.file-content",
+          "version": "1.0.0"
+        },
+        "details": "",
+        "external_run_id": null,
+        "metrics": {
+          "contains": true,
+          "duration_ms": 40,
+          "exists": true
+        },
+        "result": "pass",
+        "run": {
+          "config_fingerprint": "sha256:54f0e8d5598341de10fe62d154470ae8db1b95af456e168ce0e96848704526c3",
+          "duration_ms": 40,
+          "executed_at": "2026-08-16T21:48:43+00:00",
+          "id": "run-b4b72cfc066f4c3b"
+        },
+        "source": "docs/external-checkers.md",
+        "summary": "Required file and configured content are present: docs/external-checkers.md."
+      },
+      "status": "verified",
+      "title": "Intent Kit Example File Content: Required file and configured content are present: docs/external-checkers.md.",
+      "type": "evidence",
+      "updated_at": "2026-08-16T21:48:43+00:00"
+    },
+    "EVD-013": {
+      "created_at": "2026-08-16T21:49:21+00:00",
+      "description": "Required file and configured content are present: docs/external-checkers.md.",
+      "id": "EVD-013",
+      "properties": {
+        "artifacts": [
+          {
+            "digest_sha256": "sha256:2f4953cedc5e79a15f1c35f1d4d8660f0ea4445bcb09f7af45718103bffbba3a",
+            "media_type": "text/markdown",
+            "name": "docs/external-checkers.md",
+            "path": "docs/external-checkers.md"
+          }
+        ],
+        "checker": {
+          "id": "intentkit.example.file-content",
+          "version": "1.0.0"
+        },
+        "details": "",
+        "external_run_id": null,
+        "metrics": {
+          "contains": true,
+          "duration_ms": 39,
+          "exists": true
+        },
+        "result": "pass",
+        "run": {
+          "config_fingerprint": "sha256:54f0e8d5598341de10fe62d154470ae8db1b95af456e168ce0e96848704526c3",
+          "duration_ms": 39,
+          "executed_at": "2026-08-16T21:49:21+00:00",
+          "id": "run-221c8e5e68db4c8d"
+        },
+        "source": "docs/external-checkers.md",
+        "summary": "Required file and configured content are present: docs/external-checkers.md."
+      },
+      "status": "verified",
+      "title": "Intent Kit Example File Content: Required file and configured content are present: docs/external-checkers.md.",
+      "type": "evidence",
+      "updated_at": "2026-08-16T21:49:21+00:00"
+    },
     "OUT-001": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "description": "Intent Kit must demonstrate that its own repository can carry explicit intent, reviewable evidence, and reliable release practices.",
@@ -657,6 +836,34 @@
       "type": "proof_obligation",
       "updated_at": "2026-08-16T21:35:45+00:00"
     },
+    "PRF-007": {
+      "created_at": "2026-08-16T21:46:54+00:00",
+      "description": "Provide evidence that 'Authorize controlled external proof checks' satisfies the release-critical policy pack. Record explicit review or automated validation evidence. Evidence should be refreshed within 7 day(s) when the work changes.",
+      "id": "PRF-007",
+      "properties": {
+        "checker_kind": "external_file_content",
+        "evaluation": "all",
+        "policy_pack": {
+          "evaluation": "all",
+          "evidence_freshness_days": 7,
+          "name": "release-critical",
+          "proof_required": true,
+          "required_checkers": [],
+          "review_required": true,
+          "risk": "R3",
+          "source_provenance_required": false,
+          "title": "Release Critical"
+        },
+        "required_checkers": [
+          "intentkit.example.file-content"
+        ],
+        "risk": "R3"
+      },
+      "status": "verified",
+      "title": "Verify Authorize controlled external proof checks",
+      "type": "proof_obligation",
+      "updated_at": "2026-08-16T21:49:21+00:00"
+    },
     "REQ-001": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "description": "The repository must include a recognized license and public contribution and security policies.",
@@ -739,9 +946,32 @@
       "title": "Apply risk-calibrated policies",
       "type": "requirement",
       "updated_at": "2026-08-16T21:32:08+00:00"
+    },
+    "REQ-007": {
+      "created_at": "2026-08-16T21:46:54+00:00",
+      "description": "Intent Kit must execute external proof automation only when a project allowlist pins its identity, manifest, and entrypoint.",
+      "id": "REQ-007",
+      "properties": {
+        "policy_pack": {
+          "evaluation": "all",
+          "evidence_freshness_days": 7,
+          "name": "release-critical",
+          "proof_required": true,
+          "required_checkers": [],
+          "review_required": true,
+          "risk": "R3",
+          "source_provenance_required": false,
+          "title": "Release Critical"
+        },
+        "risk": "R3"
+      },
+      "status": "active",
+      "title": "Authorize controlled external proof checks",
+      "type": "requirement",
+      "updated_at": "2026-08-16T21:46:54+00:00"
     }
   },
   "project_name": "Intent Kit",
   "schema_version": "0.1",
-  "updated_at": "2026-08-16T21:35:45+00:00"
+  "updated_at": "2026-08-16T21:49:21+00:00"
 }

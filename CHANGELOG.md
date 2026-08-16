@@ -15,6 +15,7 @@ The project follows [Semantic Versioning](https://semver.org/). Before `1.0.0`, 
 - Read-only graph-insight documentation and a dependency-ordered public delivery roadmap.
 - Local, version-controlled Policy Packs with shipped `release-critical`, `migration`, and `documentation` defaults.
 - `intentkit policy` commands, policy-backed shaping defaults, graph-visible policy metadata, policy status summaries, and Policy Pack documentation.
+- Controlled external checker execution through project-local allowlists, pinned manifests and entrypoints, a bounded JSON subprocess protocol, and `intentkit checker` management commands.
 
 ## [0.2.0] - 2026-08-16
 

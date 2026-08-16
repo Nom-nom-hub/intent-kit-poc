@@ -21,6 +21,7 @@ from .kernel import GraphStore, NodeStatus, NodeType, RelationType
 from .policies import PolicyRegistry, render_policy_list, render_policy_show
 from .proof_checkers import CheckerRegistry, CheckState, ProofRunner
 from .proof_checkers.builtin import FileExistsChecker
+from .proof_checkers.external import ExternalCheckerRegistry
 from .proof_checkers.runner import aggregate_obligation_status
 from .renderer import MarkdownRenderer
 
@@ -110,6 +111,13 @@ def build_parser() -> argparse.ArgumentParser:
     policy.add_argument("action", choices=["list", "show", "init"])
     policy.add_argument("name", nargs="?", help="Policy pack name required by 'show'.")
     policy.set_defaults(handler=handle_policy)
+
+    checker = subparsers.add_parser(
+        "checker", help="Initialize or inspect the controlled proof-checker allowlist."
+    )
+    add_path(checker)
+    checker.add_argument("action", choices=["list", "init"])
+    checker.set_defaults(handler=handle_checker)
 
     prove = subparsers.add_parser("prove", help="Record evidence against a proof obligation.")
     add_path(prove)
@@ -218,6 +226,24 @@ def handle_capture(args: argparse.Namespace) -> int:
     store.save(graph)
     MarkdownRenderer(args.path).render(graph)
     print(f"Captured {outcome.id}: {outcome.title}")
+    return 0
+
+
+def handle_checker(args: argparse.Namespace) -> int:
+    external = ExternalCheckerRegistry(args.path.resolve())
+    if args.action == "init":
+        path = external.write_template()
+        print(f"Created external checker allowlist: {path}")
+        return 0
+    external_ids = {checker.descriptor.checker_id for checker in external.load()}
+    print("Available proof checkers:")
+    for descriptor in default_registry(args.path).descriptors():
+        origin = "external" if descriptor.checker_id in external_ids else "built-in"
+        kinds = ", ".join(descriptor.supported_kinds) or "any configured proof kind"
+        print(
+            f"- {descriptor.checker_id}@{descriptor.version} [{origin}] "
+            f"— {descriptor.display_name}; kinds: {kinds}"
+        )
     return 0
 
 
@@ -349,7 +375,7 @@ def handle_prove(args: argparse.Namespace) -> int:
 
 def handle_check(args: argparse.Namespace) -> int:
     config = parse_checker_config(args.config)
-    result = ProofRunner(load_store(args.path), default_registry()).run(
+    result = ProofRunner(load_store(args.path), default_registry(args.path)).run(
         args.obligation,
         args.checker,
         config,
@@ -364,9 +390,11 @@ def handle_check(args: argparse.Namespace) -> int:
     }[result.state]
 
 
-def default_registry() -> CheckerRegistry:
+def default_registry(project_root: Path) -> CheckerRegistry:
     registry = CheckerRegistry()
     registry.register(FileExistsChecker())
+    for checker in ExternalCheckerRegistry(project_root).load():
+        registry.register(checker)
     return registry
 
 

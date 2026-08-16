@@ -2,4 +2,4 @@ import intentkit
 
 
 def test_public_version_matches_release_candidate() -> None:
-    assert intentkit.__version__ == "0.4.0"
+    assert intentkit.__version__ == "0.5.0"

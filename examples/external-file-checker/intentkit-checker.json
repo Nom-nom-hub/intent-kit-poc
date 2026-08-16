@@ -1,0 +1,13 @@
+{
+  "protocol_version": 1,
+  "checker_id": "intentkit.example.file-content",
+  "version": "1.0.0",
+  "display_name": "Intent Kit Example File Content",
+  "supported_kinds": [
+    "external_file_content"
+  ],
+  "needs_network": false,
+  "entrypoint": "checker.py",
+  "entrypoint_sha256": "sha256:f1be9b5aaa5f9d67152d204d635b129c3f11312b42d4974c42dccac6ca1d5c19",
+  "max_timeout_seconds": 30
+}

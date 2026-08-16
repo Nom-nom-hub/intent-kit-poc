@@ -11,7 +11,7 @@ Intent Kit should develop in the order that turns its typed graph into a durable
 | P0 | Restore GitHub Actions CI | Every public change receives a repeatable quality gate. | Operational patch | GitHub workflow-write permission |
 | P1 | Graph Insight | Users can answer what changed, what is affected, and what must be revalidated. | `v0.3.0` | Current graph, import provenance, and traceability edges |
 | P2 | Policy Packs | **Delivered on `main`**: teams apply local, version-controlled risk defaults with short commands and graph-visible metadata. | `v0.4.0` candidate | Graph Insight proof-gap model |
-| P3 | Controlled Checker Extensibility | Trusted teams add reusable proof automation without arbitrary plug-in execution. | `v0.5.0` | Policy packs and security model |
+| P3 | Controlled Checker Extensibility | **Delivered on `main`**: trusted teams add manifest-pinned local proof automation without package discovery or silent execution. | `v0.5.0` candidate | Policy packs and security model |
 | P4 | Incremental Spec Kit Synchronization | Imported features can be refreshed through a reviewed change plan rather than a new graph. | `v0.6.0` | Drift detection and impact analysis |
 | P5 | Graph Explorer | Teams can inspect intent, evidence, drift, and impact visually. | `v0.7.0` | Stable insight queries and policy status |
 
@@ -53,13 +53,11 @@ Policy Packs are delivered on `main`. The shipped `release-critical`, `migration
 
 **Done when:** packs are declared in local configuration, can be applied from `shape`, appear in graph properties and Markdown, and validate against a documented policy contract.
 
-## P3 — Controlled Checker Extensibility (`v0.5.0`)
+## P3 — Controlled Checker Extensibility (`v0.5.0` candidate)
 
-External checker packages are valuable but form a code-execution boundary. Intent Kit must not import arbitrary packages from a project environment.
+Controlled external checker execution is delivered on `main`. Each project must explicitly allowlist a local checker identity and version, pin a manifest digest, pin its Python entrypoint digest, and use a bounded JSON subprocess protocol. Package discovery, network access, and sandbox claims remain out of scope.
 
-**Required controls:** explicit allowlisting, checker identity and version pinning, configuration schema validation, structured results, timeout handling, a sandbox or isolated subprocess boundary, and an audit record of the enabled checker.
-
-**Done when:** a reference external checker can be installed only through an explicit local allowlist, executed in the documented boundary, and rejected safely when untrusted or incompatible.
+**Delivered controls:** explicit allowlisting, checker identity and version pinning, manifest and entrypoint digest validation, structured results, timeout handling, a minimal execution environment, and immutable audit evidence. A modified or incompatible checker is rejected before execution.
 
 ## P4 — Incremental Spec Kit Synchronization (`v0.6.0`)
 
@@ -91,4 +89,4 @@ Every milestone follows the same delivery sequence:
 
 ## Current Next Action
 
-The active product increment is **P3 — Controlled Checker Extensibility**. It begins with an explicit allowlist and schema-validated external checker manifest while preserving the existing trusted in-process default.
+The active product increment is **P4 — Incremental Spec Kit Synchronization**. It will compare current source artifacts to recorded provenance, preview a deterministic graph change plan, and apply the plan only after explicit review.

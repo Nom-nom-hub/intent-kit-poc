@@ -10,6 +10,7 @@
 - **REQ-004 — Make change impact visible** (`active`): Users must be able to identify source drift, connected graph records, and proof gaps before accepting a specification or implementation change.
 - **REQ-005 — Enforce public continuous integration** (`active`): Every main-branch and pull-request change must run the project quality gate on supported Python versions and build a smoke-tested distribution.
 - **REQ-006 — Apply risk-calibrated policies** (`active`): Intent Kit must make risk, proof, freshness, and review expectations explicit through local Policy Packs.
+- **REQ-007 — Authorize controlled external proof checks** (`active`): Intent Kit must execute external proof automation only when a project allowlist pins its identity, manifest, and entrypoint.
 
 ## Decisions
 
@@ -54,6 +55,13 @@
 **Rationale:** JSON-only packs provide consistent defaults without executing code or weakening the trusted checker boundary.
 **Addresses:** REQ-006 — Apply risk-calibrated policies
 **Alternatives considered:** Embed policy behavior in hard-coded workflow prompts
+
+### DEC-007 — Use manifest-pinned JSON subprocesses
+
+**Status:** `proposed`
+**Rationale:** Explicit project authorization and digest pinning make external execution reviewable while preserving graph ownership in the core.
+**Addresses:** REQ-007 — Authorize controlled external proof checks
+**Alternatives considered:** Discover installed Python checker packages automatically
 
 ## Implementation Tasks
 

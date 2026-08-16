@@ -1,0 +1,12 @@
+{
+  "schema_version": "1",
+  "checkers": [
+    {
+      "checker_id": "intentkit.example.file-content",
+      "version": "1.0.0",
+      "manifest": "examples/external-file-checker/intentkit-checker.json",
+      "manifest_sha256": "sha256:209bcb515401f68c74b3edb3af14abb0ba013cd338a4483037e20a33a00412f4",
+      "enabled": true
+    }
+  ]
+}
