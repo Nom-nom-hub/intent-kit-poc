@@ -8,6 +8,18 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
+from .agent_protocol import (
+    COMPUTER_READ_OPERATIONS,
+    COMPUTER_RUN_OPERATIONS,
+    MUTATION_OPERATIONS,
+    READ_OPERATIONS,
+    AgentProtocolError,
+    error_response,
+    execute_computer,
+    execute_mutation,
+    execute_read,
+    parse_request,
+)
 from .importers import SpecKitImporter
 from .insights import (
     DriftStatus,
@@ -182,6 +194,22 @@ def build_parser() -> argparse.ArgumentParser:
         help="Return a nonzero status when affected proof obligations are not verified.",
     )
     impact.set_defaults(handler=handle_impact)
+
+    agent = subparsers.add_parser(
+        "agent", help="Serve a strict JSON protocol for controlled agent access to this project."
+    )
+    add_path(agent)
+    request_source = agent.add_mutually_exclusive_group(required=True)
+    request_source.add_argument("--request", help="Agent request as a JSON object.")
+    request_source.add_argument(
+        "--request-file", type=Path, help="Path to an agent JSON request file."
+    )
+    agent.add_argument(
+        "--apply",
+        action="store_true",
+        help="Required for supported mutation operations; read operations never mutate.",
+    )
+    agent.set_defaults(handler=handle_agent)
 
     render = subparsers.add_parser("render", help="Regenerate Markdown views from the graph.")
     add_path(render)
@@ -428,6 +456,41 @@ def handle_impact(args: argparse.Namespace) -> int:
     if args.proof_gaps and any(report.proof_gaps for report in reports):
         return 1
     return 0
+
+
+def handle_agent(args: argparse.Namespace) -> int:
+    raw_request = (
+        args.request_file.read_text(encoding="utf-8") if args.request_file else args.request
+    )
+    request_id: str | None = None
+    try:
+        request = parse_request(raw_request)
+        request_id = request["request_id"]
+        project_root = args.path.resolve()
+        checker_registry = default_registry(project_root)
+        operation = request["operation"]
+        if operation in READ_OPERATIONS:
+            response = execute_read(project_root, request, checker_registry.descriptors())
+        elif operation in COMPUTER_READ_OPERATIONS | COMPUTER_RUN_OPERATIONS:
+            response = execute_computer(project_root, request, apply=args.apply)
+        elif operation in MUTATION_OPERATIONS:
+            response = execute_mutation(
+                project_root,
+                request,
+                checker_registry,
+                apply=args.apply,
+            )
+        else:
+            raise AgentProtocolError("unsupported_operation", f"Unsupported operation: {operation}")
+        exit_code = 0
+    except AgentProtocolError as exc:
+        response = error_response(request_id, exc.code, str(exc))
+        exit_code = 2
+    except (FileNotFoundError, FileExistsError, ValueError) as exc:
+        response = error_response(request_id, "project_error", str(exc))
+        exit_code = 2
+    print(json.dumps(response, sort_keys=True))
+    return exit_code
 
 
 def handle_import_speckit(args: argparse.Namespace) -> int:

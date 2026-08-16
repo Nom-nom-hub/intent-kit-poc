@@ -9,3 +9,5 @@ dist/
 .coverage
 coverage.xml
 htmlcov/
+.intent/agent-workspace/
+.intent/agent-computer-log.jsonl

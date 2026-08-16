@@ -11,6 +11,7 @@
 - **REQ-005 — Enforce public continuous integration** (`active`): Every main-branch and pull-request change must run the project quality gate on supported Python versions and build a smoke-tested distribution.
 - **REQ-006 — Apply risk-calibrated policies** (`active`): Intent Kit must make risk, proof, freshness, and review expectations explicit through local Policy Packs.
 - **REQ-007 — Authorize controlled external proof checks** (`active`): Intent Kit must execute external proof automation only when a project allowlist pins its identity, manifest, and entrypoint.
+- **REQ-008 — Provide a controlled Agent Computer** (`active`): Agents must inspect and operate an Intent Kit project through a project-scoped JSON protocol, bounded workspace, explicit apply mode, approved proof checks, and auditable actions rather than unrestricted shell access.
 
 ## Decisions
 
@@ -62,6 +63,13 @@
 **Rationale:** Explicit project authorization and digest pinning make external execution reviewable while preserving graph ownership in the core.
 **Addresses:** REQ-007 — Authorize controlled external proof checks
 **Alternatives considered:** Discover installed Python checker packages automatically
+
+### DEC-008 — Use a project-scoped Agent Computer protocol
+
+**Status:** `proposed`
+**Rationale:** A narrow JSON protocol keeps graph mutation, policy resolution, proof execution, and evidence persistence inside Intent Kit while giving agents useful local work capabilities.
+**Addresses:** REQ-008 — Provide a controlled Agent Computer
+**Alternatives considered:** Grant agents unrestricted shell access to the project, Expose the graph JSON directly for agents to edit
 
 ## Implementation Tasks
 

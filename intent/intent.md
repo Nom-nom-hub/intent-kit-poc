@@ -1,7 +1,7 @@
 # Intent Contract
 
 **Project:** Intent Kit
-**Graph updated:** 2026-08-16T21:49:21+00:00
+**Graph updated:** 2026-08-16T22:07:54+00:00
 
 ## Outcomes
 
@@ -16,6 +16,7 @@
 - **REQ-005 — Enforce public continuous integration** (`active`): Every main-branch and pull-request change must run the project quality gate on supported Python versions and build a smoke-tested distribution. Derived from: OUT-001 — Sustain a trustworthy local-first Intent Kit release.
 - **REQ-006 — Apply risk-calibrated policies** (`active`): Intent Kit must make risk, proof, freshness, and review expectations explicit through local Policy Packs. Derived from: OUT-001 — Sustain a trustworthy local-first Intent Kit release. Policy: `release-critical` (risk `R3`).
 - **REQ-007 — Authorize controlled external proof checks** (`active`): Intent Kit must execute external proof automation only when a project allowlist pins its identity, manifest, and entrypoint. Derived from: OUT-001 — Sustain a trustworthy local-first Intent Kit release. Policy: `release-critical` (risk `R3`).
+- **REQ-008 — Provide a controlled Agent Computer** (`active`): Agents must inspect and operate an Intent Kit project through a project-scoped JSON protocol, bounded workspace, explicit apply mode, approved proof checks, and auditable actions rather than unrestricted shell access. Derived from: OUT-001 — Sustain a trustworthy local-first Intent Kit release. Policy: `release-critical` (risk `R3`).
 
 ## Manual Notes
 

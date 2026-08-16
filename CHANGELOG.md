@@ -16,6 +16,7 @@ The project follows [Semantic Versioning](https://semver.org/). Before `1.0.0`, 
 - Local, version-controlled Policy Packs with shipped `release-critical`, `migration`, and `documentation` defaults.
 - `intentkit policy` commands, policy-backed shaping defaults, graph-visible policy metadata, policy status summaries, and Policy Pack documentation.
 - Controlled external checker execution through project-local allowlists, pinned manifests and entrypoints, a bounded JSON subprocess protocol, and `intentkit checker` management commands.
+- Agent Computer foundation: strict JSON agent requests, graph and governance inspection, named local quality commands, a project-scoped scratch workspace, explicit apply-mode graph changes and proof checks, and an append-only local audit log.
 
 ## [0.2.0] - 2026-08-16
 

@@ -12,8 +12,9 @@ Intent Kit should develop in the order that turns its typed graph into a durable
 | P1 | Graph Insight | Users can answer what changed, what is affected, and what must be revalidated. | `v0.3.0` | Current graph, import provenance, and traceability edges |
 | P2 | Policy Packs | **Delivered on `main`**: teams apply local, version-controlled risk defaults with short commands and graph-visible metadata. | `v0.4.0` candidate | Graph Insight proof-gap model |
 | P3 | Controlled Checker Extensibility | **Delivered on `main`**: trusted teams add manifest-pinned local proof automation without package discovery or silent execution. | `v0.5.0` candidate | Policy packs and security model |
-| P4 | Incremental Spec Kit Synchronization | Imported features can be refreshed through a reviewed change plan rather than a new graph. | `v0.6.0` | Drift detection and impact analysis |
-| P5 | Graph Explorer | Teams can inspect intent, evidence, drift, and impact visually. | `v0.7.0` | Stable insight queries and policy status |
+| P4 | Agent Computer Foundation | **Delivered on `main`**: agents use a project-scoped JSON protocol, bounded workspace, named quality commands, explicit apply mode, and audit records. | `v0.6.0` candidate | Graph, policy, proof, checker, and CI foundations |
+| P5 | Incremental Spec Kit Synchronization | Imported features can be refreshed through an agent-reviewable change plan rather than a new graph. | `v0.7.0` | Drift detection, impact analysis, and Agent Computer workspace |
+| P6 | Graph Explorer | Teams can inspect intent, evidence, drift, impact, and agent activity visually. | `v0.8.0` | Stable insight queries, policy status, and agent audit model |
 
 ## P0 — Restore the Public Automation Gate
 
@@ -59,15 +60,21 @@ Controlled external checker execution is delivered on `main`. Each project must 
 
 **Delivered controls:** explicit allowlisting, checker identity and version pinning, manifest and entrypoint digest validation, structured results, timeout handling, a minimal execution environment, and immutable audit evidence. A modified or incompatible checker is rejected before execution.
 
-## P4 — Incremental Spec Kit Synchronization (`v0.6.0`)
+## P4 — Agent Computer Foundation (`v0.6.0` candidate)
+
+The Agent Computer is delivered on `main`. It provides a language-agnostic JSON protocol for graph inspection, policy and checker discovery, bounded project file access, named quality commands, and an agent-owned scratch workspace. Graph and workspace changes use a proposal-first flow and require explicit `--apply`; all actions route through the existing policy, checker, proof, evidence, persistence, and rendering layers.
+
+**Delivered controls:** no arbitrary shell; no direct graph-file writes; no network, browser, credentials, VM/container sandbox, or graphical desktop claim; project containment; scratch-workspace containment; and append-only local audit records.
+
+## P5 — Incremental Spec Kit Synchronization (`v0.7.0`)
 
 The current importer intentionally supports one clean, read-only import. Synchronization must remain an explicit review operation.
 
-**Required workflow:** run drift detection, generate a proposed import delta, display added/changed/removed source records, show affected graph paths and proof gaps, and apply the delta only after user confirmation. No source Spec Kit file is ever modified.
+**Required workflow:** run drift detection, generate a proposed import delta, display added/changed/removed source records, show affected graph paths and proof gaps, let an agent prepare review artifacts in its workspace, and apply the delta only after explicit user confirmation. No source Spec Kit file is ever modified.
 
 **Done when:** a changed sample feature produces a deterministic reviewable update plan; accepted updates preserve stable graph IDs where possible; rejected updates leave the graph untouched.
 
-## P5 — Graph Explorer (`v0.7.0`)
+## P6 — Graph Explorer (`v0.8.0`)
 
 A visual surface becomes valuable only after the graph queries are stable. It should start as a local, read-only explorer of the existing graph rather than a collaborative cloud product.
 
@@ -89,4 +96,4 @@ Every milestone follows the same delivery sequence:
 
 ## Current Next Action
 
-The active product increment is **P4 — Incremental Spec Kit Synchronization**. It will compare current source artifacts to recorded provenance, preview a deterministic graph change plan, and apply the plan only after explicit review.
+The active product increment is **P5 — Incremental Spec Kit Synchronization**. It will compare current source artifacts to recorded provenance, let agents prepare a reviewable update proposal, and apply the plan only after explicit human approval.

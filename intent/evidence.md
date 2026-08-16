@@ -61,9 +61,20 @@
 **Evidence freshness:** 7 day(s)
 **Review:** Explicit review or automated validation evidence required.
 **Evidence:**
+- `pass` — **EVD-013**: Intent Kit Example File Content: Required file and configured content are present: docs/external-checkers.md. (source: docs/external-checkers.md)
 - `pass` — **EVD-012**: Intent Kit Example File Content: Required file and configured content are present: docs/external-checkers.md. (source: docs/external-checkers.md)
 - `pass` — **EVD-011**: Intent Kit Example File Content: Required file and configured content are present: docs/external-checkers.md. (source: docs/external-checkers.md)
-- `pass` — **EVD-013**: Intent Kit Example File Content: Required file and configured content are present: docs/external-checkers.md. (source: docs/external-checkers.md)
+
+### PRF-008 — Verify Provide a controlled Agent Computer
+
+**Status:** `verified`
+**Claim:** Provide evidence that 'Provide a controlled Agent Computer' satisfies the release-critical policy pack. Record explicit review or automated validation evidence. Evidence should be refreshed within 7 day(s) when the work changes.
+**Policy:** `release-critical` (risk `R3`, evaluation `all`)
+**Evidence freshness:** 7 day(s)
+**Review:** Explicit review or automated validation evidence required.
+**Evidence:**
+- `pass` — **EVD-014**: Intent Kit Example File Content: Required file and configured content are present: docs/agent-computer.md. (source: docs/agent-computer.md)
+- `pass` — **EVD-015**: Intent Kit Example File Content: Required file and configured content are present: docs/agent-computer.md. (source: docs/agent-computer.md)
 
 ## Manual Notes
 

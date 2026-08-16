@@ -57,6 +57,14 @@
       "source": "EVD-003",
       "target": "PRF-002"
     },
+    "edge-37feb55c1bab": {
+      "created_at": "2026-08-16T22:06:33+00:00",
+      "id": "edge-37feb55c1bab",
+      "properties": {},
+      "relation": "derives_from",
+      "source": "REQ-008",
+      "target": "OUT-001"
+    },
     "edge-3d81ecc61d22": {
       "created_at": "2026-08-16T21:46:54+00:00",
       "id": "edge-3d81ecc61d22",
@@ -104,6 +112,14 @@
       "relation": "derives_from",
       "source": "REQ-007",
       "target": "OUT-001"
+    },
+    "edge-70a75f65d6af": {
+      "created_at": "2026-08-16T22:06:33+00:00",
+      "id": "edge-70a75f65d6af",
+      "properties": {},
+      "relation": "addresses",
+      "source": "DEC-008",
+      "target": "REQ-008"
     },
     "edge-7734436b501c": {
       "created_at": "2026-08-16T21:08:59+00:00",
@@ -169,6 +185,14 @@
       "source": "REQ-005",
       "target": "PRF-005"
     },
+    "edge-9c26116fab19": {
+      "created_at": "2026-08-16T22:07:07+00:00",
+      "id": "edge-9c26116fab19",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-014",
+      "target": "PRF-008"
+    },
     "edge-a09698e0d995": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "id": "edge-a09698e0d995",
@@ -184,6 +208,14 @@
       "relation": "derives_from",
       "source": "REQ-005",
       "target": "OUT-001"
+    },
+    "edge-b1e6c3fc1239": {
+      "created_at": "2026-08-16T22:07:54+00:00",
+      "id": "edge-b1e6c3fc1239",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-015",
+      "target": "PRF-008"
     },
     "edge-b70e6d1f7136": {
       "created_at": "2026-08-16T20:57:07+00:00",
@@ -208,6 +240,14 @@
       "relation": "proves",
       "source": "EVD-001",
       "target": "PRF-001"
+    },
+    "edge-b994970afc08": {
+      "created_at": "2026-08-16T22:06:33+00:00",
+      "id": "edge-b994970afc08",
+      "properties": {},
+      "relation": "requires_proof",
+      "source": "REQ-008",
+      "target": "PRF-008"
     },
     "edge-bb0ab549f164": {
       "created_at": "2026-08-16T21:48:43+00:00",
@@ -372,6 +412,21 @@
       "title": "Use manifest-pinned JSON subprocesses",
       "type": "decision",
       "updated_at": "2026-08-16T21:46:54+00:00"
+    },
+    "DEC-008": {
+      "created_at": "2026-08-16T22:06:33+00:00",
+      "description": "A narrow JSON protocol keeps graph mutation, policy resolution, proof execution, and evidence persistence inside Intent Kit while giving agents useful local work capabilities.",
+      "id": "DEC-008",
+      "properties": {
+        "alternatives": [
+          "Grant agents unrestricted shell access to the project",
+          "Expose the graph JSON directly for agents to edit"
+        ]
+      },
+      "status": "proposed",
+      "title": "Use a project-scoped Agent Computer protocol",
+      "type": "decision",
+      "updated_at": "2026-08-16T22:06:33+00:00"
     },
     "EVD-001": {
       "created_at": "2026-08-16T20:57:31+00:00",
@@ -713,6 +768,84 @@
       "type": "evidence",
       "updated_at": "2026-08-16T21:49:21+00:00"
     },
+    "EVD-014": {
+      "created_at": "2026-08-16T22:07:07+00:00",
+      "description": "Required file and configured content are present: docs/agent-computer.md.",
+      "id": "EVD-014",
+      "properties": {
+        "artifacts": [
+          {
+            "digest_sha256": "sha256:48f34ced2269d2463713d08088ee0b6da05fd5f9ad218a6751e6259a49a4651f",
+            "media_type": "text/markdown",
+            "name": "docs/agent-computer.md",
+            "path": "docs/agent-computer.md"
+          }
+        ],
+        "checker": {
+          "id": "intentkit.example.file-content",
+          "version": "1.0.0"
+        },
+        "details": "",
+        "external_run_id": null,
+        "metrics": {
+          "contains": true,
+          "duration_ms": 48,
+          "exists": true
+        },
+        "result": "pass",
+        "run": {
+          "config_fingerprint": "sha256:40d6452622aedeae80291c625a2a10ed8ceaa1b1536cf13b9c24515c2e6d0402",
+          "duration_ms": 48,
+          "executed_at": "2026-08-16T22:07:07+00:00",
+          "id": "run-2e9e777c9c17443b"
+        },
+        "source": "docs/agent-computer.md",
+        "summary": "Required file and configured content are present: docs/agent-computer.md."
+      },
+      "status": "verified",
+      "title": "Intent Kit Example File Content: Required file and configured content are present: docs/agent-computer.md.",
+      "type": "evidence",
+      "updated_at": "2026-08-16T22:07:07+00:00"
+    },
+    "EVD-015": {
+      "created_at": "2026-08-16T22:07:54+00:00",
+      "description": "Required file and configured content are present: docs/agent-computer.md.",
+      "id": "EVD-015",
+      "properties": {
+        "artifacts": [
+          {
+            "digest_sha256": "sha256:48f34ced2269d2463713d08088ee0b6da05fd5f9ad218a6751e6259a49a4651f",
+            "media_type": "text/markdown",
+            "name": "docs/agent-computer.md",
+            "path": "docs/agent-computer.md"
+          }
+        ],
+        "checker": {
+          "id": "intentkit.example.file-content",
+          "version": "1.0.0"
+        },
+        "details": "",
+        "external_run_id": null,
+        "metrics": {
+          "contains": true,
+          "duration_ms": 37,
+          "exists": true
+        },
+        "result": "pass",
+        "run": {
+          "config_fingerprint": "sha256:40d6452622aedeae80291c625a2a10ed8ceaa1b1536cf13b9c24515c2e6d0402",
+          "duration_ms": 37,
+          "executed_at": "2026-08-16T22:07:54+00:00",
+          "id": "run-9fdc9f6ed1094a0d"
+        },
+        "source": "docs/agent-computer.md",
+        "summary": "Required file and configured content are present: docs/agent-computer.md."
+      },
+      "status": "verified",
+      "title": "Intent Kit Example File Content: Required file and configured content are present: docs/agent-computer.md.",
+      "type": "evidence",
+      "updated_at": "2026-08-16T22:07:54+00:00"
+    },
     "OUT-001": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "description": "Intent Kit must demonstrate that its own repository can carry explicit intent, reviewable evidence, and reliable release practices.",
@@ -864,6 +997,34 @@
       "type": "proof_obligation",
       "updated_at": "2026-08-16T21:49:21+00:00"
     },
+    "PRF-008": {
+      "created_at": "2026-08-16T22:06:33+00:00",
+      "description": "Provide evidence that 'Provide a controlled Agent Computer' satisfies the release-critical policy pack. Record explicit review or automated validation evidence. Evidence should be refreshed within 7 day(s) when the work changes.",
+      "id": "PRF-008",
+      "properties": {
+        "checker_kind": "external_file_content",
+        "evaluation": "all",
+        "policy_pack": {
+          "evaluation": "all",
+          "evidence_freshness_days": 7,
+          "name": "release-critical",
+          "proof_required": true,
+          "required_checkers": [],
+          "review_required": true,
+          "risk": "R3",
+          "source_provenance_required": false,
+          "title": "Release Critical"
+        },
+        "required_checkers": [
+          "intentkit.example.file-content"
+        ],
+        "risk": "R3"
+      },
+      "status": "verified",
+      "title": "Verify Provide a controlled Agent Computer",
+      "type": "proof_obligation",
+      "updated_at": "2026-08-16T22:07:54+00:00"
+    },
     "REQ-001": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "description": "The repository must include a recognized license and public contribution and security policies.",
@@ -969,9 +1130,32 @@
       "title": "Authorize controlled external proof checks",
       "type": "requirement",
       "updated_at": "2026-08-16T21:46:54+00:00"
+    },
+    "REQ-008": {
+      "created_at": "2026-08-16T22:06:33+00:00",
+      "description": "Agents must inspect and operate an Intent Kit project through a project-scoped JSON protocol, bounded workspace, explicit apply mode, approved proof checks, and auditable actions rather than unrestricted shell access.",
+      "id": "REQ-008",
+      "properties": {
+        "policy_pack": {
+          "evaluation": "all",
+          "evidence_freshness_days": 7,
+          "name": "release-critical",
+          "proof_required": true,
+          "required_checkers": [],
+          "review_required": true,
+          "risk": "R3",
+          "source_provenance_required": false,
+          "title": "Release Critical"
+        },
+        "risk": "R3"
+      },
+      "status": "active",
+      "title": "Provide a controlled Agent Computer",
+      "type": "requirement",
+      "updated_at": "2026-08-16T22:06:33+00:00"
     }
   },
   "project_name": "Intent Kit",
   "schema_version": "0.1",
-  "updated_at": "2026-08-16T21:49:21+00:00"
+  "updated_at": "2026-08-16T22:07:54+00:00"
 }

@@ -26,20 +26,21 @@ The POC intentionally focuses on one essential thesis: **a requirement should ca
 | Graph insight | Detects imported-source drift and traverses typed graph paths to show affected work and unverified proof obligations. |
 | Policy packs | Applies local, version-controlled risk defaults for release-critical, migration, and documentation work. |
 | Controlled external checkers | Runs only explicitly allowlisted, manifest-pinned local checker scripts through an isolated JSON subprocess protocol. |
+| Agent Computer | Gives agents a project-scoped JSON protocol, bounded workspace, named validation commands, approval-gated graph changes, and audit records. |
 
 ## POC Scope
 
-The POC is deliberately not a production system. It does **not** yet include agent integrations, a visual graph explorer, GitHub/Jira synchronization, CI/telemetry adapters, automatic repository mapping, role-based access control, package-based checker discovery, network-capable external checkers, incremental import updates, or sophisticated merge/conflict resolution. Those are later roadmap capabilities, not safe assumptions for the first build.
+The POC is deliberately not a production system. It does **not** yet include a graphical agent desktop, a visual graph explorer, GitHub/Jira synchronization, CI/telemetry adapters, automatic repository mapping, role-based access control, package-based checker discovery, network-capable external checkers, incremental import updates, or sophisticated merge/conflict resolution. Those are later roadmap capabilities, not safe assumptions for the first build.
 
 ## Installation
 
-Intent Kit supports Python 3.11 and 3.12. The latest published release is `v0.2.0`. Graph Insight, Policy Packs, and controlled external checkers are currently on the `main` development branch and will be released together as `v0.5.0` after final verification.
+Intent Kit supports Python 3.11 and 3.12. The latest published release is `v0.2.0`. Graph Insight, Policy Packs, controlled external checkers, and Agent Computer support are currently on the `main` development branch and will be released together as `v0.6.0` after final verification.
 
 ```bash
 # Latest published release
 python -m pip install "git+https://github.com/Nom-nom-hub/intent-kit-poc.git@v0.2.0"
 
-# Current development branch, including Graph Insight, Policy Packs, and controlled external checkers
+# Current development branch, including Graph Insight, Policy Packs, controlled external checkers, and Agent Computer support
 python -m pip install "git+https://github.com/Nom-nom-hub/intent-kit-poc.git@main"
 ```
 
@@ -104,6 +105,7 @@ See [`docs/speckit-import.md`](docs/speckit-import.md) for the supported Markdow
 | `intentkit impact` | Traverses incoming and outgoing typed graph links from a node or imported source, including linked proof gaps. |
 | `intentkit policy` | Lists, inspects, or initializes local policy packs that calibrate risk, proof, evidence freshness, and review expectations. |
 | `intentkit checker` | Initializes or lists the explicit allowlist for built-in and manifest-pinned external proof checkers. |
+| `intentkit agent` | Accepts strict JSON requests for agent read access, Agent Computer operations, graph-change previews, and approval-gated apply operations. |
 | `intentkit render` | Rebuilds Markdown projections from the canonical graph. |
 | `intentkit status` | Shows graph counts and proof coverage. |
 
@@ -139,6 +141,21 @@ intentkit checker list --path ./demo-project
 ```
 
 This is authorization and process-boundary control, **not** an operating-system sandbox: never allowlist code you would not independently review and execute. Network-capable manifests and Python package discovery remain unsupported. See [`docs/external-checkers.md`](docs/external-checkers.md) for the protocol, hash-pinning lifecycle, and reference fixture.
+
+## Agent Computer
+
+Intent Kit gives an agent a **project-scoped computer** instead of unrestricted shell access. Agents can inspect graph state through structured JSON, read bounded project files, write only to `.intent/agent-workspace/<session-id>/` after explicit apply mode, run named quality commands, and apply typed graph changes and approved proof checks through the normal policy and evidence paths.
+
+```bash
+intentkit agent --path ./demo-project --request '{
+  "protocol_version": 1,
+  "request_id": "status-001",
+  "operation": "status",
+  "arguments": {}
+}'
+```
+
+The Agent Computer is controlled execution, not a virtual desktop or sandbox. It has no arbitrary shell, network, browser, credentials, VM/container isolation, or direct graph-file write capability. See [`docs/agent-computer.md`](docs/agent-computer.md) for its protocol, approval flow, workspace, and audit model.
 
 ## Graph Insight
 
@@ -219,7 +236,7 @@ The tests cover graph integrity, deterministic IDs, persistence, Markdown projec
 
 ## Next Build Steps
 
-The next recommended increment is **incremental Spec Kit synchronization**: a reviewed import-diff workflow that uses existing provenance, drift, impact, and migration policy data without silently creating duplicate graph records.
+The next recommended increment is **incremental Spec Kit synchronization**: a reviewed import-diff workflow that agents can analyze and propose through the new controlled workspace without silently creating duplicate graph records.
 
 ## Community and Project Policies
 
