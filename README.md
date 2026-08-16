@@ -1,5 +1,7 @@
 # Intent Kit POC
 
+![Intent Kit logo: a connected graph path that resolves in a verification check mark](assets/intent-kit-logo.png)
+
 **Intent Kit** is a local-first proof of concept for **Intent Graph Development (IGD)**. It preserves a lightweight, command-driven development experience while storing the underlying methodology as a typed, version-controlled graph of outcomes, requirements, decisions, proof obligations, and evidence.
 
 > **Design principle:** Keep the interface linear for people; keep the system model graph-shaped for agents.
