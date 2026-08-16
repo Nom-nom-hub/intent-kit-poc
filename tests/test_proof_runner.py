@@ -9,7 +9,7 @@ from intentkit.kernel import GraphStore, NodeStatus, NodeType, RelationType
 from intentkit.proof_checkers.builtin import FileExistsChecker
 from intentkit.proof_checkers.models import CheckerDescriptor, CheckRequest, CheckResult, CheckState
 from intentkit.proof_checkers.registry import CheckerRegistry
-from intentkit.proof_checkers.runner import ProofRunner
+from intentkit.proof_checkers.runner import ProofRunner, aggregate_obligation_status
 
 
 @dataclass
@@ -112,6 +112,30 @@ def test_all_policy_requires_every_configured_checker_and_tracks_latest_results(
     registry.register(StaticChecker("local.beta", CheckState.PASS))
     ProofRunner(store, registry).run("PRF-001", "local.alpha")
     assert store.load().get_node("PRF-001").status == NodeStatus.FAILED.value
+
+
+def test_all_policy_ignores_skipped_but_requires_a_real_pass(tmp_path: Path) -> None:
+    store = initialized_proof(tmp_path, properties={"evaluation": "all", "required_checkers": []})
+    graph = store.load()
+    skipped = graph.add_node(
+        NodeType.EVIDENCE,
+        "Skipped checker",
+        "Checker did not apply.",
+        status=NodeStatus.ACTIVE,
+        properties={"result": CheckState.SKIPPED.value},
+    )
+    graph.add_edge(skipped.id, "PRF-001", RelationType.PROVES)
+    assert aggregate_obligation_status(graph, "PRF-001") == NodeStatus.ACTIVE
+
+    passed = graph.add_node(
+        NodeType.EVIDENCE,
+        "Manual review",
+        "Reviewer confirmed the proof.",
+        status=NodeStatus.VERIFIED,
+        properties={"result": CheckState.PASS.value},
+    )
+    graph.add_edge(passed.id, "PRF-001", RelationType.PROVES)
+    assert aggregate_obligation_status(graph, "PRF-001") == NodeStatus.VERIFIED
 
 
 def test_registry_rejects_duplicate_checker_ids() -> None:

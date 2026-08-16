@@ -242,3 +242,72 @@ A shopper can safely repeat checkout confirmation.
     impact_output = capsys.readouterr().out
     assert "Impact root: REQ-001" in impact_output
     assert "OUT-001" in impact_output
+
+
+def test_cli_policy_pack_shapes_release_critical_defaults(tmp_path: Path, capsys) -> None:
+    root = str(tmp_path / "policy-project")
+
+    assert main(["policy", "list", "--path", root]) == 0
+    assert "release-critical" in capsys.readouterr().out
+    assert main(["init", "--path", root, "--project-name", "Policy CLI"]) == 0
+    assert (
+        main(
+            [
+                "capture",
+                "Ship safely",
+                "--description",
+                "Make releases reviewable.",
+                "--path",
+                root,
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "shape",
+                "Protect release quality",
+                "--description",
+                "Every release-critical change needs current proof.",
+                "--outcome",
+                "OUT-001",
+                "--policy",
+                "release-critical",
+                "--path",
+                root,
+            ]
+        )
+        == 0
+    )
+
+    graph = GraphStore(Path(root)).load()
+    requirement = graph.get_node("REQ-001")
+    proof = graph.get_node("PRF-001")
+    assert requirement.properties["risk"] == "R3"
+    assert requirement.properties["policy_pack"]["name"] == "release-critical"
+    assert proof.title == "Verify Protect release quality"
+    assert proof.properties["evaluation"] == "all"
+    assert proof.properties["policy_pack"]["evidence_freshness_days"] == 7
+    assert (
+        main(
+            [
+                "prove",
+                "PRF-001",
+                "Policy review",
+                "--description",
+                "Release owner reviewed the validation evidence.",
+                "--source",
+                "review:release-owner",
+                "--result",
+                "pass",
+                "--path",
+                root,
+            ]
+        )
+        == 0
+    )
+    assert GraphStore(Path(root)).load().get_node("PRF-001").status == NodeStatus.VERIFIED.value
+
+    assert main(["status", "--path", root]) == 0
+    assert "Policy packs: release-critical: 1" in capsys.readouterr().out

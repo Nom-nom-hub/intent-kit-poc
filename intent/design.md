@@ -9,6 +9,7 @@
 - **REQ-003 — Require a reproducible local quality gate** (`active`): Every repository update must pass linting, formatting, tests, package build, and an installed-command smoke test before it is pushed.
 - **REQ-004 — Make change impact visible** (`active`): Users must be able to identify source drift, connected graph records, and proof gaps before accepting a specification or implementation change.
 - **REQ-005 — Enforce public continuous integration** (`active`): Every main-branch and pull-request change must run the project quality gate on supported Python versions and build a smoke-tested distribution.
+- **REQ-006 — Apply risk-calibrated policies** (`active`): Intent Kit must make risk, proof, freshness, and review expectations explicit through local Policy Packs.
 
 ## Decisions
 
@@ -46,6 +47,13 @@
 **Rationale:** A public, repeatable quality matrix makes validation visible to contributors and catches regressions before merge.
 **Addresses:** REQ-005 — Enforce public continuous integration
 **Alternatives considered:** Rely only on local validation before push
+
+### DEC-006 — Keep policies declarative and local
+
+**Status:** `proposed`
+**Rationale:** JSON-only packs provide consistent defaults without executing code or weakening the trusted checker boundary.
+**Addresses:** REQ-006 — Apply risk-calibrated policies
+**Alternatives considered:** Embed policy behavior in hard-coded workflow prompts
 
 ## Implementation Tasks
 

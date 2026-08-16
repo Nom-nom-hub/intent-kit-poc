@@ -56,9 +56,15 @@ class MarkdownRenderer:
                     graph, requirement.id, RelationType.DERIVES_FROM, outgoing=True
                 )
                 origin = f" Derived from: {', '.join(outcome_titles)}." if outcome_titles else ""
+                policy = requirement.properties.get("policy_pack")
+                policy_summary = ""
+                if isinstance(policy, dict) and isinstance(policy.get("name"), str):
+                    policy_summary = (
+                        f" Policy: `{policy['name']}` (risk `{policy.get('risk', 'unspecified')}`)."
+                    )
                 lines.append(
                     f"- **{requirement.id} — {requirement.title}** (`{requirement.status}`): "
-                    f"{requirement.description}{origin}"
+                    f"{requirement.description}{origin}{policy_summary}"
                 )
         return "\n".join(lines) + "\n"
 
@@ -134,6 +140,20 @@ class MarkdownRenderer:
                 lines.append("")
                 lines.append(f"**Status:** `{obligation.status}`")
                 lines.append(f"**Claim:** {obligation.description}")
+                policy = obligation.properties.get("policy_pack")
+                if isinstance(policy, dict) and isinstance(policy.get("name"), str):
+                    lines.append(
+                        f"**Policy:** `{policy['name']}` "
+                        f"(risk `{policy.get('risk', 'unspecified')}`, "
+                        f"evaluation `{policy.get('evaluation', 'unspecified')}`)"
+                    )
+                    freshness = policy.get("evidence_freshness_days")
+                    if freshness is not None:
+                        lines.append(f"**Evidence freshness:** {freshness} day(s)")
+                    if policy.get("review_required"):
+                        lines.append(
+                            "**Review:** Explicit review or automated validation evidence required."
+                        )
                 lines.append("**Evidence:**")
                 if evidence_nodes:
                     for evidence in evidence_nodes:

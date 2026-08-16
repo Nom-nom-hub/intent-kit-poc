@@ -24,6 +24,7 @@ The POC intentionally focuses on one essential thesis: **a requirement should ca
 | Typed proof checks | Runs trusted in-process checkers that return normalized, provenance-rich evidence without direct graph-write access. |
 | Spec Kit migration | Imports completed `spec.md`, optional `plan.md`, and optional `tasks.md` into the local graph with artifact hashes and line-level provenance. |
 | Graph insight | Detects imported-source drift and traverses typed graph paths to show affected work and unverified proof obligations. |
+| Policy packs | Applies local, version-controlled risk defaults for release-critical, migration, and documentation work. |
 
 ## POC Scope
 
@@ -31,13 +32,13 @@ The POC is deliberately not a production system. It does **not** yet include age
 
 ## Installation
 
-Intent Kit supports Python 3.11 and 3.12. The latest published release is `v0.2.0`. Graph Insight is currently on the `main` development branch and will be released as `v0.3.0` after final verification.
+Intent Kit supports Python 3.11 and 3.12. The latest published release is `v0.2.0`. Graph Insight and Policy Packs are currently on the `main` development branch and will be released together as `v0.4.0` after final verification.
 
 ```bash
 # Latest published release
 python -m pip install "git+https://github.com/Nom-nom-hub/intent-kit-poc.git@v0.2.0"
 
-# Current development branch, including Graph Insight
+# Current development branch, including Graph Insight and Policy Packs
 python -m pip install "git+https://github.com/Nom-nom-hub/intent-kit-poc.git@main"
 ```
 
@@ -100,8 +101,28 @@ See [`docs/speckit-import.md`](docs/speckit-import.md) for the supported Markdow
 | `intentkit import-speckit` | Reads a completed Spec Kit feature directory and creates typed, provenance-backed graph nodes without changing source artifacts. |
 | `intentkit drift` | Re-hashes imported artifacts and reports unchanged, changed, missing, or unsupported provenance records. Returns nonzero when drift needs review. |
 | `intentkit impact` | Traverses incoming and outgoing typed graph links from a node or imported source, including linked proof gaps. |
+| `intentkit policy` | Lists, inspects, or initializes local policy packs that calibrate risk, proof, evidence freshness, and review expectations. |
 | `intentkit render` | Rebuilds Markdown projections from the canonical graph. |
 | `intentkit status` | Shows graph counts and proof coverage. |
+
+## Policy Packs
+
+Policy Packs turn a short shape command into a risk-calibrated workflow without hiding the applied rules. Shipped packs include `release-critical`, `migration`, and `documentation`; project-local packs live in version-controlled `.intent/policies.json`.
+
+```bash
+# Inspect the available defaults.
+intentkit policy list --path ./demo-project
+intentkit policy show release-critical --path ./demo-project
+
+# Shape a release-critical requirement. A proof obligation is generated automatically.
+intentkit shape "Protect release quality" \
+  --description "Release-critical changes need current validation evidence." \
+  --outcome OUT-001 \
+  --policy release-critical \
+  --path ./demo-project
+```
+
+Explicit `--risk`, `--proof-evaluation`, `--required-checker`, and paired proof text override the relevant pack defaults. The exact selected policy is stored on graph nodes and rendered into the Intent and Evidence views. See [`docs/policy-packs.md`](docs/policy-packs.md) for the complete contract, local configuration, precedence, and security boundary.
 
 ## Graph Insight
 
@@ -182,7 +203,7 @@ The tests cover graph integrity, deterministic IDs, persistence, Markdown projec
 
 ## Next Build Steps
 
-The next recommended increment is **policy packs**: risk-calibrated proof defaults for release-critical, migration, and documentation work. Controlled external checker discovery follows behind explicit allowlisting, configuration validation, and isolated execution boundaries. Incremental Spec Kit synchronization then builds on the existing drift and impact reports.
+The next recommended increment is **controlled external checker discovery** behind explicit allowlisting, configuration validation, version pinning, and isolated execution boundaries. Incremental Spec Kit synchronization then builds on the existing drift, impact, and migration policy reports.
 
 ## Community and Project Policies
 

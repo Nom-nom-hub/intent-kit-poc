@@ -25,6 +25,14 @@
       "source": "EVD-007",
       "target": "PRF-005"
     },
+    "edge-1001728e31cd": {
+      "created_at": "2026-08-16T21:32:08+00:00",
+      "id": "edge-1001728e31cd",
+      "properties": {},
+      "relation": "derives_from",
+      "source": "REQ-006",
+      "target": "OUT-001"
+    },
     "edge-300eba242cc0": {
       "created_at": "2026-08-16T20:57:32+00:00",
       "id": "edge-300eba242cc0",
@@ -33,6 +41,14 @@
       "source": "EVD-003",
       "target": "PRF-002"
     },
+    "edge-4366a7551163": {
+      "created_at": "2026-08-16T21:32:08+00:00",
+      "id": "edge-4366a7551163",
+      "properties": {},
+      "relation": "addresses",
+      "source": "DEC-006",
+      "target": "REQ-006"
+    },
     "edge-63102e68b9e5": {
       "created_at": "2026-08-16T21:08:59+00:00",
       "id": "edge-63102e68b9e5",
@@ -40,6 +56,14 @@
       "relation": "proves",
       "source": "EVD-005",
       "target": "PRF-004"
+    },
+    "edge-69652c330b9b": {
+      "created_at": "2026-08-16T21:32:08+00:00",
+      "id": "edge-69652c330b9b",
+      "properties": {},
+      "relation": "requires_proof",
+      "source": "REQ-006",
+      "target": "PRF-006"
     },
     "edge-69927eed1635": {
       "created_at": "2026-08-16T21:08:59+00:00",
@@ -72,6 +96,14 @@
       "relation": "addresses",
       "source": "DEC-003",
       "target": "REQ-003"
+    },
+    "edge-856ead476b72": {
+      "created_at": "2026-08-16T21:32:21+00:00",
+      "id": "edge-856ead476b72",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-009",
+      "target": "PRF-006"
     },
     "edge-87ea458aa5e7": {
       "created_at": "2026-08-16T21:22:44+00:00",
@@ -129,6 +161,14 @@
       "source": "REQ-003",
       "target": "PRF-003"
     },
+    "edge-b7e8e374970e": {
+      "created_at": "2026-08-16T21:35:45+00:00",
+      "id": "edge-b7e8e374970e",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-010",
+      "target": "PRF-006"
+    },
     "edge-b914ef9805b4": {
       "created_at": "2026-08-16T20:57:31+00:00",
       "id": "edge-b914ef9805b4",
@@ -176,6 +216,14 @@
       "relation": "proves",
       "source": "EVD-004",
       "target": "PRF-003"
+    },
+    "edge-f573c4540b15": {
+      "created_at": "2026-08-16T21:32:08+00:00",
+      "id": "edge-f573c4540b15",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-008",
+      "target": "PRF-006"
     }
   },
   "nodes": {
@@ -248,6 +296,20 @@
       "title": "Run a minimal GitHub Actions quality matrix",
       "type": "decision",
       "updated_at": "2026-08-16T21:22:44+00:00"
+    },
+    "DEC-006": {
+      "created_at": "2026-08-16T21:32:08+00:00",
+      "description": "JSON-only packs provide consistent defaults without executing code or weakening the trusted checker boundary.",
+      "id": "DEC-006",
+      "properties": {
+        "alternatives": [
+          "Embed policy behavior in hard-coded workflow prompts"
+        ]
+      },
+      "status": "proposed",
+      "title": "Keep policies declarative and local",
+      "type": "decision",
+      "updated_at": "2026-08-16T21:32:08+00:00"
     },
     "EVD-001": {
       "created_at": "2026-08-16T20:57:31+00:00",
@@ -416,6 +478,62 @@
       "type": "evidence",
       "updated_at": "2026-08-16T21:22:44+00:00"
     },
+    "EVD-008": {
+      "created_at": "2026-08-16T21:32:08+00:00",
+      "description": "Checker does not support this proof obligation.",
+      "id": "EVD-008",
+      "properties": {
+        "artifacts": [],
+        "checker": {
+          "id": "local.file-exists",
+          "version": "1.0.0"
+        },
+        "details": "",
+        "external_run_id": null,
+        "metrics": {
+          "duration_ms": 0
+        },
+        "result": "skipped",
+        "run": {
+          "config_fingerprint": "sha256:70f021bb4bd33f4a9bfc38595ce4afb4c755556aa0df82d32a46d6af10f39a6e",
+          "duration_ms": 0,
+          "executed_at": "2026-08-16T21:32:08+00:00",
+          "id": "run-aff12502d6184383"
+        },
+        "source": "checker:local.file-exists",
+        "summary": "Checker does not support this proof obligation."
+      },
+      "status": "active",
+      "title": "Local file existence: Checker does not support this proof obligation.",
+      "type": "evidence",
+      "updated_at": "2026-08-16T21:32:08+00:00"
+    },
+    "EVD-009": {
+      "created_at": "2026-08-16T21:32:21+00:00",
+      "description": "The release-critical Policy Pack listed successfully, generated the expected R3 requirement and all-evidence proof defaults, and rendered its review and freshness expectations into the project graph.",
+      "id": "EVD-009",
+      "properties": {
+        "result": "pass",
+        "source": "local:intentkit-policy+shape+status"
+      },
+      "status": "verified",
+      "title": "Policy Pack validation",
+      "type": "evidence",
+      "updated_at": "2026-08-16T21:32:21+00:00"
+    },
+    "EVD-010": {
+      "created_at": "2026-08-16T21:35:45+00:00",
+      "description": "The release-critical pack evaluates recorded evidence through its all-evidence policy. A skipped incompatible checker observation remains visible but does not block the explicit passing validation record.",
+      "id": "EVD-010",
+      "properties": {
+        "result": "pass",
+        "source": "local:policy-pack+aggregation"
+      },
+      "status": "verified",
+      "title": "Policy Pack aggregation validation",
+      "type": "evidence",
+      "updated_at": "2026-08-16T21:35:45+00:00"
+    },
     "OUT-001": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "description": "Intent Kit must demonstrate that its own repository can carry explicit intent, reviewable evidence, and reliable release practices.",
@@ -513,6 +631,32 @@
       "type": "proof_obligation",
       "updated_at": "2026-08-16T21:22:44+00:00"
     },
+    "PRF-006": {
+      "created_at": "2026-08-16T21:32:08+00:00",
+      "description": "Provide evidence that 'Apply risk-calibrated policies' satisfies the release-critical policy pack. Record explicit review or automated validation evidence. Evidence should be refreshed within 7 day(s) when the work changes.",
+      "id": "PRF-006",
+      "properties": {
+        "checker_kind": null,
+        "evaluation": "all",
+        "policy_pack": {
+          "evaluation": "all",
+          "evidence_freshness_days": 7,
+          "name": "release-critical",
+          "proof_required": true,
+          "required_checkers": [],
+          "review_required": true,
+          "risk": "R3",
+          "source_provenance_required": false,
+          "title": "Release Critical"
+        },
+        "required_checkers": [],
+        "risk": "R3"
+      },
+      "status": "verified",
+      "title": "Verify Apply risk-calibrated policies",
+      "type": "proof_obligation",
+      "updated_at": "2026-08-16T21:35:45+00:00"
+    },
     "REQ-001": {
       "created_at": "2026-08-16T20:57:07+00:00",
       "description": "The repository must include a recognized license and public contribution and security policies.",
@@ -572,9 +716,32 @@
       "title": "Enforce public continuous integration",
       "type": "requirement",
       "updated_at": "2026-08-16T21:22:44+00:00"
+    },
+    "REQ-006": {
+      "created_at": "2026-08-16T21:32:08+00:00",
+      "description": "Intent Kit must make risk, proof, freshness, and review expectations explicit through local Policy Packs.",
+      "id": "REQ-006",
+      "properties": {
+        "policy_pack": {
+          "evaluation": "all",
+          "evidence_freshness_days": 7,
+          "name": "release-critical",
+          "proof_required": true,
+          "required_checkers": [],
+          "review_required": true,
+          "risk": "R3",
+          "source_provenance_required": false,
+          "title": "Release Critical"
+        },
+        "risk": "R3"
+      },
+      "status": "active",
+      "title": "Apply risk-calibrated policies",
+      "type": "requirement",
+      "updated_at": "2026-08-16T21:32:08+00:00"
     }
   },
   "project_name": "Intent Kit",
   "schema_version": "0.1",
-  "updated_at": "2026-08-16T21:22:44+00:00"
+  "updated_at": "2026-08-16T21:35:45+00:00"
 }

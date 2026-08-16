@@ -167,7 +167,13 @@ def all_policy_status(properties: Mapping[str, Any], evidence) -> NodeStatus:
         results = [node.properties.get("result") for node in evidence]
     if any(result == CheckState.FAIL.value for result in results):
         return NodeStatus.FAILED
-    if results and all(result == CheckState.PASS.value for result in results):
+    if any(
+        result not in {CheckState.PASS.value, CheckState.FAIL.value, CheckState.SKIPPED.value}
+        for result in results
+    ):
+        return NodeStatus.ACTIVE
+    effective_results = [result for result in results if result != CheckState.SKIPPED.value]
+    if effective_results and all(result == CheckState.PASS.value for result in effective_results):
         return NodeStatus.VERIFIED
     return NodeStatus.ACTIVE
 

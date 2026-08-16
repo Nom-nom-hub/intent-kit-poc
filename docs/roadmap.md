@@ -10,7 +10,7 @@ Intent Kit should develop in the order that turns its typed graph into a durable
 |---|---|---|---|---|
 | P0 | Restore GitHub Actions CI | Every public change receives a repeatable quality gate. | Operational patch | GitHub workflow-write permission |
 | P1 | Graph Insight | Users can answer what changed, what is affected, and what must be revalidated. | `v0.3.0` | Current graph, import provenance, and traceability edges |
-| P2 | Policy Packs | Teams apply risk-calibrated proof standards with a short command instead of manual configuration. | `v0.4.0` | Graph Insight proof-gap model |
+| P2 | Policy Packs | **Delivered on `main`**: teams apply local, version-controlled risk defaults with short commands and graph-visible metadata. | `v0.4.0` candidate | Graph Insight proof-gap model |
 | P3 | Controlled Checker Extensibility | Trusted teams add reusable proof automation without arbitrary plug-in execution. | `v0.5.0` | Policy packs and security model |
 | P4 | Incremental Spec Kit Synchronization | Imported features can be refreshed through a reviewed change plan rather than a new graph. | `v0.6.0` | Drift detection and impact analysis |
 | P5 | Graph Explorer | Teams can inspect intent, evidence, drift, and impact visually. | `v0.7.0` | Stable insight queries and policy status |
@@ -41,9 +41,9 @@ Graph Insight activates the core promise of Intent Graph Development. Instead of
 
 A complete fixture must demonstrate a changed imported `spec.md` and a changed `tasks.md`. Tests must prove that drift is detected, source hashes remain deterministic, direct and transitive impact paths are stable, task-to-story and requirement-to-outcome links appear, and proof gaps are correctly identified. Intent Kit must dogfood the command against its own self-hosted graph.
 
-## P2 — Policy Packs (`v0.4.0`)
+## P2 — Policy Packs (`v0.4.0` candidate)
 
-Policy packs turn risk classes into practical defaults. A pack such as `release-critical` should create or validate the expected proof strategy without forcing a user to understand graph internals or checker semantics on every command.
+Policy Packs are delivered on `main`. The shipped `release-critical`, `migration`, and `documentation` packs create graph-visible proof and review defaults, while `.intent/policies.json` supports strictly validated local team packs. Explicit shaping flags take precedence over pack defaults, and packs remain declarative rather than executable.
 
 | Pack example | Expected behavior |
 |---|---|
@@ -91,4 +91,4 @@ Every milestone follows the same delivery sequence:
 
 ## Current Next Action
 
-The active product increment is **P1 — Graph Insight**. Development begins with a query model and output contract for `intentkit drift` and `intentkit impact`, while the P0 workflow permission issue remains tracked as an operational unblock.
+The active product increment is **P3 — Controlled Checker Extensibility**. It begins with an explicit allowlist and schema-validated external checker manifest while preserving the existing trusted in-process default.

@@ -18,8 +18,10 @@ from .insights import (
     source_nodes,
 )
 from .kernel import GraphStore, NodeStatus, NodeType, RelationType
+from .policies import PolicyRegistry, render_policy_list, render_policy_show
 from .proof_checkers import CheckerRegistry, CheckState, ProofRunner
 from .proof_checkers.builtin import FileExistsChecker
+from .proof_checkers.runner import aggregate_obligation_status
 from .renderer import MarkdownRenderer
 
 
@@ -64,10 +66,17 @@ def build_parser() -> argparse.ArgumentParser:
     shape.add_argument(
         "--risk",
         choices=["R0", "R1", "R2", "R3"],
-        default="R1",
+        default=None,
         help="Risk class used to calibrate proof.",
     )
     shape.add_argument("--decision-title", help="Optional implementation decision title.")
+    shape.add_argument(
+        "--policy",
+        help=(
+            "Optional policy pack. It supplies risk and proof defaults without overriding "
+            "explicit flags."
+        ),
+    )
     shape.add_argument("--rationale", help="Rationale for the optional decision.")
     shape.add_argument(
         "--alternative", action="append", default=[], help="Alternative considered. Repeatable."
@@ -83,7 +92,7 @@ def build_parser() -> argparse.ArgumentParser:
     shape.add_argument(
         "--proof-evaluation",
         choices=["latest", "all", "any", "manual"],
-        default="latest",
+        default=None,
         help="Evidence aggregation policy for the proof.",
     )
     shape.add_argument(
@@ -93,6 +102,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Checker ID required by all/any policies. Repeatable.",
     )
     shape.set_defaults(handler=handle_shape)
+
+    policy = subparsers.add_parser(
+        "policy", help="List, inspect, or initialize local risk-calibrated policy packs."
+    )
+    add_path(policy)
+    policy.add_argument("action", choices=["list", "show", "init"])
+    policy.add_argument("name", nargs="?", help="Policy pack name required by 'show'.")
+    policy.set_defaults(handler=handle_policy)
 
     prove = subparsers.add_parser("prove", help="Record evidence against a proof obligation.")
     add_path(prove)
@@ -204,6 +221,21 @@ def handle_capture(args: argparse.Namespace) -> int:
     return 0
 
 
+def handle_policy(args: argparse.Namespace) -> int:
+    registry = PolicyRegistry.from_project(args.path.resolve())
+    if args.action == "init":
+        path = registry.write_template()
+        print(f"Created policy configuration: {path}")
+        return 0
+    if args.action == "list":
+        print(render_policy_list(registry))
+        return 0
+    if not args.name:
+        raise ValueError("'intentkit policy show' requires a policy pack name.")
+    print(render_policy_show(registry.resolve(args.name)))
+    return 0
+
+
 def handle_shape(args: argparse.Namespace) -> int:
     store = load_store(args.path)
     graph = store.load()
@@ -211,12 +243,20 @@ def handle_shape(args: argparse.Namespace) -> int:
     if outcome.type != NodeType.OUTCOME.value:
         raise ValueError(f"{args.outcome} is a {outcome.type}, not an outcome.")
 
+    registry = PolicyRegistry.from_project(args.path.resolve())
+    policy = registry.resolve(args.policy) if args.policy else None
+    risk = args.risk or (policy.risk if policy else "R1")
+    evaluation = args.proof_evaluation or (policy.evaluation if policy else "latest")
+    required_checkers = args.required_checker or (list(policy.required_checkers) if policy else [])
+    requirement_properties: dict[str, Any] = {"risk": risk}
+    if policy:
+        requirement_properties["policy_pack"] = policy.to_properties()
     requirement = graph.add_node(
         NodeType.REQUIREMENT,
         args.title,
         args.description,
         status=NodeStatus.ACTIVE,
-        properties={"risk": args.risk},
+        properties=requirement_properties,
     )
     graph.add_edge(requirement.id, outcome.id, RelationType.DERIVES_FROM)
     recorded = [requirement.id]
@@ -234,22 +274,30 @@ def handle_shape(args: argparse.Namespace) -> int:
         graph.add_edge(decision.id, requirement.id, RelationType.ADDRESSES)
         recorded.append(decision.id)
 
-    if args.proof_title or args.proof_description:
-        if not args.proof_title or not args.proof_description:
+    proof_title = args.proof_title
+    proof_description = args.proof_description
+    if policy and policy.proof_required and not proof_title and not proof_description:
+        proof_title = policy.proof_title(args.title)
+        proof_description = policy.proof_description(args.title)
+    if proof_title or proof_description:
+        if not proof_title or not proof_description:
             raise ValueError(
                 "A proof obligation requires both --proof-title and --proof-description."
             )
+        proof_properties: dict[str, Any] = {
+            "risk": risk,
+            "checker_kind": args.proof_checker_kind,
+            "evaluation": evaluation,
+            "required_checkers": required_checkers,
+        }
+        if policy:
+            proof_properties["policy_pack"] = policy.to_properties()
         proof = graph.add_node(
             NodeType.PROOF_OBLIGATION,
-            args.proof_title,
-            args.proof_description,
+            proof_title,
+            proof_description,
             status=NodeStatus.PLANNED,
-            properties={
-                "risk": args.risk,
-                "checker_kind": args.proof_checker_kind,
-                "evaluation": args.proof_evaluation,
-                "required_checkers": args.required_checker,
-            },
+            properties=proof_properties,
         )
         graph.add_edge(requirement.id, proof.id, RelationType.REQUIRES_PROOF)
         recorded.append(proof.id)
@@ -281,14 +329,18 @@ def handle_prove(args: argparse.Namespace) -> int:
         properties={"source": args.source, "result": args.result},
     )
     graph.add_edge(evidence.id, obligation.id, RelationType.PROVES)
-    graph.set_status(
-        obligation.id,
-        NodeStatus.VERIFIED
-        if args.result == "pass"
-        else NodeStatus.FAILED
-        if args.result == "fail"
-        else NodeStatus.ACTIVE,
-    )
+    evaluation = obligation.properties.get("evaluation", "latest")
+    if evaluation == "manual":
+        graph.set_status(
+            obligation.id,
+            NodeStatus.VERIFIED
+            if args.result == "pass"
+            else NodeStatus.FAILED
+            if args.result == "fail"
+            else NodeStatus.ACTIVE,
+        )
+    else:
+        graph.set_status(obligation.id, aggregate_obligation_status(graph, obligation.id))
     store.save(graph)
     MarkdownRenderer(args.path).render(graph)
     print(f"Recorded {evidence.id} against {obligation.id}: {args.result}")
@@ -387,6 +439,18 @@ def handle_status(args: argparse.Namespace) -> int:
     print(f"Nodes: {len(graph.nodes)} | Edges: {len(graph.edges)}")
     print(" | ".join(f"{label}: {count}" for label, count in counts.items() if count))
     print(f"Proof coverage: {len(verified)}/{len(obligations)} verified | {len(failed)} failed")
+    applied_policies: dict[str, int] = {}
+    requirements = [
+        node for node in graph.nodes.values() if node.type == NodeType.REQUIREMENT.value
+    ]
+    for requirement in requirements:
+        policy = requirement.properties.get("policy_pack")
+        if isinstance(policy, dict) and isinstance(policy.get("name"), str):
+            name = policy["name"]
+            applied_policies[name] = applied_policies.get(name, 0) + 1
+    if applied_policies:
+        summary = ", ".join(f"{name}: {count}" for name, count in sorted(applied_policies.items()))
+        print(f"Policy packs: {summary}")
     return 0
 
 

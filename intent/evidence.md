@@ -41,6 +41,18 @@
 **Evidence:**
 - `pass` — **EVD-007**: GitHub Actions CI run 31973242959 (source: https://github.com/Nom-nom-hub/intent-kit-poc/actions/runs/31973242959)
 
+### PRF-006 — Verify Apply risk-calibrated policies
+
+**Status:** `verified`
+**Claim:** Provide evidence that 'Apply risk-calibrated policies' satisfies the release-critical policy pack. Record explicit review or automated validation evidence. Evidence should be refreshed within 7 day(s) when the work changes.
+**Policy:** `release-critical` (risk `R3`, evaluation `all`)
+**Evidence freshness:** 7 day(s)
+**Review:** Explicit review or automated validation evidence required.
+**Evidence:**
+- `pass` — **EVD-009**: Policy Pack validation (source: local:intentkit-policy+shape+status)
+- `pass` — **EVD-010**: Policy Pack aggregation validation (source: local:policy-pack+aggregation)
+- `skipped` — **EVD-008**: Local file existence: Checker does not support this proof obligation. (source: checker:local.file-exists)
+
 ## Manual Notes
 
 <!-- intentkit:manual-notes:start -->
