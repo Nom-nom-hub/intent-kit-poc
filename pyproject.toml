@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "intentkit"
+version = "0.1.0"
+description = "A local-first proof of concept for Intent Graph Development"
+requires-python = ">=3.11"
+authors = [{name = "Manus AI"}]
+license = {text = "MIT"}
+
+[project.scripts]
+intentkit = "intentkit.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

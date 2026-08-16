@@ -1,0 +1,6 @@
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.egg-info/
+examples/checkout-safety/.intent/
+examples/checkout-safety/intent/
