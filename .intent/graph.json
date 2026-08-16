@@ -1,0 +1,366 @@
+{
+  "created_at": "2026-08-16T20:57:07+00:00",
+  "edges": {
+    "edge-09a0033cb44a": {
+      "created_at": "2026-08-16T20:57:32+00:00",
+      "id": "edge-09a0033cb44a",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-002",
+      "target": "PRF-001"
+    },
+    "edge-300eba242cc0": {
+      "created_at": "2026-08-16T20:57:32+00:00",
+      "id": "edge-300eba242cc0",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-003",
+      "target": "PRF-002"
+    },
+    "edge-7c49811934b4": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "id": "edge-7c49811934b4",
+      "properties": {},
+      "relation": "requires_proof",
+      "source": "REQ-002",
+      "target": "PRF-002"
+    },
+    "edge-81769a417f7e": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "id": "edge-81769a417f7e",
+      "properties": {},
+      "relation": "addresses",
+      "source": "DEC-003",
+      "target": "REQ-003"
+    },
+    "edge-8b475f65da63": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "id": "edge-8b475f65da63",
+      "properties": {},
+      "relation": "derives_from",
+      "source": "REQ-003",
+      "target": "OUT-001"
+    },
+    "edge-8dd3e6f979bd": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "id": "edge-8dd3e6f979bd",
+      "properties": {},
+      "relation": "addresses",
+      "source": "DEC-001",
+      "target": "REQ-001"
+    },
+    "edge-a09698e0d995": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "id": "edge-a09698e0d995",
+      "properties": {},
+      "relation": "addresses",
+      "source": "DEC-002",
+      "target": "REQ-002"
+    },
+    "edge-b70e6d1f7136": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "id": "edge-b70e6d1f7136",
+      "properties": {},
+      "relation": "requires_proof",
+      "source": "REQ-003",
+      "target": "PRF-003"
+    },
+    "edge-b914ef9805b4": {
+      "created_at": "2026-08-16T20:57:31+00:00",
+      "id": "edge-b914ef9805b4",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-001",
+      "target": "PRF-001"
+    },
+    "edge-c2a539410ef4": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "id": "edge-c2a539410ef4",
+      "properties": {},
+      "relation": "requires_proof",
+      "source": "REQ-001",
+      "target": "PRF-001"
+    },
+    "edge-cc218f7869a2": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "id": "edge-cc218f7869a2",
+      "properties": {},
+      "relation": "derives_from",
+      "source": "REQ-001",
+      "target": "OUT-001"
+    },
+    "edge-d50fe81145aa": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "id": "edge-d50fe81145aa",
+      "properties": {},
+      "relation": "derives_from",
+      "source": "REQ-002",
+      "target": "OUT-001"
+    },
+    "edge-f53ca0f73429": {
+      "created_at": "2026-08-16T20:57:37+00:00",
+      "id": "edge-f53ca0f73429",
+      "properties": {},
+      "relation": "proves",
+      "source": "EVD-004",
+      "target": "PRF-003"
+    }
+  },
+  "nodes": {
+    "DEC-001": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "description": "Version-controlled policies make the public maintenance contract reviewable and auditable.",
+      "id": "DEC-001",
+      "properties": {
+        "alternatives": [
+          "Maintain governance only in external documentation"
+        ]
+      },
+      "status": "proposed",
+      "title": "Keep repository governance version-controlled",
+      "type": "decision",
+      "updated_at": "2026-08-16T20:57:07+00:00"
+    },
+    "DEC-002": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "description": "Read-only import plus artifact hashes preserves trust in the migration record.",
+      "id": "DEC-002",
+      "properties": {
+        "alternatives": [
+          "Rewrite source Markdown during import"
+        ]
+      },
+      "status": "proposed",
+      "title": "Import source artifacts read-only with provenance",
+      "type": "decision",
+      "updated_at": "2026-08-16T20:57:07+00:00"
+    },
+    "DEC-003": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "description": "A durable evidence record keeps release verification reviewable alongside requirements.",
+      "id": "DEC-003",
+      "properties": {
+        "alternatives": [
+          "Rely only on terminal history"
+        ]
+      },
+      "status": "proposed",
+      "title": "Record release evidence in the intent graph",
+      "type": "decision",
+      "updated_at": "2026-08-16T20:57:07+00:00"
+    },
+    "EVD-001": {
+      "created_at": "2026-08-16T20:57:31+00:00",
+      "description": "Required path is present: LICENSE.",
+      "id": "EVD-001",
+      "properties": {
+        "artifacts": [],
+        "checker": {
+          "id": "local.file-exists",
+          "version": "1.0.0"
+        },
+        "details": "",
+        "external_run_id": null,
+        "metrics": {
+          "contains": true,
+          "duration_ms": 0,
+          "exists": true
+        },
+        "result": "pass",
+        "run": {
+          "config_fingerprint": "sha256:3ab9b793ebe00bb4c8e45bc72e475eb8f9d26b43fca4b227089108b7b5e15ffc",
+          "duration_ms": 0,
+          "executed_at": "2026-08-16T20:57:31+00:00",
+          "id": "run-09a9eac2bec94e6d"
+        },
+        "source": "LICENSE",
+        "summary": "Required path is present: LICENSE."
+      },
+      "status": "verified",
+      "title": "Local file existence: Required path is present: LICENSE.",
+      "type": "evidence",
+      "updated_at": "2026-08-16T20:57:31+00:00"
+    },
+    "EVD-002": {
+      "created_at": "2026-08-16T20:57:32+00:00",
+      "description": "Required path is present: SECURITY.md.",
+      "id": "EVD-002",
+      "properties": {
+        "artifacts": [],
+        "checker": {
+          "id": "local.file-exists",
+          "version": "1.0.0"
+        },
+        "details": "",
+        "external_run_id": null,
+        "metrics": {
+          "contains": true,
+          "duration_ms": 0,
+          "exists": true
+        },
+        "result": "pass",
+        "run": {
+          "config_fingerprint": "sha256:c111c855adf5bd4b671cc0a70ac3a94602f74a6836966c967dd9d6832601004e",
+          "duration_ms": 0,
+          "executed_at": "2026-08-16T20:57:32+00:00",
+          "id": "run-dcc91a696b8f4852"
+        },
+        "source": "SECURITY.md",
+        "summary": "Required path is present: SECURITY.md."
+      },
+      "status": "verified",
+      "title": "Local file existence: Required path is present: SECURITY.md.",
+      "type": "evidence",
+      "updated_at": "2026-08-16T20:57:32+00:00"
+    },
+    "EVD-003": {
+      "created_at": "2026-08-16T20:57:32+00:00",
+      "description": "Required path is present: docs/speckit-import.md.",
+      "id": "EVD-003",
+      "properties": {
+        "artifacts": [],
+        "checker": {
+          "id": "local.file-exists",
+          "version": "1.0.0"
+        },
+        "details": "",
+        "external_run_id": null,
+        "metrics": {
+          "contains": true,
+          "duration_ms": 0,
+          "exists": true
+        },
+        "result": "pass",
+        "run": {
+          "config_fingerprint": "sha256:b12a48825480e37a3c19642cd8678cba58f79c98ae0a0a17b34b005b18f722b5",
+          "duration_ms": 0,
+          "executed_at": "2026-08-16T20:57:32+00:00",
+          "id": "run-23e7207a17224d70"
+        },
+        "source": "docs/speckit-import.md",
+        "summary": "Required path is present: docs/speckit-import.md."
+      },
+      "status": "verified",
+      "title": "Local file existence: Required path is present: docs/speckit-import.md.",
+      "type": "evidence",
+      "updated_at": "2026-08-16T20:57:32+00:00"
+    },
+    "EVD-004": {
+      "created_at": "2026-08-16T20:57:37+00:00",
+      "description": "Ruff linting, Ruff format verification, the complete pytest suite, source and wheel builds, and the installed-wheel CLI smoke test all passed for the current repository state.",
+      "id": "EVD-004",
+      "properties": {
+        "result": "pass",
+        "source": "local:ruff+pytest+build+installed-wheel"
+      },
+      "status": "verified",
+      "title": "Local release quality gate",
+      "type": "evidence",
+      "updated_at": "2026-08-16T20:57:37+00:00"
+    },
+    "OUT-001": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "description": "Intent Kit must demonstrate that its own repository can carry explicit intent, reviewable evidence, and reliable release practices.",
+      "id": "OUT-001",
+      "properties": {
+        "assumptions": [],
+        "success_measures": [
+          "All release-critical governance and migration artifacts are present.",
+          "The complete quality gate passes before project updates are pushed."
+        ]
+      },
+      "status": "active",
+      "title": "Sustain a trustworthy local-first Intent Kit release",
+      "type": "outcome",
+      "updated_at": "2026-08-16T20:57:07+00:00"
+    },
+    "PRF-001": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "description": "The license and security policy must be present in the repository.",
+      "id": "PRF-001",
+      "properties": {
+        "checker_kind": "file_exists",
+        "evaluation": "all",
+        "required_checkers": [
+          "local.file-exists"
+        ],
+        "risk": "R2"
+      },
+      "status": "verified",
+      "title": "Verify required governance artifacts",
+      "type": "proof_obligation",
+      "updated_at": "2026-08-16T20:57:32+00:00"
+    },
+    "PRF-002": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "description": "The public importer guide must be present with mapping and safety documentation.",
+      "id": "PRF-002",
+      "properties": {
+        "checker_kind": "file_exists",
+        "evaluation": "all",
+        "required_checkers": [
+          "local.file-exists"
+        ],
+        "risk": "R2"
+      },
+      "status": "verified",
+      "title": "Verify importer guidance",
+      "type": "proof_obligation",
+      "updated_at": "2026-08-16T20:57:32+00:00"
+    },
+    "PRF-003": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "description": "The current repository state must pass the documented local release quality gate.",
+      "id": "PRF-003",
+      "properties": {
+        "checker_kind": null,
+        "evaluation": "manual",
+        "required_checkers": [],
+        "risk": "R3"
+      },
+      "status": "verified",
+      "title": "Record the latest full validation",
+      "type": "proof_obligation",
+      "updated_at": "2026-08-16T20:57:37+00:00"
+    },
+    "REQ-001": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "description": "The repository must include a recognized license and public contribution and security policies.",
+      "id": "REQ-001",
+      "properties": {
+        "risk": "R2"
+      },
+      "status": "active",
+      "title": "Publish governed, licensed source",
+      "type": "requirement",
+      "updated_at": "2026-08-16T20:57:07+00:00"
+    },
+    "REQ-002": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "description": "The repository must document and ship a read-only importer with source provenance for completed Spec Kit feature artifacts.",
+      "id": "REQ-002",
+      "properties": {
+        "risk": "R2"
+      },
+      "status": "active",
+      "title": "Preserve reliable Spec Kit migration",
+      "type": "requirement",
+      "updated_at": "2026-08-16T20:57:07+00:00"
+    },
+    "REQ-003": {
+      "created_at": "2026-08-16T20:57:07+00:00",
+      "description": "Every repository update must pass linting, formatting, tests, package build, and an installed-command smoke test before it is pushed.",
+      "id": "REQ-003",
+      "properties": {
+        "risk": "R3"
+      },
+      "status": "active",
+      "title": "Require a reproducible local quality gate",
+      "type": "requirement",
+      "updated_at": "2026-08-16T20:57:07+00:00"
+    }
+  },
+  "project_name": "Intent Kit",
+  "schema_version": "0.1",
+  "updated_at": "2026-08-16T20:57:37+00:00"
+}
